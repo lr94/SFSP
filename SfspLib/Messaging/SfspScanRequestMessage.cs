@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SFSP.Messaging
+namespace Sfsp.Messaging
 {
     /// <summary>
     /// Rappresenta il messaggio inviato da un host per cercare altri host sulla rete.

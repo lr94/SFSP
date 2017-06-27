@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFSP
+namespace Sfsp
 {
     internal class UnsupportedSfspVersionException : Exception
     {

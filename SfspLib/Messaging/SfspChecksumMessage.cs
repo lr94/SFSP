@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFSP.Messaging
+namespace Sfsp.Messaging
 {
     internal class SfspChecksumMessage : SfspMessage
     {

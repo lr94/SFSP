@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace SFSP.Messaging
+namespace Sfsp.Messaging
 {
     /// <summary>
     /// Rappresenta un generico messaggio SFSP

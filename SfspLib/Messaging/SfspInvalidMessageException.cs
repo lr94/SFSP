@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFSP.Messaging
+namespace Sfsp.Messaging
 {
     public class SfspInvalidMessageException : Exception
     {

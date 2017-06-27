@@ -3,9 +3,9 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
-using SFSP.Messaging;
+using Sfsp.Messaging;
 
-namespace SFSP
+namespace Sfsp
 {
     /// <summary>
     /// Consente di cercare sulla rete locale host a cui inviare i file mediante il protocollo Sfsp

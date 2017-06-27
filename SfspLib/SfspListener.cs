@@ -3,9 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
-using SFSP.Messaging;
+using Sfsp.Messaging;
 
-namespace SFSP
+namespace Sfsp
 {
     /// <summary>
     /// Consente all'host di risultare visibile sulla rete locale e di ricevere file

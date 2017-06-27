@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFSP
+namespace Sfsp
 {
     public class TransferStatusChangedEventArgs : EventArgs
     {

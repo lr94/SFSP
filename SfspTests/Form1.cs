@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SFSP;
-using SFSP.Messaging;
+using Sfsp;
+using Sfsp.Messaging;
 
 namespace TestSFSP
 {

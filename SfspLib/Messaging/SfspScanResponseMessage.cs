@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFSP.Messaging
+namespace Sfsp.Messaging
 {
     /// <summary>
     /// Rappresenta il messaggio inviato da un host per cercare altri host sulla rete.

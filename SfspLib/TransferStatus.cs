@@ -1,4 +1,4 @@
-﻿namespace SFSP
+﻿namespace Sfsp
 {
     public enum TransferStatus
     {
