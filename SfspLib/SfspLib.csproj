@@ -41,25 +41,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SFSP\ISfspAsyncTransfer.cs" />
-    <Compile Include="SFSP\Messaging\SfspChecksumMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspConfirmMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspCreateDirectoryMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspCreateFileMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspInvalidMessageException.cs" />
-    <Compile Include="SFSP\Messaging\SfspMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspRequestMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspScanRequestMessage.cs" />
-    <Compile Include="SFSP\Messaging\SfspScanResponseMessage.cs" />
-    <Compile Include="SFSP\SfspAsyncUpload.cs" />
-    <Compile Include="SFSP\SfspHost.cs" />
-    <Compile Include="SFSP\SfspHostConfiguration.cs" />
-    <Compile Include="SFSP\SfspHostFoundEventArgs.cs" />
-    <Compile Include="SFSP\SfspListener.cs" />
-    <Compile Include="SFSP\SfspScanner.cs" />
-    <Compile Include="SFSP\TransferStatus.cs" />
-    <Compile Include="SFSP\TransferStatusChangedEventArgs.cs" />
-    <Compile Include="SFSP\UnsupportedSfspVersionException.cs" />
+    <Compile Include="ISfspAsyncTransfer.cs" />
+    <Compile Include="Messaging\SfspChecksumMessage.cs" />
+    <Compile Include="Messaging\SfspConfirmMessage.cs" />
+    <Compile Include="Messaging\SfspCreateDirectoryMessage.cs" />
+    <Compile Include="Messaging\SfspCreateFileMessage.cs" />
+    <Compile Include="Messaging\SfspInvalidMessageException.cs" />
+    <Compile Include="Messaging\SfspMessage.cs" />
+    <Compile Include="Messaging\SfspRequestMessage.cs" />
+    <Compile Include="Messaging\SfspScanRequestMessage.cs" />
+    <Compile Include="Messaging\SfspScanResponseMessage.cs" />
+    <Compile Include="SfspAsyncUpload.cs" />
+    <Compile Include="SfspHost.cs" />
+    <Compile Include="SfspHostConfiguration.cs" />
+    <Compile Include="SfspHostFoundEventArgs.cs" />
+    <Compile Include="SfspListener.cs" />
+    <Compile Include="SfspScanner.cs" />
+    <Compile Include="TransferStatus.cs" />
+    <Compile Include="TransferStatusChangedEventArgs.cs" />
+    <Compile Include="UnsupportedSfspVersionException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
