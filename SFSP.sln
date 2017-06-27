@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfspLib", "SFSP\SfspLib.csproj", "{0A2B3975-DEDA-4186-800C-FC331E183D0B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfspTests", "SfspTests\SfspTests.csproj", "{67543E26-E826-49EC-A06E-094CA48BC456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfspLib", "SfspLib\SfspLib.csproj", "{0A2B3975-DEDA-4186-800C-FC331E183D0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67543E26-E826-49EC-A06E-094CA48BC456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67543E26-E826-49EC-A06E-094CA48BC456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67543E26-E826-49EC-A06E-094CA48BC456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67543E26-E826-49EC-A06E-094CA48BC456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2B3975-DEDA-4186-800C-FC331E183D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
