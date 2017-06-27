@@ -1,11 +1,22 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Sfsp
 {
     public class SfspAsyncUpload : ISfspAsyncTransfer
     {
-        internal SfspAsyncUpload()
+        private string basePath;
+        private List<string> relativePaths;
+
+        internal SfspAsyncUpload(string basePath, List<string> relativePaths)
         {
+            this.relativePaths = relativePaths;
+            this.basePath = basePath;
+
+            if (!Directory.Exists(basePath))
+                throw new DirectoryNotFoundException("Cannot find base directory " + basePath + ".");
+
             this.Status = TransferStatus.New;
         }
 
