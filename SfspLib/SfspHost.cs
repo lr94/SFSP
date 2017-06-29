@@ -49,18 +49,23 @@ namespace Sfsp
         /// <param name="foundObjects">Lista in cui aggiungere gli oggetti trovati</param>
         private void Scan(string path, List<string> foundObjects)
         {
+            // Se l'elemento specificato è una directory
             if (Directory.Exists(path))
             {
+                // La aggiungo nella lista PRIMA dei suoi figli
                 foundObjects.Add(path);
 
+                // Elenco tutti i file in essa contenuti e li aggiungo
                 string[] files = Directory.GetFiles(path);
                 foreach (string filePath in files)
                     foundObjects.Add(filePath);
 
+                // Elenco tutte le sottodirectory in essa contenute e chiamo su esse ricorsivamente Scan
                 string[] subDirs = Directory.GetDirectories(path);
                 foreach (string dirPath in subDirs)
                     Scan(dirPath, foundObjects);
             }
+            // Se l'elemento è un file mi limito ad aggiungerlo
             else if (File.Exists(path))
                 foundObjects.Add(path);
         }
