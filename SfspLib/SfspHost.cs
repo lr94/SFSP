@@ -77,6 +77,13 @@ namespace Sfsp
         /// <returns></returns>
         public SfspAsyncUpload Send(string path)
         {
+            // Elenco tutti gli oggetti (file e cartelle) da inviare
+            List<string> objects = new List<string>();
+            Scan(path, objects);
+            // La lista non può essere vuota
+            if (objects.Count == 0)
+                throw new FileNotFoundException();
+
             throw new NotImplementedException();
         }
     }
