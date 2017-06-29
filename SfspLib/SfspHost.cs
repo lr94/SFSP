@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Sfsp
 {
@@ -39,6 +41,29 @@ namespace Sfsp
             set;
         }
 
+        /// <summary>
+        /// Effettua la sansione ricorsiva di una directory (o di un file, nel qual caso rileva solo il file specificato)
+        /// Elencando tutti gli elementi in essa contenuti.
+        /// </summary>
+        /// <param name="path">Percorso della directory o del file</param>
+        /// <param name="foundObjects">Lista in cui aggiungere gli oggetti trovati</param>
+        private void Scan(string path, List<string> foundObjects)
+        {
+            if (Directory.Exists(path))
+            {
+                foundObjects.Add(path);
+
+                string[] files = Directory.GetFiles(path);
+                foreach (string filePath in files)
+                    foundObjects.Add(filePath);
+
+                string[] subDirs = Directory.GetDirectories(path);
+                foreach (string dirPath in subDirs)
+                    Scan(dirPath, foundObjects);
+            }
+            else if (File.Exists(path))
+                foundObjects.Add(path);
+        }
 
         /// <summary>
         /// Invia un file o una directory
