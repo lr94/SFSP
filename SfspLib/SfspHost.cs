@@ -43,7 +43,7 @@ namespace Sfsp
         /// <summary>
         /// Invia un file o una directory
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Percorso dell'oggetto da inviare</param>
         /// <returns></returns>
         public SfspAsyncUpload Send(string path)
         {
