@@ -41,13 +41,13 @@ namespace Sfsp
 
 
         /// <summary>
-        /// Invia un insieme di file o directory
+        /// Invia un file o una directory
         /// </summary>
-        /// <param name="paths"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public SfspAsyncUpload Send(string[] paths)
+        public SfspAsyncUpload Send(string path)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
