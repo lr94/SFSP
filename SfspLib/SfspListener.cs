@@ -34,6 +34,41 @@ namespace Sfsp
         {
             Thread udpListenerThread = new Thread(UdpServerTask);
             udpListenerThread.Start();
+
+            Thread tcpListenerThread = new Thread(TcpServerTask);
+            tcpListenerThread.Start();
+        }
+
+        private void TcpServerTask()
+        {
+            TcpListener listener = new TcpListener(new IPEndPoint(IPAddress.Any, _Configuration.TcpPort));
+            listener.Start();
+
+            while(true)
+            {
+                // Si è connesso qualcuno
+                TcpClient client = listener.AcceptTcpClient();
+                NetworkStream stream = client.GetStream();
+
+                // Leggo il messaggio inviato (ignorando eventuali errori)
+                SfspMessage receivedMsg;
+                try
+                {
+                    receivedMsg = SfspMessage.ReadMessage(stream);
+                } catch (SfspInvalidMessageException)
+                {
+                    // Se il messaggio non era valido ignoriamo direttamente questa richiesta di connessione
+                    continue;
+                }
+
+                // Ignoro eventuali messaggi di tipo non atteso
+                if (receivedMsg is SfspRequestMessage)
+                {
+                    SfspRequestMessage request = (SfspRequestMessage)receivedMsg;
+
+                    System.Diagnostics.Debug.WriteLine("Ricevuta richiesta, bytes: " + request.TotalSize.ToString());
+                }
+            }
         }
 
         private void UdpServerTask()
