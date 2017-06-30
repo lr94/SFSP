@@ -117,6 +117,8 @@ namespace Sfsp
             if(confirm.Status == SfspConfirmMessage.FileStatus.Error)
             {
                 SetStatus(TransferStatus.Failed);
+                stream.Close();
+                client.Close();
                 return;
             }
 
