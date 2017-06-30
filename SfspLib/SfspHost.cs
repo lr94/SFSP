@@ -86,12 +86,17 @@ namespace Sfsp
         /// <returns></returns>
         public SfspAsyncUpload Send(string path)
         {
+            // Directory contenente l'elemento da inviare (la usiamo per il calcolo dei percorsi relativi)
+            String basePath = Path.GetDirectoryName(path);
+
             // Elenco tutti gli oggetti (file e cartelle) da inviare
             List<string> objects = new List<string>();
             Scan(path, objects);
             // La lista non può essere vuota
             if (objects.Count == 0)
                 throw new FileNotFoundException();
+
+            SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, objects);
 
             throw new NotImplementedException();
         }
