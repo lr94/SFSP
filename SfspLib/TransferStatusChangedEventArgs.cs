@@ -9,6 +9,9 @@ namespace Sfsp
             NewStatus = newStatus;
         }
 
+        /// <summary>
+        /// Stato del trasferimento dopo il passaggio di stato
+        /// </summary>
         public TransferStatus NewStatus
         {
             get;

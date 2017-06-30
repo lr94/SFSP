@@ -21,6 +21,9 @@ namespace Sfsp.Messaging
             WriteString(_RelativePath);
         }
 
+        /// <summary>
+        /// Percorso relativo (alla radice del trasferimento) della cartella da creare
+        /// </summary>
         public string RelativePath
         {
             get

@@ -5,8 +5,16 @@ using System.Collections.Generic;
 
 namespace Sfsp
 {
+    /// <summary>
+    /// Rappresenta un host remoto
+    /// </summary>
     public class SfspHost
     {
+        /// <summary>
+        /// Inizializza un nuovo oggetto di tipo Host
+        /// </summary>
+        /// <param name="scanResponse">Messaggio inviato dall'host in questione come risposta alla richiesta di scansione</param>
+        /// <param name="remoteAddress">Indirizzo IP dell'host remoto</param>
         internal SfspHost(Messaging.SfspScanResponseMessage scanResponse, IPAddress remoteAddress)
         {
             Name = scanResponse.Name;

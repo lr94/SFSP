@@ -9,6 +9,9 @@ namespace Sfsp
             Host = host;
         }
 
+        /// <summary>
+        /// Host rilevato
+        /// </summary>
         public SfspHost Host
         {
             get;

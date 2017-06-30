@@ -27,6 +27,9 @@ namespace Sfsp.Messaging
             WriteBlob(_Sha256);
         }
 
+        /// <summary>
+        /// Hash SHA256 dell'oggetto
+        /// </summary>
         public byte[] Sha256
         {
             get
@@ -42,6 +45,11 @@ namespace Sfsp.Messaging
             }
         }
 
+        /// <summary>
+        /// Confronta l'hash contenuto nel messaggio con un hash passato come argomento
+        /// </summary>
+        /// <param name="secondHash">Hash con cui effettuare il confronto</param>
+        /// <returns></returns>
         public bool Check(byte[] secondHash)
         {
             if (secondHash.Length != 32)

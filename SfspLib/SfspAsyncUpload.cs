@@ -15,6 +15,11 @@ namespace Sfsp
         private string basePath;
         private List<string> relativePaths;
 
+        /// <summary>
+        /// Inizializza un nuovo trasferimento (in stato "New").
+        /// </summary>
+        /// <param name="basePath">Directory "radice" contenente gli oggetti da trasferire</param>
+        /// <param name="relativePaths">Elenco di tutti gli oggetti da trasferire, espressi come percorsi relativi rispetto alla radice</param>
         internal SfspAsyncUpload(string basePath, List<string> relativePaths)
         {
             this.relativePaths = relativePaths;

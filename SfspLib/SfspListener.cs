@@ -27,6 +27,9 @@ namespace Sfsp
             udpClient.JoinMulticastGroup(_Configuration.MulticastAddress, IPAddress.Any);
         }
 
+        /// <summary>
+        /// Mette l'host locale in ascolto
+        /// </summary>
         public void Start()
         {
             Thread t = new Thread(ServerTask);
