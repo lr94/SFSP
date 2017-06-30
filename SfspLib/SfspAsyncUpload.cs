@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -152,20 +153,32 @@ namespace Sfsp
             // Apro in lettura il file
             FileStream fStream = File.OpenRead(fullPath);
 
+            // Preparazione per il calcolo del checksum
+            SHA256 sha256 = SHA256.Create();
+            sha256.Initialize();
+
             // Invio i dati
             byte[] buffer = new byte[1024];
             long fSent = 0;
             while(fSent < fSize)
             {
                 int bufSize = (fSize - fSent < 1024) ? (int)(fSize - fSent) : 1024;
-                fStream.Read(buffer, 0, bufSize);
-
+                // Leggo dal file
+                bufSize = fStream.Read(buffer, 0, bufSize);
+                // Invio i dati
                 stream.Write(buffer, 0, bufSize);
+                // Calcolo del checksum
+                sha256.TransformBlock(buffer, 0, bufSize, buffer, 0);
+                // Aggiorno i contatori
                 fSent += bufSize;
                 Progress += bufSize;
             }
-            
-            // Invio checksum??            
+
+            // Invio checksum
+            sha256.TransformFinalBlock(buffer, 0, 0);
+            byte[] hash = sha256.Hash;
+            SfspChecksumMessage checksumMsg = new SfspChecksumMessage(hash);
+            checksumMsg.Write(stream);     
         }
 
         private void SetStatus(TransferStatus status)
