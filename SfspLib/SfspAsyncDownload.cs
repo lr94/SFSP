@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -119,6 +120,10 @@ namespace Sfsp
         {
             FileStream fs = File.Open(fullPath, FileMode.Create, FileAccess.Write);
 
+            // Preparazione per il calcolo del checksum
+            SHA256 sha256 = SHA256.Create();
+            sha256.Initialize();
+
             byte[] buffer = new byte[1024];
             long fReceived = 0;
             while(fReceived < size)
@@ -128,9 +133,27 @@ namespace Sfsp
                 // Scrive il buffer su disco
                 fs.Write(buffer, 0, n);
 
+                // Calcolo del checksum
+                sha256.TransformBlock(buffer, 0, n, buffer, 0);
+
                 fReceived += n;
             }
             fs.Close();
+
+            // Verifica del checksum
+            sha256.TransformFinalBlock(buffer, 0, 0);
+            byte[] hash = sha256.Hash;
+            SfspMessage receivedMsg = SfspMessage.ReadMessage(stream);
+            if (!(receivedMsg is SfspChecksumMessage))
+                throw new ProtocolViolationException("Unexpected SFSP message");
+            SfspChecksumMessage checksumMsg = (SfspChecksumMessage)receivedMsg;
+
+            SfspConfirmMessage confirm;
+            if (checksumMsg.Check(hash))
+                confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+            else
+                confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
+            checksumMsg.Write(stream);
 
         }
 
