@@ -28,6 +28,9 @@ namespace Sfsp
             if (!Directory.Exists(basePath))
                 throw new DirectoryNotFoundException("Cannot find base directory " + basePath + ".");
 
+            if (relativePaths.Count == 0)
+                throw new ArgumentException("Cannot send an empty file set", "relativePaths");
+
             this.Status = TransferStatus.New;
         }
 
