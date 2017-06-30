@@ -15,6 +15,7 @@ namespace Sfsp
 
         private string basePath;
         private List<string> relativePaths;
+        private SfspHost remoteHost;
 
         private Thread uploadThread;
 
@@ -23,8 +24,9 @@ namespace Sfsp
         /// </summary>
         /// <param name="basePath">Directory "radice" contenente gli oggetti da trasferire</param>
         /// <param name="relativePaths">Elenco di tutti gli oggetti da trasferire, espressi come percorsi relativi rispetto alla radice</param>
-        internal SfspAsyncUpload(string basePath, List<string> relativePaths)
+        internal SfspAsyncUpload(SfspHost remoteHost, string basePath, List<string> relativePaths)
         {
+            this.remoteHost = remoteHost;
             this.relativePaths = relativePaths;
             this.basePath = basePath;
 
