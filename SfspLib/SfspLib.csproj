@@ -7,7 +7,7 @@
     <ProjectGuid>{0A2B3975-DEDA-4186-800C-FC331E183D0B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SFSP</RootNamespace>
+    <RootNamespace>Sfsp</RootNamespace>
     <AssemblyName>Sfsp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
