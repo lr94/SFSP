@@ -99,11 +99,16 @@ namespace Sfsp
 
             // Invio il messaggio
             request.Write(stream);
-            Status = TransferStatus.Pending;
-            OnStatusChange(TransferStatus.Pending);
-
+            SetStatus(TransferStatus.Pending);
+            
             // Leggo il messaggio di risposta
             SfspMessage msg = SfspMessage.ReadMessage(stream);
+        }
+
+        private void SetStatus(TransferStatus status)
+        {
+            Status = status;
+            OnStatusChange(status);
         }
 
         private long _progress;
