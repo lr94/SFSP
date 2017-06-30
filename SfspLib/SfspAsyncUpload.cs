@@ -217,6 +217,7 @@ namespace Sfsp
                 fSent += bufSize;
                 Progress += bufSize;
             }
+            fStream.Close();
 
             // Invio checksum
             sha256.TransformFinalBlock(buffer, 0, 0);
