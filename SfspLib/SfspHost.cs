@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sfsp
 {
@@ -92,11 +93,14 @@ namespace Sfsp
             // Elenco tutti gli oggetti (file e cartelle) da inviare
             List<string> objects = new List<string>();
             Scan(path, objects);
+            // Determino i percorsi relativi degli oggetti da inviare
+            List<string> relativePathObjects = objects.Select(s => PathUtils.GetRelativePath(basePath, s)).ToList();
+
             // La lista non può essere vuota
             if (objects.Count == 0)
                 throw new FileNotFoundException();
 
-            SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, objects);
+            SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, relativePathObjects);
 
             return upload;
         }
