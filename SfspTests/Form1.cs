@@ -25,26 +25,54 @@ namespace TestSFSP
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
+        List<SfspHost> hosts;
 
         private void button2_Click(object sender, EventArgs e)
         {
+            lst_hosts.Items.Clear();
+            lst_hosts.Enabled = false;
+            hosts = new List<SfspHost>();
+
             SfspScanner scanner = new SfspScanner(new SfspHostConfiguration("Boh"));
 
             scanner.StartScan(new TimeSpan(0,0,2));
 
-            scanner.HostFound += (Object sender2, SfspHostFoundEventArgs e2) => {
-                MessageBox.Show(e2.Host.Name + "\n" + e2.Host.Address.ToString());
+            scanner.HostFound += (Object sender2, SfspHostFoundEventArgs e2) =>
+            {
+                addListItem(e2.Host.Name + " - " + e2.Host.Address.ToString());
+                hosts.Add(e2.Host);
+                //MessageBox.Show(e2.Host.Name + "\n" + e2.Host.Address.ToString());
             };
+
+            scanner.ScanComplete += (Object sender2, EventArgs e2) =>
+            {
+                setListEnabled(true);
+            };
+        }
+
+        delegate void setListEnabledDelegate(bool enabled);
+        void setListEnabled(bool enabled)
+        {
+            if (lst_hosts.InvokeRequired)
+                lst_hosts.Invoke(new setListEnabledDelegate(setListEnabled), new object[] { enabled });
+            else
+                lst_hosts.Enabled = enabled;
+        }
+
+        delegate void addListItemDelegate(string text);
+        void addListItem(string text)
+        {
+            if (lst_hosts.InvokeRequired)
+                lst_hosts.Invoke(new addListItemDelegate(addListItem), new object[] { text });
+            else
+                lst_hosts.Items.Add(text);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SfspListener listener = new SfspListener(new SfspHostConfiguration(textBox2.Text));
+            txt_name.Enabled = false;
 
+            SfspListener listener = new SfspListener(new SfspHostConfiguration(txt_name.Text));
             listener.Start();
         }
 
@@ -61,6 +89,7 @@ namespace TestSFSP
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            txt_name.Text = System.Net.Dns.GetHostName();
             // MessageBox.Show(String.Join("\n", Environment.GetCommandLineArgs()));
         }
 
@@ -68,6 +97,12 @@ namespace TestSFSP
         {
             MessageBox.Show(SfspTests.PathUtils.GetRelativePath("C:\\Users\\Luca\\Documents\\Visual Studio 2015", "C:\\Users\\Luca\\Documents\\Visual Studio 2015\\Projects\\SFSP\\SfspLib\\SfspAsyncUpload.cs"));
             MessageBox.Show(SfspTests.PathUtils.GetRelativePath2("C:\\Users\\Luca\\Documents\\Visual Studio 2015", "C:\\Users\\Luca\\Documents\\Visual Studio 2015\\Projects\\SFSP\\SfspLib\\SfspAsyncUpload.cs"));
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
+            selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin");
         }
     }
 }
