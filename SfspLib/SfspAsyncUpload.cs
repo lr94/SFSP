@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -14,6 +15,8 @@ namespace Sfsp
 
         private string basePath;
         private List<string> relativePaths;
+
+        private Thread uploadThread;
 
         /// <summary>
         /// Inizializza un nuovo trasferimento (in stato "New").
@@ -44,7 +47,13 @@ namespace Sfsp
         /// </summary>
         public void Start()
         {
-            
+            uploadThread = new Thread(UploadTask);
+            uploadThread.Start();
+        }
+
+        public void UploadTask()
+        {
+
         }
 
         private long _progress;
