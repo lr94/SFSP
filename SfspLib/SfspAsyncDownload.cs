@@ -18,6 +18,16 @@ namespace Sfsp
             relativePaths = request.RelativePaths;
         }
 
+        /// <summary>
+        /// Restituisce una lista di tutti gli oggetti che l'host remoto vuole inviare
+        /// </summary>
+        /// <returns>Lista contenente i percorsi relativi dei file e delle cartelle</returns>
+        public List<String> GetObjects()
+        {
+            List<string> list = new List<string>(relativePaths);
+            return list;
+        }
+
         public long Progress
         {
             get
