@@ -33,6 +33,9 @@ namespace Sfsp
         }
 
         private long _Progress;
+        /// <summary>
+        /// Numero di byte già trasferiti (vengono contati solo i byte di contenuto dei file da trasferire)
+        /// </summary>
         public long Progress
         {
             get
@@ -54,6 +57,9 @@ namespace Sfsp
         }
 
         TransferStatus _Status;
+        /// <summary>
+        /// Stato attuale del trasferimento
+        /// </summary>
         public TransferStatus Status
         {
             get
