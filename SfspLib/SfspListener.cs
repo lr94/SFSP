@@ -27,6 +27,13 @@ namespace Sfsp
             udpClient.JoinMulticastGroup(_Configuration.MulticastAddress, IPAddress.Any);
         }
 
+        public event EventHandler<TransferRequestEventArgs> TransferRequest;
+        protected void OnTransferRequest(SfspAsyncDownload download)
+        {
+            if (TransferRequest != null)
+                TransferRequest(this, new TransferRequestEventArgs(download));
+        }
+
         /// <summary>
         /// Mette l'host locale in ascolto
         /// </summary>
@@ -66,7 +73,7 @@ namespace Sfsp
                 {
                     SfspRequestMessage request = (SfspRequestMessage)receivedMsg;
 
-                    System.Diagnostics.Debug.WriteLine("Ricevuta richiesta, bytes: " + request.TotalSize.ToString());
+                    OnTransferRequest(new SfspAsyncDownload(request));
                 }
             }
         }
