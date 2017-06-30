@@ -108,6 +108,18 @@ namespace Sfsp
         }
 
         public event EventHandler<TransferStatusChangedEventArgs> StatusChanged;
+        
+        private void OnStatusChange(TransferStatus status)
+        {
+            if (StatusChanged != null)
+                StatusChanged(this, new TransferStatusChangedEventArgs(status));
+        }
+
+        private void SetStatus(TransferStatus status)
+        {
+            Status = status;
+            OnStatusChange(status);
+        }
 
         public void Abort()
         {
