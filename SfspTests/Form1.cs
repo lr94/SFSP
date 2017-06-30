@@ -63,5 +63,11 @@ namespace TestSFSP
         {
             // MessageBox.Show(String.Join("\n", Environment.GetCommandLineArgs()));
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SfspTests.PathUtils.GetRelativePath("C:\\Users\\Luca\\Documents\\Visual Studio 2015", "C:\\Users\\Luca\\Documents\\Visual Studio 2015\\Projects\\SFSP\\SfspLib\\SfspAsyncUpload.cs"));
+            MessageBox.Show(SfspTests.PathUtils.GetRelativePath2("C:\\Users\\Luca\\Documents\\Visual Studio 2015", "C:\\Users\\Luca\\Documents\\Visual Studio 2015\\Projects\\SFSP\\SfspLib\\SfspAsyncUpload.cs"));
+        }
     }
 }
