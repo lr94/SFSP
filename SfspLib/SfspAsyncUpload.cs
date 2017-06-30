@@ -120,6 +120,52 @@ namespace Sfsp
             }
 
             // Se arriviamo qui l'invio è stato accettato!
+            foreach(String objectRelativePath in relativePaths)
+            {
+                // Percorso completo sul sistema locale
+                string fullPath = Path.Combine(basePath, objectRelativePath);
+
+                // Se è una cartella...
+                if (Directory.Exists(fullPath))
+                {
+                    // ...inviamo un comando di creazione della cartella
+                    SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(objectRelativePath);
+                    createDirMessage.Write(stream);
+                }
+                // Se è un file...
+                else if (File.Exists(fullPath))
+                    UploadFile(stream, fullPath, objectRelativePath);
+                else
+                    throw new FileNotFoundException("File or directory not found", fullPath);
+            }
+        }
+
+        private void UploadFile(NetworkStream stream, string fullPath, string relativePath)
+        {
+            // Determino la dimensione del file
+            FileInfo fInfo = new FileInfo(fullPath);
+            long fSize = fInfo.Length;
+            // Invio il comando di creazione del file
+            SfspCreateFileMessage createFileMessage = new SfspCreateFileMessage((ulong)fSize, relativePath);
+            createFileMessage.Write(stream);
+
+            // Apro in lettura il file
+            FileStream fStream = File.OpenRead(fullPath);
+
+            // Invio i dati
+            byte[] buffer = new byte[1024];
+            long fSent = 0;
+            while(fSent < fSize)
+            {
+                int bufSize = (fSize - fSent < 1024) ? (int)(fSize - fSent) : 1024;
+                fStream.Read(buffer, 0, bufSize);
+
+                stream.Write(buffer, 0, bufSize);
+                fSent += bufSize;
+                Progress += bufSize;
+            }
+            
+            // Invio checksum??            
         }
 
         private void SetStatus(TransferStatus status)
