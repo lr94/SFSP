@@ -110,14 +110,28 @@ namespace Sfsp
 
                     // Scarico il file
                     string fullPath = Path.Combine(destinationPath, fileRelativePath);
-                    DownloadFile(stream, fullPath);
+                    DownloadFile(stream, fullPath, (long)createFileMsg.FileSize);
                 }
             }
         }
 
-        private void DownloadFile(NetworkStream stream, string fullPath)
+        private void DownloadFile(NetworkStream stream, string fullPath, long size)
         {
-            throw new NotImplementedException();
+            FileStream fs = File.Open(fullPath, FileMode.Create, FileAccess.Write);
+
+            byte[] buffer = new byte[1024];
+            long fReceived = 0;
+            while(fReceived < size)
+            {
+                // Riceve i dati e li inserisce nel buffer
+                int n = stream.Read(buffer, 0, 1024);
+                // Scrive il buffer su disco
+                fs.Write(buffer, 0, n);
+
+                fReceived += n;
+            }
+            fs.Close();
+
         }
 
         /// <summary>
