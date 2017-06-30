@@ -20,6 +20,8 @@ namespace Sfsp
             TotalSize = (long)request.TotalSize;
             relativePaths = request.RelativePaths;
             tcpClient = client;
+
+            Status = TransferStatus.Pending;
         }
 
         /// <summary>
