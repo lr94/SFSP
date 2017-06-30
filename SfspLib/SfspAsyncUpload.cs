@@ -132,6 +132,24 @@ namespace Sfsp
                     // ...inviamo un comando di creazione della cartella
                     SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(objectRelativePath);
                     createDirMessage.Write(stream);
+
+                    // Attendo conferma
+                    msg = SfspMessage.ReadMessage(stream);
+                    if (!(msg is SfspConfirmMessage))
+                    {
+                        SetStatus(TransferStatus.Failed);
+                        stream.Close();
+                        client.Close();
+                        return;
+                    }
+                    confirm = (SfspConfirmMessage)msg;
+                    if(confirm.Status != SfspConfirmMessage.FileStatus.Ok)
+                    {
+                        SetStatus(TransferStatus.Failed);
+                        stream.Close();
+                        client.Close();
+                        return;
+                    }
                 }
                 // Se è un file...
                 else if (File.Exists(fullPath))
