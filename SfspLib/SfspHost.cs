@@ -98,7 +98,7 @@ namespace Sfsp
 
             SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, objects);
 
-            throw new NotImplementedException();
+            return upload;
         }
 
         /// <summary>
