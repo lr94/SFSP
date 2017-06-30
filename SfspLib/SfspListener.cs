@@ -74,7 +74,7 @@ namespace Sfsp
                     SfspRequestMessage request = (SfspRequestMessage)receivedMsg;
 
                     // Genero l'oggetto per il download e sollevo l'evento
-                    OnTransferRequest(new SfspAsyncDownload(request));
+                    OnTransferRequest(new SfspAsyncDownload(request, client));
                 }
             }
         }

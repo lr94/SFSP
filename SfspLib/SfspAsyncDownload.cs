@@ -11,13 +11,15 @@ namespace Sfsp
     public class SfspAsyncDownload : ISfspAsyncTransfer
     {
         private IList<string> relativePaths;
+        private TcpClient tcpClient;
 
         private object locker = new object();
 
-        internal SfspAsyncDownload(SfspRequestMessage request)
+        internal SfspAsyncDownload(SfspRequestMessage request, TcpClient client)
         {
             TotalSize = (long)request.TotalSize;
             relativePaths = request.RelativePaths;
+            tcpClient = client;
         }
 
         /// <summary>
