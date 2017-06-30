@@ -19,6 +19,8 @@ namespace Sfsp
 
         private Thread uploadThread;
 
+        private bool started = false;
+
         /// <summary>
         /// Inizializza un nuovo trasferimento (in stato "New").
         /// </summary>
@@ -49,6 +51,17 @@ namespace Sfsp
         /// </summary>
         public void Start()
         {
+            // Verifichiamo che l'oggetto non sia già stato utilizzato per un trasferimento
+            // uso lock perché altrimenti in linea teorica un altro thread potrebbe chiamare
+            // Start() mentre questo si trova tra if(started) e started = true.
+            lock(locker)
+            {
+                if (started)
+                    throw new InvalidOperationException("The transfer has already been started");
+
+                started = true;
+            }
+
             uploadThread = new Thread(UploadTask);
             uploadThread.Start();
         }
