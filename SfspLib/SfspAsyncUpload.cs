@@ -123,6 +123,9 @@ namespace Sfsp
             }
 
             // Se arriviamo qui l'invio è stato accettato!
+            SetStatus(TransferStatus.InProgress);
+
+            // Inizio il trasferimento vero e proprio
             foreach(String objectRelativePath in relativePaths)
             {
                 // Percorso completo sul sistema locale
