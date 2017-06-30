@@ -30,15 +30,13 @@ namespace SfspTests
 
         static internal string GetRelativePath2(string basePath, string targetPath)
         {
+            if (!basePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                basePath += Path.DirectorySeparatorChar.ToString();
             Uri baseUri = new Uri(basePath);
             Uri targetUri = new Uri(targetPath);
 
             Uri relativeUri = baseUri.MakeRelativeUri(targetUri);
             String result = Uri.UnescapeDataString(relativeUri.ToString()).Replace('/', System.IO.Path.DirectorySeparatorChar);
-            int firstSepIndex = result.IndexOf('\\');
-
-            if(firstSepIndex != -1 && firstSepIndex < result.Length - 1)
-                result = result.Substring(firstSepIndex + 1);
 
             return result;
         }
