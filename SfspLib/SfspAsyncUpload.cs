@@ -2,6 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Threading;
+using System.Net;
+using System.Net.Sockets;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -46,6 +48,12 @@ namespace Sfsp
         /// </summary>
         public event EventHandler<TransferStatusChangedEventArgs> StatusChanged;
 
+        private void OnStatusChange(TransferStatus status)
+        {
+            if (StatusChanged != null)
+                StatusChanged(this, new TransferStatusChangedEventArgs(status));
+        }
+
         /// <summary>
         /// Avvia l'upload di tutti gli oggetti selezionati per il trasferimento
         /// </summary>
@@ -82,8 +90,20 @@ namespace Sfsp
             }
             TotalSize = totalSize;
 
+            // Mi collego all'host remoto
+            TcpClient client = remoteHost.CreateConnection();
+            NetworkStream stream = client.GetStream();
+
             // Preparo il messaggio di richiesta da inviare
             SfspRequestMessage request = new SfspRequestMessage((ulong)totalSize, relativePaths);
+
+            // Invio il messaggio
+            request.Write(stream);
+            Status = TransferStatus.Pending;
+            OnStatusChange(TransferStatus.Pending);
+
+            // Leggo il messaggio di risposta
+            SfspMessage msg = SfspMessage.ReadMessage(stream);
         }
 
         private long _progress;
