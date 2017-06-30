@@ -147,12 +147,19 @@ namespace Sfsp
                     if(!done)
                     {
                         SetStatus(TransferStatus.Failed);
+                        stream.Close();
+                        client.Close();
                         return;
                     }
                 }
                 else
                     throw new FileNotFoundException("File or directory not found", fullPath);
             }
+
+            // Abbiamo finito
+            SetStatus(TransferStatus.Completed);
+            stream.Close();
+            client.Close();
         }
 
         private bool UploadFile(NetworkStream stream, string fullPath, string relativePath)
