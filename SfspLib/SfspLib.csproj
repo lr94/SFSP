@@ -51,6 +51,7 @@
     <Compile Include="Messaging\SfspRequestMessage.cs" />
     <Compile Include="Messaging\SfspScanRequestMessage.cs" />
     <Compile Include="Messaging\SfspScanResponseMessage.cs" />
+    <Compile Include="SfspAsyncDownload.cs" />
     <Compile Include="SfspAsyncUpload.cs" />
     <Compile Include="SfspHost.cs" />
     <Compile Include="SfspHostConfiguration.cs" />
