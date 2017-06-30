@@ -102,7 +102,8 @@ namespace TestSFSP
         private void button1_Click(object sender, EventArgs e)
         {
             SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
-            selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin");
+            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin");
+            upload.Start();
         }
     }
 }
