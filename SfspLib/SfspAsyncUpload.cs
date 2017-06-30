@@ -51,7 +51,7 @@ namespace Sfsp
             uploadThread.Start();
         }
 
-        public void UploadTask()
+        private void UploadTask()
         {
 
         }
