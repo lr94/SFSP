@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 using System.IO;
 using System.Collections.Generic;
 
@@ -93,6 +94,19 @@ namespace Sfsp
                 throw new FileNotFoundException();
 
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Crea una connessione TCP con l'host remoto
+        /// </summary>
+        /// <returns>L'oggetto TcpClient relativo alla connessione con l'host remoto</returns>
+        internal TcpClient CreateConnection()
+        {
+            IPEndPoint endpoint = new IPEndPoint(this.Address, this.TcpPort);
+            TcpClient tcp = new TcpClient();
+            tcp.Connect(endpoint);
+
+            return tcp;
         }
     }
 }
