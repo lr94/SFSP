@@ -15,6 +15,8 @@ namespace Sfsp
 
         private object locker = new object();
 
+        private bool response_sent = false;
+
         internal SfspAsyncDownload(SfspRequestMessage request, TcpClient client)
         {
             TotalSize = (long)request.TotalSize;
@@ -22,6 +24,23 @@ namespace Sfsp
             tcpClient = client;
 
             Status = TransferStatus.Pending;
+        }
+
+        /// <summary>
+        /// Rifiuta la richiesta di trasferimento
+        /// </summary>
+        public void Deny()
+        {
+            lock(locker)
+            {
+                if (response_sent)
+                    throw new InvalidOperationException("Response already sent");
+                response_sent = true;
+            }
+
+            // Invio il messaggio di rifiuto
+            SfspConfirmMessage confirmMsg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
+            confirmMsg.Write(tcpClient.GetStream());
         }
 
         /// <summary>
