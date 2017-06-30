@@ -53,7 +53,22 @@ namespace Sfsp
 
         private void UploadTask()
         {
+            // Scorro tutti gli oggetti da inviare
+            long totalSize = 0;
+            foreach(string currentObject in relativePaths)
+            {
+                // Ne ottengo il percorso completo per poi determinarne la dimensione, che aggiungo a totalSize
+                String fullpath = Path.Combine(basePath, currentObject);
+                if(File.Exists(fullpath))
+                {
+                    FileInfo fi = new FileInfo(fullpath);
+                    totalSize += fi.Length;
+                }
+            }
+            TotalSize = totalSize;
 
+            // Preparo il messaggio di richiesta da inviare
+            SfspRequestMessage request = new SfspRequestMessage((ulong)totalSize, relativePaths);
         }
 
         private long _progress;
