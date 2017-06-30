@@ -12,6 +12,7 @@ namespace Sfsp
     {
         private IList<string> relativePaths;
         private TcpClient tcpClient;
+        Thread downloadThread;
 
         private object locker = new object();
 
@@ -38,9 +39,85 @@ namespace Sfsp
                 response_sent = true;
             }
 
+            // Setto lo stato
+            SetStatus(TransferStatus.Failed);
+
             // Invio il messaggio di rifiuto
             SfspConfirmMessage confirmMsg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
             confirmMsg.Write(tcpClient.GetStream());
+        }
+
+        /// <summary>
+        /// Accetta la richiesta di trasferimento
+        /// </summary>
+        /// <param name="destinationPath">Percorso in cui salvare i dati ricevuti</param>
+        public void Accept(string destinationPath)
+        {
+            lock (locker)
+            {
+                if (response_sent)
+                    throw new InvalidOperationException("Response already sent");
+                response_sent = true;
+            }
+
+            if (!Directory.Exists(destinationPath))
+                throw new DirectoryNotFoundException();
+
+            downloadThread = new Thread(() => DownloadTask(destinationPath));
+            downloadThread.Start();
+        }
+
+        private void DownloadTask(string destinationPath)
+        {
+            NetworkStream stream = tcpClient.GetStream();
+
+            // Invio il messaggio di accettazione
+            SfspConfirmMessage confirmMsg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+            confirmMsg.Write(stream);
+
+            Progress = 0;
+            Status = TransferStatus.InProgress;
+
+            // Elengo degli oggetti da ricevere (si ridurrà mano a mano che li riceviamo)
+            List<string> toReceive = new List<string>(relativePaths);
+
+            while(toReceive.Count > 0)
+            {
+                SfspMessage msg = SfspMessage.ReadMessage(stream);
+
+                // Se vogliamo creare una directory
+                if(msg is SfspCreateDirectoryMessage)
+                {
+                    // Ottengo il percorso relativo della cartella da creare
+                    SfspCreateDirectoryMessage createDirMsg = (SfspCreateDirectoryMessage)msg;
+                    string dirRelativePath = createDirMsg.RelativePath;
+
+                    // Rimuovo questo oggetto dalla lista degli oggetti da scaricare
+                    toReceive.Remove(dirRelativePath);
+
+                    // La vado a creare
+                    string fullPath = Path.Combine(destinationPath, dirRelativePath);
+                    Directory.CreateDirectory(fullPath);
+                }
+                else if(msg is SfspCreateFileMessage)
+                {
+                    // Ottengo il percorso relativo del file da creare
+                    SfspCreateFileMessage createFileMsg = (SfspCreateFileMessage)msg;
+                    string fileRelativePath = createFileMsg.FileRelativePath;
+
+                    // Rimuovo questo oggetto dalla lista degli oggetti da scaricare
+                    toReceive.Remove(fileRelativePath);
+
+                    // Scarico il file
+                    string fullPath = Path.Combine(destinationPath, fileRelativePath);
+                    DownloadFile(stream, fullPath);
+                }
+            }
+        }
+
+        private void DownloadFile(NetworkStream stream, string fullPath)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
