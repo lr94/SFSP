@@ -103,6 +103,23 @@ namespace Sfsp
             
             // Leggo il messaggio di risposta
             SfspMessage msg = SfspMessage.ReadMessage(stream);
+
+            // Ci aspettiamo una risposta di tipo Confirm!
+            if(!(msg is SfspConfirmMessage))
+            {
+                SetStatus(TransferStatus.Failed);
+                return;
+            }
+
+            SfspConfirmMessage confirm = (SfspConfirmMessage)msg;
+            // Se l'invio è stato rifiutato...
+            if(confirm.Status == SfspConfirmMessage.FileStatus.Error)
+            {
+                SetStatus(TransferStatus.Failed);
+                return;
+            }
+
+            // Se arriviamo qui l'invio è stato accettato!
         }
 
         private void SetStatus(TransferStatus status)
