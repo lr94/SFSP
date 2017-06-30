@@ -32,11 +32,11 @@ namespace Sfsp
         /// </summary>
         public void Start()
         {
-            Thread t = new Thread(ServerTask);
-            t.Start();
+            Thread udpListenerThread = new Thread(UdpServerTask);
+            udpListenerThread.Start();
         }
 
-        private void ServerTask()
+        private void UdpServerTask()
         {
             while(true)
             {
