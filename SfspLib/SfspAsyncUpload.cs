@@ -7,6 +7,8 @@ namespace Sfsp
 {
     public class SfspAsyncUpload : ISfspAsyncTransfer
     {
+        private object locker = new object();
+
         private string basePath;
         private List<string> relativePaths;
 
@@ -28,16 +30,46 @@ namespace Sfsp
             
         }
 
+        private long _progress;
         public long Progress
         {
-            get;
-            private set;
+            get
+            {
+                long to_ret;
+                lock(locker)
+                {
+                    to_ret = _progress;
+                }
+                return to_ret;
+            }
+            private set
+            {
+                lock(locker)
+                {
+                    _progress = value;
+                }
+            }
         }
 
+        TransferStatus _status;
         public TransferStatus Status
         {
-            get;
-            private set;
+            get
+            {
+                TransferStatus to_ret;
+                lock(locker)
+                {
+                    to_ret = _status;
+                }
+                return to_ret;
+            }
+            private set
+            {
+                lock(locker)
+                {
+                    _status = value;
+                }
+            }
         }
 
         public long TotalSize
