@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace SfspTests
@@ -36,7 +34,13 @@ namespace SfspTests
             Uri targetUri = new Uri(targetPath);
 
             Uri relativeUri = baseUri.MakeRelativeUri(targetUri);
-            return Uri.UnescapeDataString(relativeUri.ToString()).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString());
+            String result = Uri.UnescapeDataString(relativeUri.ToString()).Replace('/', System.IO.Path.DirectorySeparatorChar);
+            int firstSepIndex = result.IndexOf('\\');
+
+            if(firstSepIndex != -1 && firstSepIndex < result.Length - 1)
+                result = result.Substring(firstSepIndex + 1);
+
+            return result;
         }
     }
 }

@@ -73,6 +73,16 @@ namespace TestSFSP
             txt_name.Enabled = false;
 
             SfspListener listener = new SfspListener(new SfspHostConfiguration(txt_name.Text));
+            listener.TransferRequest += (object s2, TransferRequestEventArgs e2) =>
+            {
+                List<String> ss = e2.Download.GetObjects();
+                string txt = "";
+                foreach(String s in ss)
+                {
+                    txt += s + "\n";
+                }
+                MessageBox.Show(e2.Download.TotalSize.ToString() + "\n\n" + txt);
+            };
             listener.Start();
         }
 
