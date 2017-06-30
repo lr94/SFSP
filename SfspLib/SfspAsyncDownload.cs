@@ -12,6 +12,8 @@ namespace Sfsp
     {
         private IList<string> relativePaths;
 
+        private object locker = new object();
+
         internal SfspAsyncDownload(SfspRequestMessage request)
         {
             TotalSize = (long)request.TotalSize;
@@ -28,19 +30,45 @@ namespace Sfsp
             return list;
         }
 
+        private long _Progress;
         public long Progress
         {
             get
             {
-                throw new NotImplementedException();
+                long to_ret;
+                lock(locker)
+                {
+                    to_ret = _Progress;
+                }
+                return to_ret;
+            }
+            private set
+            {
+                lock(locker)
+                {
+                    _Progress = value;
+                }
             }
         }
 
+        TransferStatus _Status;
         public TransferStatus Status
         {
             get
             {
-                throw new NotImplementedException();
+                TransferStatus to_ret;
+                lock(locker)
+                {
+                    to_ret = _Status;
+                }
+                return to_ret;
+            }
+            private set
+            {
+                lock(locker)
+                {
+                    _Status = value;
+                }
             }
         }
 
