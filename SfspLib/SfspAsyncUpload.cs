@@ -135,13 +135,27 @@ namespace Sfsp
                 }
                 // Se è un file...
                 else if (File.Exists(fullPath))
-                    UploadFile(stream, fullPath, objectRelativePath);
+                {
+                    // Provo massimo 3 volte ad inviarlo
+                    bool done = false;
+                    int attempts = 3;
+                    do
+                    {
+                        done |= UploadFile(stream, fullPath, objectRelativePath);
+                        attempts--;
+                    } while (!done && attempts > 0);
+                    if(!done)
+                    {
+                        SetStatus(TransferStatus.Failed);
+                        return;
+                    }
+                }
                 else
                     throw new FileNotFoundException("File or directory not found", fullPath);
             }
         }
 
-        private void UploadFile(NetworkStream stream, string fullPath, string relativePath)
+        private bool UploadFile(NetworkStream stream, string fullPath, string relativePath)
         {
             // Determino la dimensione del file
             FileInfo fInfo = new FileInfo(fullPath);
@@ -178,7 +192,23 @@ namespace Sfsp
             sha256.TransformFinalBlock(buffer, 0, 0);
             byte[] hash = sha256.Hash;
             SfspChecksumMessage checksumMsg = new SfspChecksumMessage(hash);
-            checksumMsg.Write(stream);     
+            checksumMsg.Write(stream);
+
+            // Aspetto una risposta
+            SfspMessage receivedMsg = SfspMessage.ReadMessage(stream);
+            if (!(receivedMsg is SfspConfirmMessage))
+                throw new ProtocolViolationException("Unexpected Sfsp message");
+            SfspConfirmMessage confirmMsg = (SfspConfirmMessage)receivedMsg;
+
+            // Il trasferimento è fallito, faccio retrocedere il contatore e restituisco false
+            if(confirmMsg.Status != SfspConfirmMessage.FileStatus.Ok)
+            {
+                Progress -= fSize;
+                return false;
+            }
+
+            // Tutto a posto
+            return true;
         }
 
         private void SetStatus(TransferStatus status)
