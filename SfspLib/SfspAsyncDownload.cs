@@ -10,9 +10,12 @@ namespace Sfsp
 {
     public class SfspAsyncDownload : ISfspAsyncTransfer
     {
+        private IList<string> relativePaths;
+
         internal SfspAsyncDownload(SfspRequestMessage request)
         {
-
+            TotalSize = (long)request.TotalSize;
+            relativePaths = request.RelativePaths;
         }
 
         public long Progress
@@ -33,10 +36,8 @@ namespace Sfsp
 
         public long TotalSize
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            private set;
         }
 
         public event EventHandler<TransferStatusChangedEventArgs> StatusChanged;
