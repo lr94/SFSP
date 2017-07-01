@@ -33,18 +33,18 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="40" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Canvas Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="Gold"></Canvas>
                             <DockPanel Grid.Column="1" Grid.Row="0">
-                                <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" FontSize="20"></TextBlock>
-                                <StackPanel DockPanel.Dock="Right" Margin="0,0,10,0">
-                                    <TextBlock Text="Prova2" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Blue"></TextBlock>
-                                    <TextBlock Text="Prova3" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Orange"></TextBlock>
+                                <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
+                                <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <TextBlock Text="Prova2" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Text="Prova3" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
                                 </StackPanel>
                             </DockPanel>
-                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,15,10,10" Value="50"></ProgressBar>
+                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="50"></ProgressBar>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
