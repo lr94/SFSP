@@ -40,6 +40,30 @@ namespace Sfsp.Messaging
         }
 
         /// <summary>
+        /// Legge da dataStream esattamente count bytes (o meno se si verificano errori), restituisce
+        /// il numero di bytes effettivamente letti.
+        /// Questa roba è da migliorare (in termini di gestione degli errori)
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private static int Receive(Stream stream, byte[] buffer, int offset, int count)
+        {
+            int n = 0;
+            try
+            {
+                while (n < count)
+                    n += stream.Read(buffer, offset + n, count - n);
+            } catch(IOException)
+            {
+
+            }
+
+            return n;
+        }
+
+        /// <summary>
         /// Legge un messaggio SFSP e crea un'istanza di una classe derivata adatta per rappresentarlo.
         /// </summary>
         /// <param name="sourceStream">Stream da cui leggere il messaggio</param>
@@ -50,7 +74,7 @@ namespace Sfsp.Messaging
 
             // Controllo che il messaggio inizi con "SFSP"
             byte[] magicBytes = new byte[4];
-            if (dataStream.Read(magicBytes, 0, 4) != 4)
+            if (Receive(dataStream, magicBytes, 0, 4) != 4)
                 throw new SfspInvalidMessageException();
             if (magicBytes[0] != 0x53 || magicBytes[1] != 0x46 || magicBytes[2] != 0x53 || magicBytes[3] != 0x50)
                 throw new SfspInvalidMessageException();
@@ -65,7 +89,7 @@ namespace Sfsp.Messaging
 
             // Leggo il tipo di messaggio
             byte[] messageTypeBytes = new byte[2];
-            if(dataStream.Read(messageTypeBytes,0,2) != 2)
+            if(Receive(dataStream, messageTypeBytes, 0,2) != 2)
                 throw new SfspInvalidMessageException();
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(messageTypeBytes);
@@ -73,7 +97,7 @@ namespace Sfsp.Messaging
 
             // Leggo la lunghezza dei dati
             byte[] dataLengthBytes = new byte[4];
-            if (dataStream.Read(dataLengthBytes, 0, 4) != 4)
+            if (Receive(dataStream, dataLengthBytes, 0, 4) != 4)
                 throw new SfspInvalidMessageException();
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(dataLengthBytes);
@@ -154,7 +178,7 @@ namespace Sfsp.Messaging
             byte[] buffer = new byte[2];
 
             // Provo a leggere 2 byte, in caso di fallimento lancio un'eccezione
-            if (dataStream.Read(buffer, 0, 2) != 2)
+            if (Receive(dataStream, buffer, 0, 2) != 2)
                 throw new SfspInvalidMessageException();
 
             // Se la macchina su cui lavoriamo è little endian invertiamo i byte (che vengono letti come big endian)
@@ -190,7 +214,7 @@ namespace Sfsp.Messaging
             byte[] buffer = new byte[4];
 
             // Provo a leggere 4 byte, in caso di fallimento lancio un'eccezione
-            if (dataStream.Read(buffer, 0, 4) != 4)
+            if (Receive(dataStream, buffer, 0, 4) != 4)
                 throw new SfspInvalidMessageException();
 
             // Se la macchina su cui lavoriamo è little endian invertiamo i byte (che vengono letti come big endian)
@@ -226,7 +250,7 @@ namespace Sfsp.Messaging
             byte[] buffer = new byte[8];
 
             // Provo a leggere 4 byte, in caso di fallimento lancio un'eccezione
-            if (dataStream.Read(buffer, 0, 8) != 8)
+            if (Receive(dataStream, buffer, 0, 8) != 8)
                 throw new SfspInvalidMessageException();
 
             // Se la macchina su cui lavoriamo è little endian invertiamo i byte (che vengono letti come big endian)
@@ -265,7 +289,7 @@ namespace Sfsp.Messaging
             byte[] buffer = new byte[nbytes];
 
             // Provo a leggere il numero di byte che ci aspettiamo
-            if (dataStream.Read(buffer, 0, nbytes) != nbytes)
+            if (Receive(dataStream, buffer, 0, nbytes) != nbytes)
                 throw new SfspInvalidMessageException();
 
             // Decodifico i byte letti
@@ -304,7 +328,7 @@ namespace Sfsp.Messaging
             byte[] buffer = new byte[nbytes];
 
             // Provo a leggere il numero di byte che ci aspettiamo
-            if (dataStream.Read(buffer, 0, nbytes) != nbytes)
+            if (Receive(dataStream, buffer, 0, nbytes) != nbytes)
                 throw new SfspInvalidMessageException();
 
             return buffer;
