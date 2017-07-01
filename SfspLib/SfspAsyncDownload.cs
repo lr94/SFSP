@@ -77,24 +77,25 @@ namespace Sfsp
             confirmMsg.Write(stream);
 
             Progress = 0;
-            Status = TransferStatus.InProgress;
+            SetStatus(TransferStatus.InProgress);
 
             // Elengo degli oggetti da ricevere (si ridurrà mano a mano che li riceviamo)
             List<string> toReceive = new List<string>(relativePaths);
 
-            while(toReceive.Count > 0)
+            while (toReceive.Count > 0)
             {
                 SfspMessage msg = SfspMessage.ReadMessage(stream);
 
                 // Se vogliamo creare una directory
-                if(msg is SfspCreateDirectoryMessage)
+                if (msg is SfspCreateDirectoryMessage)
                 {
                     // Ottengo il percorso relativo della cartella da creare
                     SfspCreateDirectoryMessage createDirMsg = (SfspCreateDirectoryMessage)msg;
                     string dirRelativePath = createDirMsg.RelativePath;
 
                     // Rimuovo questo oggetto dalla lista degli oggetti da scaricare
-                    toReceive.Remove(dirRelativePath);
+                    if (!toReceive.Remove(dirRelativePath))
+                        throw new ProtocolViolationException("Unexpected directory " + dirRelativePath);
 
                     // La vado a creare
                     string fullPath = Path.Combine(destinationPath, dirRelativePath);
@@ -104,14 +105,15 @@ namespace Sfsp
                     SfspConfirmMessage confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
                     confirm.Write(stream);
                 }
-                else if(msg is SfspCreateFileMessage)
+                else if (msg is SfspCreateFileMessage)
                 {
                     // Ottengo il percorso relativo del file da creare
                     SfspCreateFileMessage createFileMsg = (SfspCreateFileMessage)msg;
                     string fileRelativePath = createFileMsg.FileRelativePath;
 
                     // Rimuovo questo oggetto dalla lista degli oggetti da scaricare
-                    toReceive.Remove(fileRelativePath);
+                    if (!toReceive.Remove(fileRelativePath))
+                        throw new ProtocolViolationException("Unexpected file " + fileRelativePath);
 
                     // Scarico il file
                     string fullPath = Path.Combine(destinationPath, fileRelativePath);
