@@ -133,7 +133,8 @@ namespace Sfsp
             while(fReceived < size)
             {
                 // Riceve i dati e li inserisce nel buffer
-                int n = stream.Read(buffer, 0, 1024);
+                int bufSize = (size - fReceived) < 1024 ? (int)(size - fReceived) : 1024;
+                int n = stream.Read(buffer, 0, bufSize);
                 // Scrive il buffer su disco
                 fs.Write(buffer, 0, n);
 
@@ -141,6 +142,7 @@ namespace Sfsp
                 sha256.TransformBlock(buffer, 0, n, buffer, 0);
 
                 fReceived += n;
+                Progress += n;
             }
             fs.Close();
 
@@ -156,7 +158,10 @@ namespace Sfsp
             if (checksumMsg.Check(hash))
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
             else
+            {
+                Progress -= size;
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
+            }
             confirm.Write(stream);
 
         }
