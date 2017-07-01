@@ -153,7 +153,7 @@ namespace Sfsp
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
             else
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
-            checksumMsg.Write(stream);
+            confirm.Write(stream);
 
         }
 
