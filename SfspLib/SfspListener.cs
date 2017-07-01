@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using System.Collections.Generic;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -13,7 +14,7 @@ namespace Sfsp
     public class SfspListener
     {
         private SfspHostConfiguration _Configuration;
-        private UdpClient udpClient;
+        private List<UdpClient> udpClients;
 
         /// <summary>
         /// 
@@ -23,8 +24,30 @@ namespace Sfsp
         {
             _Configuration = configuration;
 
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, _Configuration.UdpPort));
-            udpClient.JoinMulticastGroup(_Configuration.MulticastAddress, IPAddress.Any);
+            // Determino gli indirizzi IP di tutte le interfacce di rete
+            string strHostName = System.Net.Dns.GetHostName();
+            IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
+            IPAddress[] addresses = ipEntry.AddressList;
+
+            // Per ciascuno di essi creo un client UDP...
+            udpClients = new List<UdpClient>();
+            foreach (IPAddress currentIP in addresses)
+            {
+                try
+                {
+                    UdpClient currentClient = new UdpClient(new IPEndPoint(currentIP, _Configuration.UdpPort));
+                    currentClient.MulticastLoopback = true;
+                    // ...in modo da essere sicuro di ascoltare per pacchetti multicast su tutte le interfacce
+                    currentClient.JoinMulticastGroup(_Configuration.MulticastAddress, currentIP);
+
+                    udpClients.Add(currentClient);
+                }
+                catch(SocketException)
+                {
+                    // Probabilmente l'interfaccia corrente era già in ascolto o non supportava multicast
+                    // mi limito ad ignorare la cosa
+                }
+            }
         }
 
         /// <summary>
@@ -32,11 +55,14 @@ namespace Sfsp
         /// </summary>
         public void Start()
         {
-            Thread t = new Thread(ServerTask);
-            t.Start();
+            foreach(UdpClient udpClient in udpClients)
+            {
+                Thread t = new Thread(() => ServerTask(udpClient));
+                t.Start();
+            }
         }
 
-        private void ServerTask()
+        private void ServerTask(UdpClient udpClient)
         {
             while(true)
             {
