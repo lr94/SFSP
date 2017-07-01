@@ -101,6 +101,9 @@ namespace Sfsp.Messaging
                 case SfspMessageTypes.Confirm:
                     msg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
                     break;
+                case SfspMessageTypes.Checksum:
+                    msg = new SfspChecksumMessage(new byte[32]);
+                    break;
                 default:
                     throw new SfspInvalidMessageException();
             }
