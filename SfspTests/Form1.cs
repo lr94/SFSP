@@ -82,6 +82,9 @@ namespace TestSFSP
                     txt += s + "\n";
                 }
                 MessageBox.Show(e2.Download.TotalSize.ToString() + "\n\n" + txt);
+
+
+                e2.Download.Accept("C:\\Users\\Luca\\Desktop\\test");
             };
             listener.Start();
         }
@@ -112,7 +115,7 @@ namespace TestSFSP
         private void button1_Click(object sender, EventArgs e)
         {
             SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
-            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin\\Debug\\Sfsp.dll");
+            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin");
             upload.Start();
         }
     }
