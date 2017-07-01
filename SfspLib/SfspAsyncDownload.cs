@@ -120,6 +120,8 @@ namespace Sfsp
                     DownloadFile(stream, fullPath, (long)createFileMsg.FileSize);
                 }
             }
+
+            SetStatus(TransferStatus.Completed);
         }
 
         private void DownloadFile(NetworkStream stream, string fullPath, long size)
