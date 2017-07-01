@@ -109,7 +109,16 @@ namespace TestSFSP
         private void button1_Click(object sender, EventArgs e)
         {
             SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
-            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP");
+            SfspAsyncUpload upload = selectedHost.Send(txt_path.Text);
+
+            upload.StatusChanged += (object s2, TransferStatusChangedEventArgs e2) =>
+            {
+                if (e2.NewStatus == TransferStatus.Completed)
+                    MessageBox.Show("Completato!");
+                else if (e2.NewStatus == TransferStatus.Failed)
+                    MessageBox.Show("Fallito!");
+            };
+
             upload.Start();
         }
     }
