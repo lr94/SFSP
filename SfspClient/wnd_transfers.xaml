@@ -1,0 +1,54 @@
+﻿<Window x:Class="SfspClient.wnd_transfers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SfspClient"
+        mc:Ignorable="d"
+        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded">
+    <DockPanel>
+        <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Condividi file"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Esci"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Strumenti">
+                <MenuItem Header="Opzioni"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <DockPanel>
+            <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!--
+                        <DockPanel>
+                            <Canvas Background="Aquamarine" Width="100" Height="100" DockPanel.Dock="Left">
+                            </Canvas>
+                        </DockPanel>
+                        -->
+                        <Grid Height="75">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75" />
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Canvas Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="Gold"></Canvas>
+                            <DockPanel Grid.Column="1" Grid.Row="0">
+                                <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Red" FontSize="20"></TextBlock>
+                                <StackPanel DockPanel.Dock="Right" Margin="0,0,10,0">
+                                    <TextBlock Text="Prova2" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Blue"></TextBlock>
+                                    <TextBlock Text="Prova3" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Orange"></TextBlock>
+                                </StackPanel>
+                            </DockPanel>
+                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,15,10,10" Value="50"></ProgressBar>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </DockPanel>
+</Window>
