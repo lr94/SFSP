@@ -99,6 +99,10 @@ namespace Sfsp
                     // La vado a creare
                     string fullPath = Path.Combine(destinationPath, dirRelativePath);
                     Directory.CreateDirectory(fullPath);
+
+                    // Invio conferma
+                    SfspConfirmMessage confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+                    confirm.Write(stream);
                 }
                 else if(msg is SfspCreateFileMessage)
                 {
