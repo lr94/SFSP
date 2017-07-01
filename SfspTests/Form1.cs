@@ -12,12 +12,6 @@ using Sfsp.Messaging;
 
 namespace TestSFSP
 {
-    enum test : byte
-    {
-        a = 1,
-        b = 2
-    }
-
     public partial class Form1 : Form
     {
         public Form1()
@@ -115,7 +109,7 @@ namespace TestSFSP
         private void button1_Click(object sender, EventArgs e)
         {
             SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
-            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP\\SfspTests\\bin");
+            SfspAsyncUpload upload = selectedHost.Send("C:\\Users\\Luca\\Documents\\visual studio 2015\\Projects\\SFSP");
             upload.Start();
         }
     }
