@@ -20,6 +20,7 @@ namespace SfspClient
     /// </summary>
     public partial class wnd_transfers : Window
     {
+        #region "NotifyIcon"
         System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
         private void InitNotifyIcon(String iconName, String menuKey)
         {
@@ -30,13 +31,14 @@ namespace SfspClient
             notifyIcon.Click += (object sender, EventArgs e) => this.Show();
             notifyIcon.MouseDown += (object sender, System.Windows.Forms.MouseEventArgs e) =>
             {
-                if(e.Button == System.Windows.Forms.MouseButtons.Right)
+                if (e.Button == System.Windows.Forms.MouseButtons.Right)
                 {
                     ContextMenu menu = (ContextMenu)this.FindResource(menuKey);
                     menu.IsOpen = true;
                 }
             };
         }
+        #endregion
 
         public wnd_transfers()
         {
