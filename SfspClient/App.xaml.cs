@@ -13,5 +13,14 @@ namespace SfspClient
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            wnd_transfers wnd1 = new wnd_transfers();
+            wnd1.Hide();
+            System.Threading.Thread.Sleep(3000);
+            wnd1.Show();
+        }
     }
 }

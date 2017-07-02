@@ -1,8 +1,7 @@
 ﻿<Application x:Class="SfspClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SfspClient"
-             StartupUri="wnd_transfers.xaml">
+             xmlns:local="clr-namespace:SfspClient">
     <Application.Resources>
          
     </Application.Resources>
