@@ -18,9 +18,18 @@ namespace SfspClient
             base.OnStartup(e);
 
             wnd_transfers wnd1 = new wnd_transfers();
-            wnd1.Hide();
-            System.Threading.Thread.Sleep(3000);
-            wnd1.Show();
+
+            String[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 1)
+            {
+                if (args[1] == "-hidden")
+                    wnd1.Hide();
+                else
+                    wnd1.Show();
+            }
+            else
+                wnd1.Show();
         }
     }
 }
