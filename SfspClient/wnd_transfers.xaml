@@ -6,6 +6,15 @@
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
         Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ContextMenu x:Key="notifyIconMenu">
+            <MenuItem Header="Trasferimenti"></MenuItem>
+            <MenuItem Header="Impostazioni"></MenuItem>
+            <Separator></Separator>
+            <MenuItem Header="Esci"></MenuItem>
+        </ContextMenu>
+    </Window.Resources>
+    
     <DockPanel>
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">

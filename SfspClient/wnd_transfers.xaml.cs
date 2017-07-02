@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace SfspClient
 {
@@ -19,9 +20,29 @@ namespace SfspClient
     /// </summary>
     public partial class wnd_transfers : Window
     {
+        System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+        private void InitNotifyIcon(String iconName, String menuKey)
+        {
+            Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/" + iconName)).Stream;
+            notifyIcon.Icon = new System.Drawing.Icon(iconStream);
+            notifyIcon.Visible = true;
+
+            notifyIcon.Click += (object sender, EventArgs e) => this.Show();
+            notifyIcon.MouseDown += (object sender, System.Windows.Forms.MouseEventArgs e) =>
+            {
+                if(e.Button == System.Windows.Forms.MouseButtons.Right)
+                {
+                    ContextMenu menu = (ContextMenu)this.FindResource(menuKey);
+                    menu.IsOpen = true;
+                }
+            };
+        }
+
         public wnd_transfers()
         {
             InitializeComponent();
+
+            InitNotifyIcon("icon.ico", "notifyIconMenu");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
