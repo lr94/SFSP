@@ -29,6 +29,7 @@
             </MenuItem>
             <MenuItem Header="?">
                 <MenuItem Header="Informazioni"></MenuItem>
+                <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
         <DockPanel>

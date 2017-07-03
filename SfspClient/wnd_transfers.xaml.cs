@@ -51,5 +51,11 @@ namespace SfspClient
         {
             lst_transfers.Items.Add("Hello");
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            wnd_hosts hosts = new wnd_hosts();
+            hosts.Show();
+        }
     }
 }

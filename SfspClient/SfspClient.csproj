@@ -66,6 +66,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="wnd_hosts.xaml.cs">
+      <DependentUpon>wnd_hosts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="wnd_transfers.xaml.cs">
       <DependentUpon>wnd_transfers.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="wnd_hosts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="wnd_transfers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
