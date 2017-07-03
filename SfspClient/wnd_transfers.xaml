@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded">
     <Window.Resources>
+        <!-- Context menu per l'icona nella system tray -->
         <ContextMenu x:Key="notifyIconMenu">
             <MenuItem Header="Trasferimenti"></MenuItem>
             <MenuItem Header="Impostazioni"></MenuItem>
@@ -16,6 +17,7 @@
     </Window.Resources>
     
     <DockPanel>
+        <!-- Main menu -->
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="Condividi file"></MenuItem>
@@ -30,6 +32,7 @@
             </MenuItem>
         </Menu>
         <DockPanel>
+            <!-- Lista dei trasferimenti -->
             <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -48,14 +51,19 @@
                                 <RowDefinition Height="40" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
+                            <!-- Icona del trasferimento -->
                             <Canvas Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="Gold"></Canvas>
                             <DockPanel Grid.Column="1" Grid.Row="0">
+                                <!-- Nome dell'oggetto (nome file o cartella radice) -->
                                 <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
                                 <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <!-- Mittente? -->
                                     <TextBlock Text="Prova2" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                    <!-- Velocità / tempo residuo -->
                                     <TextBlock Text="Prova3" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
                                 </StackPanel>
                             </DockPanel>
+                            <!-- Avanzamento -->
                             <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="50"></ProgressBar>
                         </Grid>
                     </DataTemplate>
