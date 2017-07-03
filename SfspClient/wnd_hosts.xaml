@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="Host disponibili" Height="600" Width="600" Icon="icon.ico" Loaded="Window_Loaded">
     <Grid>
-
+        <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <Canvas Height="64" Width="64" Background="Blue"></Canvas>
+                        <Label Content="Prova"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
     </Grid>
 </Window>
