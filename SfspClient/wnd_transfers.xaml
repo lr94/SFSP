@@ -25,6 +25,9 @@
             <MenuItem Header="Strumenti">
                 <MenuItem Header="Opzioni"></MenuItem>
             </MenuItem>
+            <MenuItem Header="?">
+                <MenuItem Header="Informazioni"></MenuItem>
+            </MenuItem>
         </Menu>
         <DockPanel>
             <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
