@@ -21,6 +21,7 @@ namespace Sfsp
         {
             TotalSize = (long)request.TotalSize;
             relativePaths = request.RelativePaths;
+            RemoteHostName = request.RemoteHostName;
             tcpClient = client;
 
             Status = TransferStatus.Pending;
@@ -183,7 +184,16 @@ namespace Sfsp
         {
             List<string> list = new List<string>(relativePaths);
             return list;
-        }     
+        }
+
+        /// <summary>
+        /// Nome SFSP dell'host che invia i dati
+        /// </summary>
+        public string RemoteHostName
+        {
+            get;
+            private set;
+        }
 
 
         public override void Abort()
