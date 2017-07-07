@@ -25,5 +25,27 @@ namespace Sfsp
 
             return result;
         }
+
+        /// <summary>
+        /// Sostituisce in un percorso il carattere di separazione delle directory della piattaforma con "\",
+        /// usato nel protocollo SFSP. Su Windows non fa niente.
+        /// </summary>
+        /// <param name="originalPath">Percorso (rappresentazione del sistema operativo corrente)</param>
+        /// <returns></returns>
+        public static string ConvertOSPathToSFSP(string originalPath)
+        {
+            return originalPath.Replace(Path.DirectorySeparatorChar, '\\');
+        }
+
+        /// <summary>
+        /// Sostituisce in un percorso il carattere "\" usato nel protocollo SFSP col carattere di separazione
+        /// delle directory utilizzato dalla piattaforma corrente.
+        /// </summary>
+        /// <param name="sfspPath">Percorso (rappresentazione SFSP)</param>
+        /// <returns></returns>
+        public static string ConvertSFSPPathToOS(string sfspPath)
+        {
+            return sfspPath.Replace('\\', Path.DirectorySeparatorChar);
+        }
     }
 }
