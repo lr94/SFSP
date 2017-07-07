@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
 
+using Sfsp;
+
 namespace SfspClient
 {
     /// <summary>
@@ -39,6 +41,13 @@ namespace SfspClient
             };
         }
         #endregion
+
+        SfspHostConfiguration hostConfiguration;
+
+        void InitSfsp()
+        {
+            hostConfiguration = new SfspHostConfiguration(System.Net.Dns.GetHostName());
+        }
 
         public wnd_transfers()
         {
