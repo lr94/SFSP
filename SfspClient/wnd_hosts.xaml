@@ -12,7 +12,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <Canvas Height="64" Width="64" Background="Blue"></Canvas>
-                        <Label Content="Prova"/>
+                        <TextBlock Text="Prova" HorizontalAlignment="Center" TextAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
