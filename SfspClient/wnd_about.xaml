@@ -1,0 +1,25 @@
+﻿<Window x:Class="SfspClient.wnd_about"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SfspClient"
+        mc:Ignorable="d"
+        Title="Informazioni" Height="200" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Icon="icon.ico" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <DockPanel>
+            <Canvas Width="150" Height="150" Background="AliceBlue" HorizontalAlignment="Left"></Canvas>
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" TextAlignment="Center">
+                SFSP Client
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" Padding="0,5,0,0" TextAlignment="Center">
+                    Simple File Sharing Protocol
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" Padding="0,5,0,0" TextAlignment="Center">
+                    Progetto per l'esame di<LineBreak/>Programmazione di Sistema
+                </TextBlock>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

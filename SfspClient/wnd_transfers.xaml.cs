@@ -60,5 +60,11 @@ namespace SfspClient
         {
             lst_transfers.Items.Add("Hello");
         }
+
+        private void mnu_about_Click(object sender, RoutedEventArgs e)
+        {
+            wnd_about about = new wnd_about();
+            about.ShowDialog();
+        }
     }
 }
