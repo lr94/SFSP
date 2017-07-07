@@ -13,23 +13,40 @@ namespace SfspClient
     /// </summary>
     public partial class App : Application
     {
+        private wnd_transfers main_wnd;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            wnd_transfers wnd1 = new wnd_transfers();
+            main_wnd = new wnd_transfers();
 
             String[] args = Environment.GetCommandLineArgs();
 
             if (args.Length > 1)
             {
                 if (args[1] == "-hidden")
-                    wnd1.Hide();
+                    main_wnd.Hide();
                 else
-                    wnd1.Show();
+                    main_wnd.Show();
+
+                if (args[1] == "-share" && args.Length > 2)
+                    main_wnd.ShareObject(args[2]);
             }
             else
-                wnd1.Show();
+                main_wnd.Show();
+        }
+
+        /// <summary>
+        /// Chiamato quando si prova ad avviare una seconda istanza
+        /// </summary>
+        /// <param name="args">Array degli argomenti (escluso il nome del programma)</param>
+        public void SecondInstance(string[] args)
+        {
+            if (args.Length > 1 && args[0] == "-share")
+                main_wnd.ShareObject(args[1]);
+            else
+                MessageBox.Show("L'applicazione è già in esecuzione!");
         }
     }
 }

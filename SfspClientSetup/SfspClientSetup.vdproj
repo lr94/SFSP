@@ -136,7 +136,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Sfsp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Sfsp, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_DA4058B18A3A99796FF98A35E43B1BED"
@@ -365,7 +365,7 @@
                                                     "Condition" = "8:"
                                                     "Transitive" = "11:FALSE"
                                                     "ValueTypes" = "3:1"
-                                                    "Value" = "8:\"[TARGETDIR]\\SfspClient.exe\" \"%1\""
+                                                    "Value" = "8:\"[TARGETDIR]\\SfspClient.exe\" -share \"%1\""
                                                     }
                                                 }
                                             }
@@ -461,7 +461,7 @@
                                                     "Condition" = "8:"
                                                     "Transitive" = "11:FALSE"
                                                     "ValueTypes" = "3:1"
-                                                    "Value" = "8:\"[TARGETDIR]\\SfspClient.exe\" \"%1\""
+                                                    "Value" = "8:\"[TARGETDIR]\\SfspClient.exe\" -share \"%1\""
                                                     }
                                                 }
                                             }

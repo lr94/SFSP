@@ -47,6 +47,15 @@ namespace SfspClient
             InitNotifyIcon("icon.ico", "notifyIconMenu");
         }
 
+        /// <summary>
+        /// Da chiamare quando si vuole condividere un file o una cartella. Aprirà la finestra di scansione ecc ecc 
+        /// </summary>
+        /// <param name="path">Percorso dell'oggetto da condividere</param>
+        public void ShareObject(string path)
+        {
+            MessageBox.Show(path);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lst_transfers.Items.Add("Hello");
