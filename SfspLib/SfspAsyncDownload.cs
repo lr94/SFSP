@@ -119,6 +119,7 @@ namespace Sfsp
                 }
             }
 
+            ForceProgressUpdate();
             SetStatus(TransferStatus.Completed);
         }
 
@@ -171,9 +172,6 @@ namespace Sfsp
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
             }
             confirm.Write(stream);
-
-            // Aggiornamento dell'avanzamento dell'operazione
-            ForceProgressUpdate();
         }
 
         /// <summary>

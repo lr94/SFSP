@@ -170,6 +170,7 @@ namespace Sfsp
             }
 
             // Abbiamo finito
+            ForceProgressUpdate();
             SetStatus(TransferStatus.Completed);
             stream.Close();
             client.Close();
@@ -233,9 +234,6 @@ namespace Sfsp
 
                 return false;
             }
-
-            // Aggiornamento dell'avanzamento dell'operazione
-            ForceProgressUpdate();
 
             // Tutto a posto
             return true;
