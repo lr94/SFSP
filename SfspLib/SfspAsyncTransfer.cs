@@ -43,7 +43,7 @@ namespace Sfsp
             if (update_time_ticks == 0)
                 return;
 
-            DateTime now = new DateTime();
+            DateTime now = DateTime.Now;
 
             // Se non è trascorso l'intervallo esco
             if (now.Ticks - last_progress_update.Ticks < update_time_ticks)
@@ -57,7 +57,7 @@ namespace Sfsp
         /// </summary>
         protected void ForceProgressUpdate()
         {
-            DateTime now = new DateTime();
+            DateTime now = DateTime.Now;
 
             // Calcolo la velocità
             double seconds = now.Subtract(last_progress_update).TotalSeconds;
