@@ -37,10 +37,14 @@ namespace SfspClient
                 main_wnd.Show();
         }
 
+        /// <summary>
+        /// Chiamato quando si prova ad avviare una seconda istanza
+        /// </summary>
+        /// <param name="args">Array degli argomenti (escluso il nome del programma)</param>
         public void SecondInstance(string[] args)
         {
-            if (args.Length > 2 && args[1] == "-share")
-                main_wnd.ShareObject(args[2]);
+            if (args.Length > 1 && args[0] == "-share")
+                main_wnd.ShareObject(args[1]);
         }
     }
 }
