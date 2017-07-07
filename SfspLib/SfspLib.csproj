@@ -41,8 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PathUtils.cs" />
+    <Compile Include="ProgressUpdateEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ISfspAsyncTransfer.cs" />
+    <Compile Include="SfspAsyncTransfer.cs" />
     <Compile Include="Messaging\SfspChecksumMessage.cs" />
     <Compile Include="Messaging\SfspConfirmMessage.cs" />
     <Compile Include="Messaging\SfspCreateDirectoryMessage.cs" />

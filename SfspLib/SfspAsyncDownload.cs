@@ -9,13 +9,11 @@ using Sfsp.Messaging;
 
 namespace Sfsp
 {
-    public class SfspAsyncDownload : ISfspAsyncTransfer
+    public class SfspAsyncDownload : SfspAsyncTransfer
     {
         private IList<string> relativePaths;
         private TcpClient tcpClient;
         Thread downloadThread;
-
-        private object locker = new object();
 
         private bool response_sent = false;
 
@@ -76,7 +74,7 @@ namespace Sfsp
             SfspConfirmMessage confirmMsg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
             confirmMsg.Write(stream);
 
-            Progress = 0;
+            progress = 0;
             SetStatus(TransferStatus.InProgress);
 
             // Elengo degli oggetti da ricevere (si ridurrà mano a mano che li riceviamo)
@@ -121,6 +119,7 @@ namespace Sfsp
                 }
             }
 
+            ForceProgressUpdate();
             SetStatus(TransferStatus.Completed);
         }
 
@@ -132,12 +131,12 @@ namespace Sfsp
             SHA256 sha256 = SHA256.Create();
             sha256.Initialize();
 
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BUFFER_SIZE];
             long fReceived = 0;
             while(fReceived < size)
             {
                 // Riceve i dati e li inserisce nel buffer
-                int bufSize = (size - fReceived) < 1024 ? (int)(size - fReceived) : 1024;
+                int bufSize = (size - fReceived) < BUFFER_SIZE ? (int)(size - fReceived) : BUFFER_SIZE;
                 int n = stream.Read(buffer, 0, bufSize);
                 // Scrive il buffer su disco
                 fs.Write(buffer, 0, n);
@@ -146,7 +145,10 @@ namespace Sfsp
                 sha256.TransformBlock(buffer, 0, n, buffer, 0);
 
                 fReceived += n;
-                Progress += n;
+                progress += n;
+
+                // Eventuale aggiornamento dell'avanzamento dell'operazione
+                ProgressUpdateIfNeeded();
             }
             fs.Close();
 
@@ -163,92 +165,28 @@ namespace Sfsp
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
             else
             {
-                Progress -= size;
+                progress -= size;
+                // Aggiornamento dell'avanzamento dell'operazione
+                ForceProgressUpdate();
+
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
             }
             confirm.Write(stream);
-
         }
 
         /// <summary>
-        /// Restituisce una lista di tutti gli oggetti che l'host remoto vuole inviare
+        /// Restituisce una lista di tutti gli oggetti che l'host remoto vuole inviare.
+        /// I percorsi sono con separatore SFSP ("\")
         /// </summary>
         /// <returns>Lista contenente i percorsi relativi dei file e delle cartelle</returns>
         public List<String> GetObjects()
         {
             List<string> list = new List<string>(relativePaths);
             return list;
-        }
+        }     
 
-        private long _Progress;
-        /// <summary>
-        /// Numero di byte già trasferiti (vengono contati solo i byte di contenuto dei file da trasferire)
-        /// </summary>
-        public long Progress
-        {
-            get
-            {
-                long to_ret;
-                lock(locker)
-                {
-                    to_ret = _Progress;
-                }
-                return to_ret;
-            }
-            private set
-            {
-                lock(locker)
-                {
-                    _Progress = value;
-                }
-            }
-        }
 
-        TransferStatus _Status;
-        /// <summary>
-        /// Stato attuale del trasferimento
-        /// </summary>
-        public TransferStatus Status
-        {
-            get
-            {
-                TransferStatus to_ret;
-                lock(locker)
-                {
-                    to_ret = _Status;
-                }
-                return to_ret;
-            }
-            private set
-            {
-                lock(locker)
-                {
-                    _Status = value;
-                }
-            }
-        }
-
-        public long TotalSize
-        {
-            get;
-            private set;
-        }
-
-        public event EventHandler<TransferStatusChangedEventArgs> StatusChanged;
-        
-        private void OnStatusChange(TransferStatus status)
-        {
-            if (StatusChanged != null)
-                StatusChanged(this, new TransferStatusChangedEventArgs(status));
-        }
-
-        private void SetStatus(TransferStatus status)
-        {
-            Status = status;
-            OnStatusChange(status);
-        }
-
-        public void Abort()
+        public override void Abort()
         {
             throw new NotImplementedException();
         }
