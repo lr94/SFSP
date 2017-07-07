@@ -35,7 +35,7 @@ namespace Sfsp.Messaging
             {
                 return _TotalSize;
             }
-            set
+            protected set
             {
                 _TotalSize = value;
             }
