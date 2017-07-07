@@ -70,13 +70,15 @@ namespace TestSFSP
             listener.TransferRequest += (object s2, TransferRequestEventArgs e2) =>
             {
                 List<String> ss = e2.Download.GetObjects();
-                string txt = "";
-                foreach(String s in ss)
-                {
-                    txt += s + "\n";
-                }
-                MessageBox.Show(e2.Download.TotalSize.ToString() + "\n\n" + txt);
+                MessageBox.Show(e2.Download.TotalSize.ToString() + "\n\n" + "Numero oggetti: " + ss.Count);
 
+                e2.Download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 125);
+
+                e2.Download.ProgressUpdate += (object s3, ProgressUpdateEventArgs e3) =>
+                {
+                    double perc = (double)e3.Progress / e3.TotalSize * 100;
+                    UpdateText(label2, "Download: " + perc.ToString() + " %\n" + e3.Speed.ToString());
+                };
 
                 e2.Download.Accept("C:\\Users\\Luca\\Desktop\\test");
             };
@@ -119,7 +121,26 @@ namespace TestSFSP
                     MessageBox.Show("Fallito!");
             };
 
+            upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 250);
+
+            upload.ProgressUpdate += (object s2, ProgressUpdateEventArgs e2) =>
+            {
+                double perc = (double)e2.Progress / e2.TotalSize * 100;
+                UpdateText(label1, "Upload: " + perc.ToString() + " %\n" + e2.Speed.ToString());
+            };
+
             upload.Start();
+        }
+
+        private delegate void UpdateTextDelegate(Control c, string txt);
+        private void UpdateText(Control c, string txt)
+        {
+            if (c.InvokeRequired)
+            {
+                c.Invoke(new UpdateTextDelegate(UpdateText), new object[] {c,  txt });
+            }
+            else
+                c.Text = txt;
         }
     }
 }
