@@ -98,7 +98,7 @@ namespace Sfsp
                         throw new ProtocolViolationException("Unexpected directory " + dirRelativePath);
 
                     // La vado a creare
-                    string fullPath = Path.Combine(destinationPath, dirRelativePath);
+                    string fullPath = Path.Combine(destinationPath, PathUtils.ConvertSFSPPathToOS(dirRelativePath));
                     Directory.CreateDirectory(fullPath);
 
                     // Invio conferma
@@ -116,7 +116,7 @@ namespace Sfsp
                         throw new ProtocolViolationException("Unexpected file " + fileRelativePath);
 
                     // Scarico il file
-                    string fullPath = Path.Combine(destinationPath, fileRelativePath);
+                    string fullPath = Path.Combine(destinationPath, PathUtils.ConvertSFSPPathToOS(fileRelativePath));
                     DownloadFile(stream, fullPath, (long)createFileMsg.FileSize);
                 }
             }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Linq;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -96,7 +97,8 @@ namespace Sfsp
             NetworkStream stream = client.GetStream();
 
             // Preparo il messaggio di richiesta da inviare
-            SfspRequestMessage request = new SfspRequestMessage((ulong)totalSize, relativePaths);
+            List<string> relativeSFSPPaths = relativePaths.Select(s => PathUtils.ConvertOSPathToSFSP(s)).ToList();
+            SfspRequestMessage request = new SfspRequestMessage((ulong)totalSize, relativeSFSPPaths);
 
             // Invio il messaggio
             request.Write(stream);
@@ -135,7 +137,7 @@ namespace Sfsp
                 if (Directory.Exists(fullPath))
                 {
                     // ...inviamo un comando di creazione della cartella
-                    SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(objectRelativePath);
+                    SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(PathUtils.ConvertOSPathToSFSP(objectRelativePath));
                     createDirMessage.Write(stream);
 
                     // Attendo conferma
@@ -191,7 +193,7 @@ namespace Sfsp
             FileInfo fInfo = new FileInfo(fullPath);
             long fSize = fInfo.Length;
             // Invio il comando di creazione del file
-            SfspCreateFileMessage createFileMessage = new SfspCreateFileMessage((ulong)fSize, relativePath);
+            SfspCreateFileMessage createFileMessage = new SfspCreateFileMessage((ulong)fSize, PathUtils.ConvertOSPathToSFSP(relativePath));
             createFileMessage.Write(stream);
 
             // Apro in lettura il file
