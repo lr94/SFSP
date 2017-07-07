@@ -61,7 +61,7 @@ namespace Sfsp
 
             // Calcolo la velocità
             double seconds = now.Subtract(last_progress_update).TotalSeconds;
-            double speed = (double)(progress - notified_progress) / seconds;
+            long speed = (long)((double)(progress - notified_progress) / seconds);
             // (se un file viene ritrasferito in seguito a errore risulterebbe velocità negativa)
             if (speed < 0)
                 speed = 0;
@@ -71,7 +71,7 @@ namespace Sfsp
 
             // Sollevo l'evento
             if (ProgressUpdate != null)
-                ProgressUpdate(this, new ProgressUpdateEventArgs(progress, TotalSize, (long)speed));
+                ProgressUpdate(this, new ProgressUpdateEventArgs(progress, TotalSize, speed));
         }
 
         /// <summary>
