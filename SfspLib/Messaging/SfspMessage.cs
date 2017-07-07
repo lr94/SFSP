@@ -25,12 +25,14 @@ namespace Sfsp.Messaging
         }
 
         private const byte MY_PROTOCOL_VERSION_MAJOR = 0;
-        private const byte MY_PROTOCOL_VERSION_MINOR = 1;
+        private const byte MY_PROTOCOL_VERSION_MINOR = 8;
 
         protected Stream dataStream;
         protected SfspMessageTypes _MessageType;
         protected uint dataLength;
 
+        // Se il messaggio è in uscita contengono lo stesso valore delle costanti
+        // Se il messaggio è in entrata contengono la versione del mittente
         private int _protocolVersionMajor = MY_PROTOCOL_VERSION_MAJOR;
         private int _protocolVersionMinor = MY_PROTOCOL_VERSION_MINOR;
 
