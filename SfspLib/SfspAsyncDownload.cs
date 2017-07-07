@@ -131,12 +131,12 @@ namespace Sfsp
             SHA256 sha256 = SHA256.Create();
             sha256.Initialize();
 
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BUFFER_SIZE];
             long fReceived = 0;
             while(fReceived < size)
             {
                 // Riceve i dati e li inserisce nel buffer
-                int bufSize = (size - fReceived) < 1024 ? (int)(size - fReceived) : 1024;
+                int bufSize = (size - fReceived) < BUFFER_SIZE ? (int)(size - fReceived) : BUFFER_SIZE;
                 int n = stream.Read(buffer, 0, bufSize);
                 // Scrive il buffer su disco
                 fs.Write(buffer, 0, n);

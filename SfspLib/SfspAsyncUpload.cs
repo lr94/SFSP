@@ -193,11 +193,11 @@ namespace Sfsp
             sha256.Initialize();
 
             // Invio i dati
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[BUFFER_SIZE];
             long fSent = 0;
             while(fSent < fSize)
             {
-                int bufSize = (fSize - fSent < 1024) ? (int)(fSize - fSent) : 1024;
+                int bufSize = (fSize - fSent < BUFFER_SIZE) ? (int)(fSize - fSent) : BUFFER_SIZE;
                 // Leggo dal file
                 bufSize = fStream.Read(buffer, 0, bufSize);
                 // Invio i dati
