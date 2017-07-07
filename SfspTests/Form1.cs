@@ -113,7 +113,7 @@ namespace TestSFSP
         private void button1_Click(object sender, EventArgs e)
         {
             SfspHost selectedHost = hosts[lst_hosts.SelectedIndex];
-            SfspAsyncUpload upload = selectedHost.Send(txt_path.Text);
+            SfspAsyncUpload upload = selectedHost.Send(txt_path.Text, new SfspHostConfiguration(txt_name.Text));
 
             upload.StatusChanged += (object s2, TransferStatusChangedEventArgs e2) =>
             {
