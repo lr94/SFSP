@@ -122,7 +122,7 @@ namespace Sfsp.Messaging
                     msg = new SfspCreateFileMessage(0, "");
                     break;
                 case SfspMessageTypes.Request:
-                    msg = new SfspRequestMessage(0, null);
+                    msg = new SfspRequestMessage("", 0, null);
                     break;
                 case SfspMessageTypes.Confirm:
                     msg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);

@@ -18,6 +18,7 @@ namespace Sfsp
         private string basePath;
         private List<string> relativePaths;
         private SfspHost remoteHost;
+        private SfspHostConfiguration configuration;
 
         private Thread uploadThread;
 
@@ -28,11 +29,12 @@ namespace Sfsp
         /// </summary>
         /// <param name="basePath">Directory "radice" contenente gli oggetti da trasferire</param>
         /// <param name="relativePaths">Elenco di tutti gli oggetti da trasferire, espressi come percorsi relativi rispetto alla radice</param>
-        internal SfspAsyncUpload(SfspHost remoteHost, string basePath, List<string> relativePaths)
+        internal SfspAsyncUpload(SfspHost remoteHost, string basePath, List<string> relativePaths, SfspHostConfiguration thisHostConfig)
         {
             this.remoteHost = remoteHost;
             this.relativePaths = relativePaths;
             this.basePath = basePath;
+            this.configuration = thisHostConfig;
 
             if (!Directory.Exists(basePath))
                 throw new DirectoryNotFoundException("Cannot find base directory " + basePath + ".");
@@ -86,7 +88,7 @@ namespace Sfsp
 
             // Preparo il messaggio di richiesta da inviare
             List<string> relativeSFSPPaths = relativePaths.Select(s => PathUtils.ConvertOSPathToSFSP(s)).ToList();
-            SfspRequestMessage request = new SfspRequestMessage((ulong)totalSize, relativeSFSPPaths);
+            SfspRequestMessage request = new SfspRequestMessage(configuration.Name, (ulong)totalSize, relativeSFSPPaths);
 
             // Invio il messaggio
             request.Write(stream);

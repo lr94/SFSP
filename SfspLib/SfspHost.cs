@@ -85,7 +85,7 @@ namespace Sfsp
         /// </summary>
         /// <param name="path">Percorso dell'oggetto da inviare</param>
         /// <returns></returns>
-        public SfspAsyncUpload Send(string path)
+        public SfspAsyncUpload Send(string path, SfspHostConfiguration thisHostConfiguration)
         {
             // Directory contenente l'elemento da inviare (la usiamo per il calcolo dei percorsi relativi)
             String basePath = Path.GetDirectoryName(path);
@@ -100,7 +100,7 @@ namespace Sfsp
             if (objects.Count == 0)
                 throw new FileNotFoundException();
 
-            SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, relativePathObjects);
+            SfspAsyncUpload upload = new SfspAsyncUpload(this, basePath, relativePathObjects, thisHostConfiguration);
 
             return upload;
         }
