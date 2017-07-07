@@ -206,6 +206,9 @@ namespace Sfsp
                 // Aggiorno i contatori
                 fSent += bufSize;
                 progress += bufSize;
+
+                // Eventuale aggiornamento dell'avanzamento dell'operazione
+                ProgressUpdateIfNeeded();
             }
             fStream.Close();
 
@@ -225,8 +228,14 @@ namespace Sfsp
             if(confirmMsg.Status != SfspConfirmMessage.FileStatus.Ok)
             {
                 progress -= fSize;
+                // Aggiornamento dell'avanzamento dell'operazione
+                ForceProgressUpdate();
+
                 return false;
             }
+
+            // Aggiornamento dell'avanzamento dell'operazione
+            ForceProgressUpdate();
 
             // Tutto a posto
             return true;

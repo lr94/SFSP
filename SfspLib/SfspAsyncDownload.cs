@@ -145,6 +145,9 @@ namespace Sfsp
 
                 fReceived += n;
                 progress += n;
+
+                // Eventuale aggiornamento dell'avanzamento dell'operazione
+                ProgressUpdateIfNeeded();
             }
             fs.Close();
 
@@ -162,9 +165,15 @@ namespace Sfsp
             else
             {
                 progress -= size;
+                // Aggiornamento dell'avanzamento dell'operazione
+                ForceProgressUpdate();
+
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
             }
             confirm.Write(stream);
+
+            // Aggiornamento dell'avanzamento dell'operazione
+            ForceProgressUpdate();
         }
 
         /// <summary>
