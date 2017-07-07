@@ -77,7 +77,7 @@ namespace TestSFSP
                 e2.Download.ProgressUpdate += (object s3, ProgressUpdateEventArgs e3) =>
                 {
                     double perc = (double)e3.Progress / e3.TotalSize * 100;
-                    UpdateText(label2, "Download: " + perc.ToString() + " %\n" + e3.Speed.ToString());
+                    UpdateText(label2, "Download: " + perc.ToString() + " %\n" + FormatBytes(e3.Speed) + "/s");
                 };
 
                 e2.Download.Accept("C:\\Users\\Luca\\Desktop\\test");
@@ -100,6 +100,8 @@ namespace TestSFSP
         {
             txt_name.Text = System.Net.Dns.GetHostName();
             // MessageBox.Show(String.Join("\n", Environment.GetCommandLineArgs()));
+
+            this.Text = FormatBytes(123456789);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -126,7 +128,7 @@ namespace TestSFSP
             upload.ProgressUpdate += (object s2, ProgressUpdateEventArgs e2) =>
             {
                 double perc = (double)e2.Progress / e2.TotalSize * 100;
-                UpdateText(label1, "Upload: " + perc.ToString() + " %\n" + e2.Speed.ToString());
+                UpdateText(label1, "Upload: " + perc.ToString() + " %\n" + FormatBytes(e2.Speed) + "/s");
             };
 
             upload.Start();
@@ -141,6 +143,25 @@ namespace TestSFSP
             }
             else
                 c.Text = txt;
+        }
+
+        public string FormatBytes(long num)
+        {
+            if (num == 0)
+                return "0 B";
+
+            double n = num;
+            string[] units = { "", "K", "M", "G", "T", "P", "E" };
+            int ui = (int)Math.Truncate(Math.Log(n, 1024));
+
+            n /= Math.Pow(1024, ui);
+
+            string unit = units[ui];
+            if (ui != 0)
+                unit += "i";
+            unit += "B";
+
+            return String.Format("{0:0.#} {1}", n, unit);
         }
     }
 }
