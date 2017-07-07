@@ -71,7 +71,7 @@ namespace Sfsp
 
             // Sollevo l'evento
             if (ProgressUpdate != null)
-                ProgressUpdate(this, new ProgressUpdateEventArgs(progress, TotalSize, speed));
+                ProgressUpdate(this, new ProgressUpdateEventArgs(progress, TotalSize, (long)speed));
         }
 
         /// <summary>

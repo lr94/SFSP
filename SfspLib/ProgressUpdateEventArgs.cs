@@ -4,7 +4,7 @@ namespace Sfsp
 {
     public class ProgressUpdateEventArgs : EventArgs
     {
-        internal ProgressUpdateEventArgs(long progress, long total, double speed)
+        internal ProgressUpdateEventArgs(long progress, long total, long speed)
         {
             Progress = progress;
             TotalSize = total;
@@ -32,7 +32,7 @@ namespace Sfsp
         /// <summary>
         /// Velocità (B/s) calcolata sull'ultimo intervallo
         /// </summary>
-        public double Speed
+        public long Speed
         {
             get;
             private set;
