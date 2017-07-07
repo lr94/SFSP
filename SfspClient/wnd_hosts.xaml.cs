@@ -23,5 +23,10 @@ namespace SfspClient
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            lst_hosts.Items.Add("test");
+        }
     }
 }
