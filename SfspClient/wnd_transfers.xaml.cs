@@ -81,5 +81,11 @@ namespace SfspClient
             wnd_hosts hosts = new wnd_hosts();
             hosts.Show();
         }
+
+        private void mnu_settings_Click(object sender, RoutedEventArgs e)
+        {
+            wnd_settings settings = new wnd_settings();
+            settings.ShowDialog();
+        }
     }
 }

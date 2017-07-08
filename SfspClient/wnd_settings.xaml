@@ -1,0 +1,55 @@
+﻿<Window x:Class="SfspClient.wnd_settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SfspClient"
+        mc:Ignorable="d"
+        Title="Impostazioni" Height="200" Width="500" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48*"/>
+            <ColumnDefinition Width="199*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="10" Grid.ColumnSpan="2">
+            <DockPanel>
+                <Label Width="120">Nome:</Label>
+                <TextBox Name="txt_name" VerticalContentAlignment="Center"></TextBox>
+            </DockPanel>
+            <DockPanel>
+                <Label Width="120">Modalità:</Label>
+                <DockPanel HorizontalAlignment="Center">
+                    <RadioButton VerticalAlignment="Center">
+                        <TextBlock>Online</TextBlock>
+                    </RadioButton>
+                    <RadioButton VerticalAlignment="Center" Margin="20,0,0,0">
+                        <TextBlock>Offline</TextBlock>
+                    </RadioButton>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel>
+                <Label Width="120">Salvataggio:</Label>
+                <DockPanel>
+                    <Button Name="btn_browse" DockPanel.Dock="Right" Padding="5,0,5,0">Sfoglia</Button>
+                    <TextBox Name="txt_path" DockPanel.Dock="Left" Margin="0,0,5,0" VerticalContentAlignment="Center"></TextBox>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel Margin="0,5,0,0">
+                <DockPanel Width="120" />
+                <DockPanel>
+                    <CheckBox Name="chk_autoaccept">
+                        <TextBlock>Accetta automaticamente i file in arrivo</TextBlock>
+                    </CheckBox>
+                </DockPanel>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Grid.Column="1" Orientation="Horizontal">
+            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3">
+                Annulla
+            </Button>
+            <Button x:Name="btn_ok" Width="60" Padding="5,3,5,3" Margin="5,0,0,0">
+                Ok
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
