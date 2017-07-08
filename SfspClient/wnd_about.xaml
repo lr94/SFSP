@@ -26,7 +26,14 @@
                     Simple File Sharing Protocol
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" Padding="0,5,0,0" TextAlignment="Center">
-                    Progetto per l'esame di<LineBreak/>Programmazione di Sistema
+                    Progetto per l'esame di
+                    <LineBreak/>
+                    Programmazione di Sistema
+                    <LineBreak/>
+                    A. A. 2016/2017
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" Padding="0,20,0,0" TextAlignment="Center">
+                    Luca Robbiano (244033)
                 </TextBlock>
             </StackPanel>
         </DockPanel>
