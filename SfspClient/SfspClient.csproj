@@ -67,6 +67,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ApplicationSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="wnd_about.xaml.cs">

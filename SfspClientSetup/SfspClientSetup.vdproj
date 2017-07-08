@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_D0A034A5F2184B38892744CC8A956C0A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DA4058B18A3A99796FF98A35E43B1BED"
         "OwnerKey" = "8:_E4A9AE6479624E3692BD1899532E73E3"
         "MsmSig" = "8:_UNDEFINED"
@@ -132,6 +138,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D0A034A5F2184B38892744CC8A956C0A"
+            {
+            "SourcePath" = "8:settings.conf"
+            "TargetName" = "8:settings.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_3D470A17F7B24636950F02C1FD117A3C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DA4058B18A3A99796FF98A35E43B1BED"
             {
             "AssemblyRegister" = "3:1"
@@ -203,6 +229,28 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_FD756202F09C49C880BF6B42CF193567"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3D470A17F7B24636950F02C1FD117A3C"
+                    {
+                    "Name" = "8:Sfsp"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_46739C7E1E884D0ABC7AD4167089E36E"
+                        "Folders"
+                        {
+                        }
+                    }
+                }
+            }
         }
         "LaunchCondition"
         {
@@ -220,7 +268,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SfspClientSetup"
         "ProductCode" = "8:{45C23BF3-50AB-47AB-90A4-F636B5D75C38}"
-        "PackageCode" = "8:{8FED6CE9-A282-41D1-B24A-8368091FF1CB}"
+        "PackageCode" = "8:{7BF098F7-EB30-47ED-A651-CCDFF7FDFBA5}"
         "UpgradeCode" = "8:{C85960C1-99E0-4D09-92C4-261907272BFA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
