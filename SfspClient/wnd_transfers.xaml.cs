@@ -42,11 +42,18 @@ namespace SfspClient
         }
         #endregion
 
+        ApplicationSettings settings;
         SfspHostConfiguration hostConfiguration;
+        SfspListener listener;
 
         void InitSfsp()
         {
-            hostConfiguration = new SfspHostConfiguration(System.Net.Dns.GetHostName());
+            // Nome dell'host come da impostazioni
+            hostConfiguration = new SfspHostConfiguration(settings.HostName);
+
+            // Inizializzo il listener
+            listener = new SfspListener(hostConfiguration);
+            // Manca solo listener.Start();
         }
 
         public wnd_transfers()
@@ -54,6 +61,12 @@ namespace SfspClient
             InitializeComponent();
 
             InitNotifyIcon("icon.ico", "notifyIconMenu");
+
+            // Carico le impostazioni dell'applicazione
+            settings = new ApplicationSettings();
+
+            // Inizializzo tutto ciò che è necessario per il protocollo SFSP
+            InitSfsp();
         }
 
         /// <summary>
