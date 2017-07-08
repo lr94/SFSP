@@ -7,21 +7,32 @@
         mc:Ignorable="d"
         Title="Host disponibili" Height="400" Width="700" Icon="icon.ico" Loaded="Window_Loaded">
     <Grid>
-        <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <Canvas Height="64" Width="64" Background="Blue"></Canvas>
-                        <TextBlock Text="Prova" HorizontalAlignment="Center" TextAlignment="Center"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListBox>
+        <DockPanel>
+            <TextBlock Text="[nome file]" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
+            <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="0,0,0,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <Canvas Height="64" Width="64" Background="Blue"></Canvas>
+                            <TextBlock Text="Prova" HorizontalAlignment="Center" TextAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </DockPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Grid.Column="1" Orientation="Horizontal">
+            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True">
+                Annulla
+            </Button>
+            <Button x:Name="btn_send" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True">
+                Invia
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
 
