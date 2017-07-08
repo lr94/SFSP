@@ -6,9 +6,18 @@
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
         Title="Informazioni" Height="200" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Icon="icon.ico" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="polito.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <DockPanel>
-            <Canvas Width="150" Height="150" Background="AliceBlue" HorizontalAlignment="Left"></Canvas>
+            <Viewbox Width="150" Height="150" Stretch="Uniform" Margin="10,0,0,0">
+                <ContentControl Content="{StaticResource polito_logo}" />
+            </Viewbox>
             <StackPanel>
                 <TextBlock HorizontalAlignment="Center" FontSize="30" TextAlignment="Center">
                 SFSP Client
