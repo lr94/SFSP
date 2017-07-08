@@ -46,7 +46,11 @@ namespace SfspClient
             if (args.Length > 1 && args[0] == "-share")
                 main_wnd.ShareObject(args[1]);
             else
-                MessageBox.Show("L'applicazione è già in esecuzione!");
+            {
+                // Mostra la finestra principale
+                main_wnd.Show();
+                main_wnd.Activate();
+            }
         }
     }
 }
