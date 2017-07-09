@@ -47,7 +47,10 @@ namespace SfspClient
                 Directory.CreateDirectory(appdata);
 
             if (!File.Exists(GetFileName()))
+            {
+                data = new Dictionary<string, string>();
                 Store();
+            }
         }
 
         /// <summary>
