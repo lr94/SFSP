@@ -66,10 +66,12 @@ namespace Sfsp
             foreach (UdpClient udpClient in udpClients)
             {
                 Thread udpListenerThread = new Thread(() => ServerTask(udpClient));
+                udpListenerThread.IsBackground = true;
                 udpListenerThread.Start();
             }
 
             Thread tcpListenerThread = new Thread(TcpServerTask);
+            tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
         }
 
