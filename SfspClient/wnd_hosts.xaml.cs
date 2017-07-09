@@ -82,7 +82,8 @@ namespace SfspClient
 
         private void btn_send_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = true;
+            this.Close();
         }
     }
 }
