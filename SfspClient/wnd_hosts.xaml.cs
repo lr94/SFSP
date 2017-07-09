@@ -35,7 +35,7 @@ namespace SfspClient
             scanner.HostFound += scanner_HostFound;
             scanner.ScanComplete += scanner_ScanComplete;
             icn_spinner.Spin = true;
-            scanner.StartScan(new TimeSpan(0, 0, 2));
+            scanner.StartScan(new TimeSpan(0, 0, 1));
         }
 
         private void scanner_HostFound(object sender, SfspHostFoundEventArgs e)
