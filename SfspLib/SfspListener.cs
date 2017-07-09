@@ -21,7 +21,7 @@ namespace Sfsp
         /// <param name="configuration">Configurazione dell'host</param>
         public SfspListener(SfspHostConfiguration configuration)
         {
-            _Configuration = configuration;
+            Configuration = configuration;
 
             // Determino gli indirizzi IP di tutte le interfacce di rete
             string strHostName = System.Net.Dns.GetHostName();
