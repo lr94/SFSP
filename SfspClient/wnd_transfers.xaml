@@ -62,19 +62,19 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <!-- Icona del trasferimento -->
-                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="Download" Foreground="Blue" />
+                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="{Binding Icon}" Spin="{Binding Spin}" Foreground="{Binding IconBrush}" />
                             <DockPanel Grid.Column="1" Grid.Row="0">
                                 <!-- Nome dell'oggetto (nome file o cartella radice) -->
-                                <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
+                                <TextBlock Text="{Binding RootObjectName}" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
                                 <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">
                                     <!-- Mittente? -->
-                                    <TextBlock Text="Prova2" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Text="{Binding RemoteHostName}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
                                     <!-- Velocità / tempo residuo -->
-                                    <TextBlock Text="Prova3" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Text="{Binding SpeedString}" Visibility="{Binding ProgressVisibility}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
                                 </StackPanel>
                             </DockPanel>
                             <!-- Avanzamento -->
-                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="50"></ProgressBar>
+                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="{Binding ProgressPercent}" Visibility="{Binding ProgressVisibility}"></ProgressBar>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

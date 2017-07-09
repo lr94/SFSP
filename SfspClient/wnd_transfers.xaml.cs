@@ -101,6 +101,14 @@ namespace SfspClient
                 foreach(SfspHost h in hostList)
                 {
                     SfspAsyncUpload upload = h.Send(path, hostConfiguration);
+                    // Aggiorno stato dell'avanzamento 10 volte al secondo
+                    upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
+
+                    // Aggiunto in cima alla lista
+                    var wrapper = new TransferWrapper(upload, h.Name, System.IO.Path.GetFileName(path));
+                    transfer_wrapper_list.Insert(0, wrapper);
+
+                    upload.Start();
                 }
             }
         }
@@ -113,13 +121,26 @@ namespace SfspClient
 
         private void Listener_TransferRequest(object sender, TransferRequestEventArgs e)
         {
-            // Debug
-            MessageBox.Show("Richiesta ricevuta: " + e.Download.GetObjects()[0]);
+            Dispatcher.Invoke(() =>
+            {
+                // Debug
+                MessageBox.Show("Richiesta ricevuta: " + e.Download.GetObjects()[0]);
+
+                SfspAsyncDownload download = e.Download;
+                // Aggiorno stato dell'avanzamento 10 volte al secondo
+                download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
+
+                // Aggiunto in cima alla lista
+                var wrapper = new TransferWrapper(download, e.Download.RemoteHostName, download.GetObjects()[0]);
+                transfer_wrapper_list.Insert(0, wrapper);
+
+                download.Accept("C:\\Users\\Luca\\Desktop\\test\\");
+            });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            lst_transfers.Items.Add("Hello");
+            // lst_transfers.Items.Add("Hello");
         }
 
         private void mnu_about_Click(object sender, RoutedEventArgs e)
