@@ -28,6 +28,9 @@ namespace SfspClient
         {
             InitializeComponent();
 
+            string filename = System.IO.Path.GetFileName(fileToSend);
+            txtb_filename.Text = String.Format(txtb_filename.Text, filename);
+
             hosts = new ObservableCollection<SfspHost>();
             lst_hosts.ItemsSource = hosts;
 
