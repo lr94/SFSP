@@ -34,6 +34,7 @@ namespace SfspClient
                 {
                     main_wnd.Show();
                     main_wnd.Activate();
+                    main_wnd.Focus();
                     main_wnd.ShareObject(args[2]);
                 }
             }
@@ -54,6 +55,7 @@ namespace SfspClient
                 // Mostra la finestra principale
                 main_wnd.Show();
                 main_wnd.Activate();
+                main_wnd.Focus();
             }
         }
     }
