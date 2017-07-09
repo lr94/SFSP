@@ -49,7 +49,12 @@ namespace SfspClient
         public void SecondInstance(string[] args)
         {
             if (args.Length > 1 && args[0] == "-share")
+            {
+                main_wnd.Show();
+                main_wnd.Activate();
+                main_wnd.Focus();
                 main_wnd.ShareObject(args[1]);
+            }
             else
             {
                 // Mostra la finestra principale
