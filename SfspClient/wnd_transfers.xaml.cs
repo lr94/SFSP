@@ -100,6 +100,7 @@ namespace SfspClient
 
         public void Quit()
         {
+            notifyIcon.Visible = false;
             Application.Current.Shutdown();
         }
 
