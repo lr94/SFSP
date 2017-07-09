@@ -85,5 +85,11 @@ namespace SfspClient
             DialogResult = true;
             this.Close();
         }
+
+        private void lst_hosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Si può cliccare su "Invia" solo se è selezionato almeno un host
+            btn_send.IsEnabled = (lst_hosts.SelectedItems.Count > 0);
+        }
     }
 }

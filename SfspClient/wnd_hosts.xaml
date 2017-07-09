@@ -10,7 +10,7 @@
     <Grid>
         <DockPanel>
             <TextBlock Name="txtb_filename" Text="Invio di {0}" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
-            <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" IsEnabled="False">
+            <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" IsEnabled="False" SelectionChanged="lst_hosts_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
@@ -30,7 +30,7 @@
             <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True" Click="btn_cancel_Click">
                 Annulla
             </Button>
-            <Button x:Name="btn_send" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True" Click="btn_send_Click">
+            <Button x:Name="btn_send" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True" IsEnabled="False" Click="btn_send_Click">
                 Invia
             </Button>
         </StackPanel>
