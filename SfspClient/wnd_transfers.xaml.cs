@@ -59,6 +59,7 @@ namespace SfspClient
 
             // Inizializzo il listener
             listener = new SfspListener(hostConfiguration);
+            listener.TransferRequest += Listener_TransferRequest;
             // Mi metto in ascolto
             listener.Start();
         }
@@ -85,6 +86,12 @@ namespace SfspClient
             wnd_hosts hosts = new wnd_hosts();
             hosts.ShowDialog();
             MessageBox.Show(path);
+        }
+
+        private void Listener_TransferRequest(object sender, TransferRequestEventArgs e)
+        {
+            // Debug
+            MessageBox.Show("Richiesta ricevuta: " + e.Download.GetObjects()[0]);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
