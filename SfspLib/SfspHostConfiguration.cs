@@ -9,6 +9,8 @@ namespace Sfsp
     /// </summary>
     public class SfspHostConfiguration
     {
+        private object locker = new object();
+
         public SfspHostConfiguration(string name)
         {
             Name = name;
@@ -17,17 +19,33 @@ namespace Sfsp
             MulticastAddress = IPAddress.Parse("239.0.0.1");
         }
 
+        private string _Name;
         /// <summary>
-        /// Nome dell'host
+        /// Nome dell'host. Questa proprietà può cambiare quando il server è già avviato ed è thread safe.
         /// </summary>
         public string Name
         {
-            get;
-            set;
+            get
+            {
+                string value;
+                lock (locker)
+                {
+                    value = _Name;
+                }
+                return value;
+            }
+            set
+            {
+                lock (locker)
+                {
+                    _Name = value;
+                }
+            }
         }
 
         /// <summary>
-        /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file
+        /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file.
+        /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
         /// </summary>
         public ushort TcpPort
         {
@@ -36,7 +54,8 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Porta UDP su cui l'host deve stare in ascolto per eventuali scansioni
+        /// Porta UDP su cui l'host deve stare in ascolto per eventuali scansioni.
+        /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
         /// </summary>
         public ushort UdpPort
         {
@@ -45,7 +64,8 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Indirizzo IP multicast per la scansione mediante UDP
+        /// Indirizzo IP multicast per la scansione mediante UDP.
+        /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
         /// </summary>
         public IPAddress MulticastAddress
         {
