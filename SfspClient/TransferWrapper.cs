@@ -8,11 +8,11 @@ namespace SfspClient
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TransferWrapper(SfspAsyncTransfer transfer, SfspHost remoteHost, string rootObjectName)
+        public TransferWrapper(SfspAsyncTransfer transfer, string remoteHostName, string rootObjectName)
         {
             ProgressPercent = 0.0;
             Speed = 0;
-            RemoteHostName = remoteHost.Name;
+            RemoteHostName = remoteHostName;
             _TransferObject = transfer;
             RootObjectName = rootObjectName;
         }
