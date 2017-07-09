@@ -43,7 +43,7 @@ namespace Sfsp
 
                     udpClients.Add(currentClient);
                 }
-                catch(SocketException)
+                catch (SocketException)
                 {
                     // Probabilmente l'interfaccia corrente era già in ascolto o non supportava multicast
                     // mi limito ad ignorare la cosa
@@ -84,7 +84,7 @@ namespace Sfsp
                 TcpClient client = listener.AcceptTcpClient();
 
                 // Se siamo invisibili non vogliamo ricevere nulla, ci disconnettiamo
-                if(!Online)
+                if (!Configuration.Online)
                 {
                     client.Close();
                     continue;
@@ -118,7 +118,7 @@ namespace Sfsp
 
         private void ServerTask(UdpClient udpClient)
         {
-            while(true)
+            while (true)
             {
                 IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
                 byte[] datagram = udpClient.Receive(ref remoteEndpoint);
@@ -127,10 +127,10 @@ namespace Sfsp
                 SfspMessage msg = SfspMessage.ReadMessage(ms);
 
                 // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
-                if (!Online)
+                if (!Configuration.Online)
                     continue;
 
-                if(msg is SfspScanRequestMessage)
+                if (msg is SfspScanRequestMessage)
                 {
                     SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
 
@@ -150,31 +150,8 @@ namespace Sfsp
         public SfspHostConfiguration Configuration
         {
             get;
+            private set;
         }
 
-        private bool _Online = true;
-        /// <summary>
-        /// Specifica se l'host è in modalità Online e se deve essere quindi visibile agli altri host sulla rete
-        /// e poter ricevere dati. Se impostato su false il Listener rimane in ascolto sulla rete ma non risponde.
-        /// </summary>
-        public bool Online
-        {
-            get
-            {
-                bool to_ret;
-                lock (locker)
-                {
-                    to_ret = _Online;
-                }
-                return to_ret;
-            }
-            set
-            {
-                lock (locker)
-                {
-                    _Online = value;
-                }
-            }
-        }
     }
 }

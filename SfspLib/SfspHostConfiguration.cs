@@ -43,11 +43,37 @@ namespace Sfsp
             }
         }
 
+        private bool _Online = true;
         /// <summary>
-        /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file.
-        /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
+        /// Specifica se l'host è in modalità Online e se deve essere quindi visibile agli altri host sulla rete
+        /// e poter ricevere dati. Se impostato su false il Listener rimane in ascolto sulla rete ma non risponde.
+        /// Questa proprietà può cambiare quando il server è già avviato ed è thread safe.
         /// </summary>
-        public ushort TcpPort
+        public bool Online
+        {
+            get
+            {
+                bool to_ret;
+                lock (locker)
+                {
+                    to_ret = _Online;
+                }
+                return to_ret;
+            }
+            set
+            {
+                lock (locker)
+                {
+                    _Online = value;
+                }
+            }
+        }
+
+    /// <summary>
+    /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file.
+    /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
+    /// </summary>
+    public ushort TcpPort
         {
             get;
             set;

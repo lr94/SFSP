@@ -168,7 +168,7 @@ namespace TestSFSP
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            listener.Online = checkBox1.Checked;
+            listener.Configuration.Online = checkBox1.Checked;
         }
 
         private void txt_name_TextChanged(object sender, EventArgs e)
