@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="wnd_incomingfile" Height="198.867" Width="442.776">
+        Title="Richiesta di connessione" Height="198.867" Width="442.776" Icon="icon.ico" ResizeMode="NoResize">
     <Grid>
-        
+        <StackPanel Margin="10">
+            <TextBlock FontSize="20">[nome] vuole inviarti dei file:</TextBlock>
+            <TextBlock FontSize="20">[nomeoggetto]</TextBlock>
+            <TextBlock FontSize="15">(dimensione)</TextBlock>
+            <DockPanel Margin="0,13,0,0">
+                <Label Width="60">Salva in:</Label>
+                <DockPanel>
+                    <Button Name="btn_browse" DockPanel.Dock="Right" Padding="5,0,5,0" Width="60">Sfoglia</Button>
+                    <TextBox Name="txt_path" DockPanel.Dock="Left" Margin="0,0,5,0" VerticalContentAlignment="Center"></TextBox>
+                </DockPanel>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Grid.Column="1" Orientation="Horizontal">
+            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" Click="btn_cancel_Click" IsCancel="True">
+                Rifiuta
+            </Button>
+            <Button x:Name="btn_accept" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" Click="btn_ok_Click" IsDefault="True">
+                Accetta
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
