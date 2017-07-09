@@ -81,6 +81,8 @@ namespace SfspClient
         /// <param name="path">Percorso dell'oggetto da condividere</param>
         public void ShareObject(string path)
         {
+            wnd_hosts hosts = new wnd_hosts();
+            hosts.ShowDialog();
             MessageBox.Show(path);
         }
 
