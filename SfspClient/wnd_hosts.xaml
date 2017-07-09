@@ -6,7 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Host disponibili" Height="400" Width="700" Icon="icon.ico" Loaded="Window_Loaded">
+        Title="Host disponibili" Height="400" Width="700" Icon="icon.ico" Loaded="Window_Loaded" Topmost="True">
     <Grid>
         <DockPanel>
             <TextBlock Name="txtb_filename" Text="Invio di {0}" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
