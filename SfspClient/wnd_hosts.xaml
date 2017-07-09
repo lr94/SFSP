@@ -9,7 +9,7 @@
         Title="Host disponibili" Height="400" Width="700" Icon="icon.ico" Loaded="Window_Loaded">
     <Grid>
         <DockPanel>
-            <TextBlock Text="[nome file]" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
+            <TextBlock Name="txtb_filename" Text="[nome file]" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
             <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
