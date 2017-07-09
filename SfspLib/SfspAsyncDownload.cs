@@ -64,6 +64,7 @@ namespace Sfsp
                 throw new DirectoryNotFoundException();
 
             downloadThread = new Thread(() => DownloadTask(destinationPath));
+            downloadThread.IsBackground = true;
             downloadThread.Start();
         }
 

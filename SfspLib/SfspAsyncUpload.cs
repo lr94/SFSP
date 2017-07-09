@@ -63,6 +63,7 @@ namespace Sfsp
             }
 
             uploadThread = new Thread(UploadTask);
+            uploadThread.IsBackground = true;
             uploadThread.Start();
         }
 
