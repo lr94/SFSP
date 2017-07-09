@@ -88,6 +88,11 @@ namespace SfspClient
             MessageBox.Show(path);
         }
 
+        public void Quit()
+        {
+            Application.Current.Shutdown();
+        }
+
         private void Listener_TransferRequest(object sender, TransferRequestEventArgs e)
         {
             // Debug
@@ -133,6 +138,11 @@ namespace SfspClient
                 still_running_tip_shown = true;
                 notifyIcon.ShowBalloonTip(1500, "Sfsp Cliet", "Sfsp Client è ancora in esecuzione", System.Windows.Forms.ToolTipIcon.Info);
             }
+        }
+
+        private void mnu_quit_Click(object sender, RoutedEventArgs e)
+        {
+            Quit();
         }
     }
 }

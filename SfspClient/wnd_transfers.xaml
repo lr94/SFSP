@@ -21,7 +21,7 @@
                 </MenuItem.Icon>
             </MenuItem>
             <Separator></Separator>
-            <MenuItem Header="Esci"></MenuItem>
+            <MenuItem Header="Esci" Click="mnu_quit_Click"></MenuItem>
         </ContextMenu>
     </Window.Resources>
     
@@ -31,7 +31,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Condividi file"></MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Esci"></MenuItem>
+                <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Strumenti">
                 <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click"></MenuItem>
