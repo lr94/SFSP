@@ -38,6 +38,12 @@ namespace SfspClient
             scanner.StartScan(new TimeSpan(0, 0, 1));
         }
 
+        public List<SfspHost> GetSelectedHosts()
+        {
+            List<SfspHost> selectedHosts = lst_hosts.SelectedItems.Cast<SfspHost>().ToList();
+            return selectedHosts;
+        }
+
         private void scanner_HostFound(object sender, SfspHostFoundEventArgs e)
         {
             Dispatcher.Invoke(new AddHostDelegate(AddHost), new object[] { e.Host });
@@ -69,6 +75,11 @@ namespace SfspClient
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_send_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
