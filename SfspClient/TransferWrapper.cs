@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
 using Sfsp;
 
 namespace SfspClient
@@ -29,10 +31,12 @@ namespace SfspClient
                 if(_TransferObject != null)
                 {
                     _TransferObject.ProgressUpdate -= TransferObject_ProgressUpdate;
+                    _TransferObject.StatusChanged -= TransferObject_StatusChange;
                 }
 
                 _TransferObject = value;
                 _TransferObject.ProgressUpdate += TransferObject_ProgressUpdate;
+                _TransferObject.StatusChanged += TransferObject_StatusChange;
             }
         }
 
@@ -83,6 +87,75 @@ namespace SfspClient
             get;
             private set;
         }
+
+        public string Icon
+        {
+            get
+            {
+                if(_TransferObject is SfspAsyncDownload && _TransferObject.Status == TransferStatus.InProgress)
+                {
+                    return "Download";
+                }
+                if (_TransferObject is SfspAsyncUpload && _TransferObject.Status == TransferStatus.InProgress)
+                {
+                    return "Upload";
+                }
+
+                if(_TransferObject.Status == TransferStatus.Failed)
+                {
+                    return "ExclamationTriangle";
+                }
+
+                if(_TransferObject.Status == TransferStatus.Pending || _TransferObject.Status == TransferStatus.New)
+                {
+                    return "Spinner";
+                }
+
+                return "Check";
+            }
+        }
+
+        public Brush IconBrush
+        {
+            get
+            {
+                switch(_TransferObject.Status)
+                {
+                    case TransferStatus.Completed:
+                        return Brushes.Green;
+                        break;
+                    case TransferStatus.Failed:
+                        return Brushes.Red;
+                        break;
+                    case TransferStatus.InProgress:
+                        return Brushes.Blue;
+                        break;
+                    default:
+                        return Brushes.DarkGray;
+                }
+            }
+        }
+
+        public bool Spin
+        {
+            get
+            {
+                if (_TransferObject.Status == TransferStatus.Pending || _TransferObject.Status == TransferStatus.New)
+                    return true;
+                return false;
+            }
+        }
+
+        public Visibility ProgressVisibility
+        {
+            get
+            {
+                if (_TransferObject.Status == TransferStatus.InProgress)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Hidden;
+            }
+        }
         
         private void TransferObject_ProgressUpdate(object sender, ProgressUpdateEventArgs e)
         {
@@ -91,6 +164,14 @@ namespace SfspClient
 
             OnPropertyChanged("ProgressPercent");
             OnPropertyChanged("SpeedString");
+        }
+
+        private void TransferObject_StatusChange(object sender, TransferStatusChangedEventArgs e)
+        {
+            OnPropertyChanged("ProgressVisibility");
+            OnPropertyChanged("IconBrush");
+            OnPropertyChanged("Icon");
+            OnPropertyChanged("Spin");
         }
 
         private void OnPropertyChanged(string propertyName)
