@@ -66,7 +66,6 @@ namespace TestSFSP
 
         private void button3_Click(object sender, EventArgs e)
         {
-            txt_name.Enabled = false;
             checkBox1.Enabled = true;
             button3.Enabled = false;
 
@@ -170,6 +169,12 @@ namespace TestSFSP
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             listener.Online = checkBox1.Checked;
+        }
+
+        private void txt_name_TextChanged(object sender, EventArgs e)
+        {
+            if (listener != null)
+                listener.Configuration.Name = txt_name.Text;
         }
     }
 }
