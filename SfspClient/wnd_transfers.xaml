@@ -62,7 +62,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <!-- Icona del trasferimento -->
-                            <Canvas Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="Gold"></Canvas>
+                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="Download" Foreground="Blue" />
                             <DockPanel Grid.Column="1" Grid.Row="0">
                                 <!-- Nome dell'oggetto (nome file o cartella radice) -->
                                 <TextBlock Text="Prova" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
