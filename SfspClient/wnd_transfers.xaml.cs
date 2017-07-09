@@ -48,14 +48,14 @@ namespace SfspClient
         }
         #endregion
 
-        ApplicationSettings settings;
+        ApplicationSettings appSettings;
         SfspHostConfiguration hostConfiguration;
         SfspListener listener;
 
         void InitSfsp()
         {
             // Nome dell'host come da impostazioni
-            hostConfiguration = new SfspHostConfiguration(settings.HostName);
+            hostConfiguration = new SfspHostConfiguration(appSettings.HostName);
 
             // Inizializzo il listener
             listener = new SfspListener(hostConfiguration);
@@ -71,7 +71,7 @@ namespace SfspClient
             InitNotifyIcon("icon.ico", "notifyIconMenu");
 
             // Carico le impostazioni dell'applicazione
-            settings = new ApplicationSettings();
+            appSettings = new ApplicationSettings();
 
             // Inizializzo tutto ciò che è necessario per il protocollo SFSP
             InitSfsp();
@@ -120,6 +120,11 @@ namespace SfspClient
         {
             wnd_settings settings = new wnd_settings();
             settings.ShowDialog();
+
+            // Aggiorno impostazioni
+            appSettings.Load();
+            hostConfiguration.Name = appSettings.HostName;
+            hostConfiguration.Online = (appSettings.Mode == ApplicationSettings.HostMode.Online);
         }
 
         private void mnu_transfers_Click(object sender, RoutedEventArgs e)
