@@ -201,5 +201,15 @@ namespace SfspClient
         {
             Quit();
         }
+
+        private void mnu_clear_Click(object sender, RoutedEventArgs e)
+        {
+            // Rimuovo i trasferimenti completati o falliti dalla lista
+            var toRemove = transfer_wrapper_list.Where(tw =>
+                (tw.TransferObject.Status == TransferStatus.Failed || tw.TransferObject.Status == TransferStatus.Completed)).ToList();
+            
+            foreach(TransferWrapper tw in toRemove)
+                transfer_wrapper_list.Remove(tw);
+        }
     }
 }
