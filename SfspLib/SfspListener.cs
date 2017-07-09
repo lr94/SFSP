@@ -15,6 +15,8 @@ namespace Sfsp
     {
         private List<UdpClient> udpClients;
 
+        private object locker = new object();
+
         /// <summary>
         /// 
         /// </summary>
@@ -80,6 +82,14 @@ namespace Sfsp
             {
                 // Si è connesso qualcuno
                 TcpClient client = listener.AcceptTcpClient();
+
+                // Se siamo invisibili non vogliamo ricevere nulla, ci disconnettiamo
+                if(!Online)
+                {
+                    client.Close();
+                    continue;
+                }
+
                 NetworkStream stream = client.GetStream();
 
                 // Leggo il messaggio inviato (ignorando eventuali errori)
@@ -116,6 +126,10 @@ namespace Sfsp
                 MemoryStream ms = new MemoryStream(datagram);
                 SfspMessage msg = SfspMessage.ReadMessage(ms);
 
+                // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
+                if (!Online)
+                    continue;
+
                 if(msg is SfspScanRequestMessage)
                 {
                     SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
@@ -136,6 +150,31 @@ namespace Sfsp
         public SfspHostConfiguration Configuration
         {
             get;
+        }
+
+        private bool _Online = true;
+        /// <summary>
+        /// Specifica se l'host è in modalità Online e se deve essere quindi visibile agli altri host sulla rete
+        /// e poter ricevere dati. Se impostato su false il Listener rimane in ascolto sulla rete ma non risponde.
+        /// </summary>
+        public bool Online
+        {
+            get
+            {
+                bool to_ret;
+                lock (locker)
+                {
+                    to_ret = _Online;
+                }
+                return to_ret;
+            }
+            set
+            {
+                lock (locker)
+                {
+                    _Online = value;
+                }
+            }
         }
     }
 }
