@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,17 +22,53 @@ namespace SfspClient
     public partial class wnd_hosts : Window
     {
         private SfspScanner scanner;
+        private ObservableCollection<SfspHost> hosts;
 
         public wnd_hosts(string fileToSend, SfspHostConfiguration config)
         {
             InitializeComponent();
 
+            hosts = new ObservableCollection<SfspHost>();
+            lst_hosts.ItemsSource = hosts;
+
             scanner = new SfspScanner(config);
+            scanner.HostFound += scanner_HostFound;
+            scanner.ScanComplete += scanner_ScanComplete;
+            icn_spinner.Spin = true;
+            scanner.StartScan(new TimeSpan(0, 0, 2));
+        }
+
+        private void scanner_HostFound(object sender, SfspHostFoundEventArgs e)
+        {
+            Dispatcher.Invoke(new AddHostDelegate(AddHost), new object[] { e.Host });
+        }
+
+        private void scanner_ScanComplete(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(ScanComplete);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            lst_hosts.Items.Add("test");
+            // lst_hosts.Items.Add("test");
+        }
+
+        private delegate void AddHostDelegate(SfspHost host);
+        private void AddHost(SfspHost host)
+        {
+            hosts.Add(host);
+        }
+
+        private void ScanComplete()
+        {
+            icn_spinner.Spin = false;
+            icn_spinner.Visibility = Visibility.Hidden;
+            lst_hosts.IsEnabled = true;
+        }
+
+        private void btn_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

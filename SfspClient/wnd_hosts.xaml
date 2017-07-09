@@ -10,12 +10,12 @@
     <Grid>
         <DockPanel>
             <TextBlock Name="txtb_filename" Text="[nome file]" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
-            <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0">
+            <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" IsEnabled="False">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
                             <fa:ImageAwesome Icon="Laptop" Width="64" Height="64"/>
-                            <TextBlock Text="Prova" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -27,13 +27,14 @@
             </ListBox>
         </DockPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True">
+            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True" Click="btn_cancel_Click">
                 Annulla
             </Button>
             <Button x:Name="btn_send" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True">
                 Invia
             </Button>
         </StackPanel>
+        <fa:ImageAwesome Name="icn_spinner" Icon="Spinner" Spin="False" SpinDuration="5" Height="40" Foreground="DarkGray" />
     </Grid>
 </Window>
 
