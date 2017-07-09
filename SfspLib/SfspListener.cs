@@ -13,7 +13,6 @@ namespace Sfsp
     /// </summary>
     public class SfspListener
     {
-        private SfspHostConfiguration _Configuration;
         private List<UdpClient> udpClients;
 
         /// <summary>
@@ -35,10 +34,10 @@ namespace Sfsp
             {
                 try
                 {
-                    UdpClient currentClient = new UdpClient(new IPEndPoint(currentIP, _Configuration.UdpPort));
+                    UdpClient currentClient = new UdpClient(new IPEndPoint(currentIP, Configuration.UdpPort));
                     currentClient.MulticastLoopback = true;
                     // ...in modo da essere sicuro di ascoltare per pacchetti multicast su tutte le interfacce
-                    currentClient.JoinMulticastGroup(_Configuration.MulticastAddress, currentIP);
+                    currentClient.JoinMulticastGroup(Configuration.MulticastAddress, currentIP);
 
                     udpClients.Add(currentClient);
                 }
@@ -74,7 +73,7 @@ namespace Sfsp
 
         private void TcpServerTask()
         {
-            TcpListener listener = new TcpListener(new IPEndPoint(IPAddress.Any, _Configuration.TcpPort));
+            TcpListener listener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
             listener.Start();
 
             while (true)
@@ -121,7 +120,7 @@ namespace Sfsp
                 {
                     SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
 
-                    SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(_Configuration.Name, _Configuration.TcpPort);
+                    SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
                     TcpClient tcpClient = new TcpClient();
                     tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
                     NetworkStream stream = tcpClient.GetStream();
@@ -136,10 +135,7 @@ namespace Sfsp
         /// </summary>
         public SfspHostConfiguration Configuration
         {
-            get
-            {
-                return _Configuration;
-            }
+            get;
         }
     }
 }
