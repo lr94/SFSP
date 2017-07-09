@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,8 @@ namespace SfspClient
         SfspHostConfiguration hostConfiguration;
         SfspListener listener;
 
+        ObservableCollection<TransferWrapper> transfer_wrapper_list;
+
         void InitSfsp()
         {
             // Nome dell'host come da impostazioni
@@ -72,6 +75,10 @@ namespace SfspClient
 
             // Carico le impostazioni dell'applicazione
             appSettings = new ApplicationSettings();
+
+            // Inizializzo la lista dei trasferimenti
+            transfer_wrapper_list = new ObservableCollection<TransferWrapper>();
+            lst_transfers.ItemsSource = transfer_wrapper_list;
 
             // Inizializzo tutto ciò che è necessario per il protocollo SFSP
             InitSfsp();
