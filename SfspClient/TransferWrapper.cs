@@ -13,7 +13,7 @@ namespace SfspClient
             ProgressPercent = 0.0;
             Speed = 0;
             RemoteHostName = remoteHostName;
-            _TransferObject = transfer;
+            TransferObject = transfer;
             RootObjectName = rootObjectName;
         }
 
