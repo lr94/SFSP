@@ -31,7 +31,11 @@ namespace SfspClient
                     main_wnd.Show();
 
                 if (args[1] == "-share" && args.Length > 2)
+                {
+                    main_wnd.Show();
+                    main_wnd.Activate();
                     main_wnd.ShareObject(args[2]);
+                }
             }
             else
                 main_wnd.Show();
