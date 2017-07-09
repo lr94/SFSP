@@ -83,7 +83,7 @@ namespace SfspClient
         /// <param name="path">Percorso dell'oggetto da condividere</param>
         public void ShareObject(string path)
         {
-            wnd_hosts hosts = new wnd_hosts();
+            wnd_hosts hosts = new wnd_hosts(path, hostConfiguration);
             hosts.ShowDialog();
             MessageBox.Show(path);
         }
@@ -112,7 +112,7 @@ namespace SfspClient
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            wnd_hosts hosts = new wnd_hosts();
+            wnd_hosts hosts = new wnd_hosts("", hostConfiguration);
             hosts.Show();
         }
 
