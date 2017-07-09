@@ -187,7 +187,6 @@ namespace SfspClient
             if(!still_running_tip_shown)
             {
                 still_running_tip_shown = true;
-                notifyIcon.ShowBalloonTip(1500, "Sfsp Cliet", "Sfsp Client è ancora in esecuzione", System.Windows.Forms.ToolTipIcon.Info);
             }
         }
 
