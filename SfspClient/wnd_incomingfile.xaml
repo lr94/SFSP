@@ -8,22 +8,22 @@
         Title="Richiesta di connessione" Height="198.867" Width="442.776" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Margin="10">
-            <TextBlock FontSize="20">[nome] vuole inviarti dei file:</TextBlock>
-            <TextBlock FontSize="20">[nomeoggetto]</TextBlock>
-            <TextBlock FontSize="15">(dimensione)</TextBlock>
+            <TextBlock Name="txtb_name" FontSize="20" Text="{}{0} vuole inviarti dei file:"/>
+            <TextBlock Name="txtb_filename" FontSize="20" Text="{}{0}"></TextBlock>
+            <TextBlock Name="txtb_size" FontSize="15">({0})</TextBlock>
             <DockPanel Margin="0,13,0,0">
                 <Label Width="60">Salva in:</Label>
                 <DockPanel>
-                    <Button Name="btn_browse" DockPanel.Dock="Right" Padding="5,0,5,0" Width="60">Sfoglia</Button>
+                    <Button Name="btn_browse" DockPanel.Dock="Right" Padding="5,0,5,0" Width="60" Click="btn_browse_Click">Sfoglia</Button>
                     <TextBox Name="txt_path" DockPanel.Dock="Left" Margin="0,0,5,0" VerticalContentAlignment="Center"></TextBox>
                 </DockPanel>
             </DockPanel>
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True">
+            <Button x:Name="btn_cancel" Width="60" Padding="5,3,5,3" IsCancel="True" Click="btn_cancel_Click">
                 Rifiuta
             </Button>
-            <Button x:Name="btn_accept" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True">
+            <Button x:Name="btn_accept" Width="60" Padding="5,3,5,3" Margin="5,0,0,0" IsDefault="True" Click="btn_accept_Click">
                 Accetta
             </Button>
         </StackPanel>
