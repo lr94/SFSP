@@ -83,9 +83,19 @@ namespace SfspClient
         /// <param name="path">Percorso dell'oggetto da condividere</param>
         public void ShareObject(string path)
         {
-            wnd_hosts hosts = new wnd_hosts(path, hostConfiguration);
-            hosts.ShowDialog();
-            MessageBox.Show(path);
+            wnd_hosts hostScannerDialog = new wnd_hosts(path, hostConfiguration);
+
+            bool? result = hostScannerDialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                // Invio file
+                List<SfspHost> hostList = hostScannerDialog.GetSelectedHosts();
+                
+                foreach(SfspHost h in hostList)
+                {
+                    SfspAsyncUpload upload = h.Send(path, hostConfiguration);
+                }
+            }
         }
 
         public void Quit()
@@ -112,8 +122,15 @@ namespace SfspClient
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            wnd_hosts hosts = new wnd_hosts("", hostConfiguration);
-            hosts.Show();
+            wnd_hosts hostScannerDialog = new wnd_hosts("PROVA", hostConfiguration);
+
+            bool? result = hostScannerDialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                // Invio file
+                List<SfspHost> h = hostScannerDialog.GetSelectedHosts();
+                MessageBox.Show(h.Count.ToString());
+            }
         }
 
         private void mnu_settings_Click(object sender, RoutedEventArgs e)
