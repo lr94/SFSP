@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
         Title="Host disponibili" Height="400" Width="700" Icon="icon.ico" Loaded="Window_Loaded">
@@ -13,7 +14,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Canvas Height="64" Width="64" Background="Blue"></Canvas>
+                            <fa:ImageAwesome Icon="Laptop" Width="64" Height="64"/>
                             <TextBlock Text="Prova" HorizontalAlignment="Center" TextAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>
