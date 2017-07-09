@@ -211,5 +211,14 @@ namespace SfspClient
             foreach(TransferWrapper tw in toRemove)
                 transfer_wrapper_list.Remove(tw);
         }
+
+        private void mnu_share_Click(object sender, RoutedEventArgs e)
+        {
+            var ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Filter = "Tutti i file|*.*";
+
+            if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                ShareObject(ofd.FileName);
+        }
     }
 }

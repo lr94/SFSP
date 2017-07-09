@@ -29,7 +29,7 @@
         <!-- Main menu -->
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="Condividi file"></MenuItem>
+                <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click"></MenuItem>
             </MenuItem>
