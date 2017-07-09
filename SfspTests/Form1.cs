@@ -21,6 +21,8 @@ namespace TestSFSP
 
         List<SfspHost> hosts;
 
+        SfspListener listener;
+
         private void button2_Click(object sender, EventArgs e)
         {
             lst_hosts.Items.Clear();
@@ -65,8 +67,10 @@ namespace TestSFSP
         private void button3_Click(object sender, EventArgs e)
         {
             txt_name.Enabled = false;
+            checkBox1.Enabled = true;
+            button3.Enabled = false;
 
-            SfspListener listener = new SfspListener(new SfspHostConfiguration(txt_name.Text));
+            listener = new SfspListener(new SfspHostConfiguration(txt_name.Text));
             listener.TransferRequest += (object s2, TransferRequestEventArgs e2) =>
             {
                 List<String> ss = e2.Download.GetObjects();
@@ -161,6 +165,11 @@ namespace TestSFSP
             unit += "B";
 
             return String.Format("{0:0.#} {1}", n, unit);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            listener.Online = checkBox1.Checked;
         }
     }
 }
