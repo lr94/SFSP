@@ -123,18 +123,25 @@ namespace SfspClient
         {
             Dispatcher.Invoke(() =>
             {
-                // Debug
-                MessageBox.Show("Richiesta ricevuta: " + e.Download.GetObjects()[0]);
-
                 SfspAsyncDownload download = e.Download;
-                // Aggiorno stato dell'avanzamento 10 volte al secondo
-                download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
-                // Aggiunto in cima alla lista
-                var wrapper = new TransferWrapper(download, e.Download.RemoteHostName, download.GetObjects()[0]);
-                transfer_wrapper_list.Insert(0, wrapper);
+                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath);
 
-                download.Accept("C:\\Users\\Luca\\Desktop\\test\\");
+                bool? result = dialog.ShowDialog();
+
+                if (result.HasValue && result.Value)
+                {
+                    // Aggiorno stato dell'avanzamento 10 volte al secondo
+                    download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
+
+                    // Aggiunto in cima alla lista
+                    var wrapper = new TransferWrapper(download, e.Download.RemoteHostName, download.GetObjects()[0]);
+                    transfer_wrapper_list.Insert(0, wrapper);
+
+                    download.Accept(dialog.DestinationPath);
+                }
+                else
+                    download.Deny();
             });
         }
 
