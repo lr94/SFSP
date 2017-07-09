@@ -24,19 +24,25 @@ namespace SfspClient
     {
         #region "NotifyIcon"
         System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+        bool still_running_tip_shown = false;
+
         private void InitNotifyIcon(String iconName, String menuKey)
         {
             Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/" + iconName)).Stream;
             notifyIcon.Icon = new System.Drawing.Icon(iconStream);
             notifyIcon.Visible = true;
 
-            notifyIcon.Click += (object sender, EventArgs e) => this.Show();
             notifyIcon.MouseDown += (object sender, System.Windows.Forms.MouseEventArgs e) =>
             {
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
                 {
                     ContextMenu menu = (ContextMenu)this.FindResource(menuKey);
                     menu.IsOpen = true;
+                }
+                else if(e.Button == System.Windows.Forms.MouseButtons.Left)
+                {
+                    this.Show();
+                    this.Activate();
                 }
             };
         }
@@ -99,6 +105,24 @@ namespace SfspClient
         {
             wnd_settings settings = new wnd_settings();
             settings.ShowDialog();
+        }
+
+        private void mnu_transfers_Click(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            this.Activate();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+
+            if(!still_running_tip_shown)
+            {
+                still_running_tip_shown = true;
+                notifyIcon.ShowBalloonTip(1500, "Sfsp Cliet", "Sfsp Client è ancora in esecuzione", System.Windows.Forms.ToolTipIcon.Info);
+            }
         }
     }
 }

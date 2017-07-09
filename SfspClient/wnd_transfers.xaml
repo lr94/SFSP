@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded">
+        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <!-- Context menu per l'icona nella system tray -->
         <ContextMenu x:Key="notifyIconMenu">
-            <MenuItem Header="Trasferimenti"></MenuItem>
+            <MenuItem Name="mnu_transfers" Header="Trasferimenti" Click="mnu_transfers_Click"></MenuItem>
             <MenuItem Header="Impostazioni"></MenuItem>
             <Separator></Separator>
             <MenuItem Header="Esci"></MenuItem>
