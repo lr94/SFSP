@@ -59,7 +59,8 @@ namespace SfspClient
 
             // Inizializzo il listener
             listener = new SfspListener(hostConfiguration);
-            // Manca solo listener.Start();
+            // Mi metto in ascolto
+            listener.Start();
         }
 
         public wnd_transfers()
