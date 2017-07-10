@@ -116,11 +116,18 @@
                                     <!-- Mittente? -->
                                     <TextBlock Text="{Binding RemoteHostName}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
                                     <!-- Velocità / tempo residuo -->
-                                    <TextBlock Text="{Binding SpeedString}" Visibility="{Binding ProgressVisibility}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                    <TextBlock Visibility="{Binding ProgressVisibility}" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} - {1}">
+                                                <Binding Path="EstimatedTimeString" />
+                                                <Binding Path="SpeedString" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </StackPanel>
                             </DockPanel>
                             <!-- Avanzamento -->
-                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="{Binding ProgressPercent}" Visibility="{Binding ProgressVisibility}"></ProgressBar>
+                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="{Binding ProgressPercent, Mode=OneWay}" Visibility="{Binding ProgressVisibility}"></ProgressBar>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

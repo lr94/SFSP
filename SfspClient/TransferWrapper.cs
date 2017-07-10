@@ -12,7 +12,7 @@ namespace SfspClient
 
         public TransferWrapper(SfspAsyncTransfer transfer, string remoteHostName, string rootObjectName)
         {
-            ProgressPercent = 0.0;
+            Progress = 0;
             Speed = 0;
             RemoteHostName = remoteHostName;
             TransferObject = transfer;
@@ -70,10 +70,32 @@ namespace SfspClient
             }
         }
 
-        public double ProgressPercent
+        public string EstimatedTimeString
+        {
+            get
+            {
+                if (Speed == 0)
+                    return "Eternità";
+
+                long seconds = (TotalSize - Progress) / Speed;
+
+                TimeSpan ts = new TimeSpan(TimeSpan.TicksPerSecond * seconds);
+                return NumericFormatter.FormatTimeSpan(ts);
+            }
+        }
+
+        public long Progress
         {
             get;
             set;
+        }
+
+        public double ProgressPercent
+        {
+            get
+            {
+                return ((double)Progress) / TotalSize * 100;
+            }
         }
 
         public string RemoteHostName
@@ -187,11 +209,12 @@ namespace SfspClient
         
         private void TransferObject_ProgressUpdate(object sender, ProgressUpdateEventArgs e)
         {
-            ProgressPercent = ((double)e.Progress) / TotalSize * 100;
+            Progress = e.Progress;
             Speed = e.Speed;
 
             OnPropertyChanged("ProgressPercent");
             OnPropertyChanged("SpeedString");
+            OnPropertyChanged("EstimatedTimeString");
         }
 
         private void TransferObject_StatusChange(object sender, TransferStatusChangedEventArgs e)

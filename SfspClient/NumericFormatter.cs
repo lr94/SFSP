@@ -39,6 +39,9 @@ namespace SfspClient
             if (ts.Seconds != 0)
                 sl.Add(ts.Seconds.ToString() + " second" + (ts.Seconds == 1 ? "o" : "i"));
 
+            if (sl.Count == 0)
+                return "";
+
             return sl.Aggregate((a, b) => a + ", " + b);
         }
     }
