@@ -34,7 +34,7 @@
                 Invia
             </Button>
         </StackPanel>
-        <fa:ImageAwesome Name="icn_spinner" Icon="Spinner" Spin="False" SpinDuration="5" Height="40" Foreground="DarkGray" />
+        <fa:ImageAwesome Name="icn_spinner" Icon="Spinner" Spin="False" SpinDuration="5" Height="40" Foreground="DarkSlateGray" />
     </Grid>
 </Window>
 

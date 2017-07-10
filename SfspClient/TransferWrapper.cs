@@ -172,11 +172,11 @@ namespace SfspClient
                 switch(_TransferObject.Status)
                 {
                     case TransferStatus.Completed:
-                        return Brushes.Green;
+                        return new SolidColorBrush(Color.FromRgb(39, 174, 96));
                     case TransferStatus.Failed:
-                        return Brushes.Red;
+                        return new SolidColorBrush(Color.FromRgb(231, 76, 60));
                     case TransferStatus.InProgress:
-                        return new SolidColorBrush(Color.FromRgb(9, 117, 206));
+                        return new SolidColorBrush(Color.FromRgb(26, 188, 156));
                     default:
                         return Brushes.DarkSlateGray;
                 }
