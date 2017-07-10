@@ -176,7 +176,7 @@ namespace SfspClient
                     case TransferStatus.Failed:
                         return Brushes.Red;
                     case TransferStatus.InProgress:
-                        return Brushes.Blue;
+                        return new SolidColorBrush(Color.FromRgb(9, 117, 206));
                     default:
                         return Brushes.DarkSlateGray;
                 }
