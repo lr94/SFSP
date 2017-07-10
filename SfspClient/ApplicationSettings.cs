@@ -22,7 +22,7 @@ namespace SfspClient
         public ApplicationSettings()
         {
             HostName = System.Net.Dns.GetHostName();
-            DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Downloads");
+            DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
             AutoAccept = false;
             Mode = HostMode.Online;
 
