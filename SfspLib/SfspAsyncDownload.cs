@@ -127,7 +127,8 @@ namespace Sfsp
 
         private void DownloadFile(NetworkStream stream, string fullPath, long size)
         {
-            FileStream fs = File.Open(fullPath, FileMode.Create, FileAccess.Write);
+            string tmpFullPath = fullPath + ".part";
+            FileStream fs = File.Open(tmpFullPath, FileMode.Create, FileAccess.Write);
 
             // Preparazione per il calcolo del checksum
             SHA256 sha256 = SHA256.Create();
@@ -164,9 +165,22 @@ namespace Sfsp
 
             SfspConfirmMessage confirm;
             if (checksumMsg.Check(hash))
+            {
+                // Tutto a posto
+                // Se c'è già un file con lo stesso nome lo elimino
+                if (File.Exists(fullPath))
+                    File.Delete(fullPath);
+
+                // Rinomino il file temporaneo
+                File.Move(tmpFullPath, fullPath);
+
                 confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+            }
             else
             {
+                // Qualcosa è andato storto, elimino il file temporaneo
+                File.Delete(tmpFullPath);
+
                 progress -= size;
                 // Aggiornamento dell'avanzamento dell'operazione
                 ForceProgressUpdate();
