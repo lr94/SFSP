@@ -56,5 +56,16 @@ namespace SfspClient
             settings.Store();
             this.Close();
         }
+
+        private void btn_browse_Click(object sender, RoutedEventArgs e)
+        {
+            var fbd = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (System.IO.Directory.Exists(txt_path.Text))
+                fbd.SelectedPath = txt_path.Text;
+
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                txt_path.Text = fbd.SelectedPath;
+        }
     }
 }
