@@ -14,7 +14,7 @@ namespace SfspClient
                 return "0 B";
 
             double n = num;
-            string[] units = { "", "K", "M", "G", "T", "P", "E" };
+            string[] units = { "", "K", "M", "G", "T", "P", "E", "Z", "Y" };
             int ui = (int)Math.Truncate(Math.Log(n, 1024));
 
             n /= Math.Pow(1024, ui);
