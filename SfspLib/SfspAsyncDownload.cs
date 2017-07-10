@@ -163,7 +163,6 @@ namespace Sfsp
                 if(n == 0)
                 {
                     TcpState state = GetTcpClientState(tcpClient);
-
                     // Se è stata chiusa sollevo un'eccezione
                     if (state != TcpState.Established)
                         throw new SocketException();
@@ -228,7 +227,9 @@ namespace Sfsp
            TcpConnectionInformation info = IPGlobalProperties.GetIPGlobalProperties()
                                                              .GetActiveTcpConnections()
                                                              .SingleOrDefault(t
-                                                                => t.LocalEndPoint.Equals(client.Client.LocalEndPoint));
+                                                                => t.LocalEndPoint.Equals(client.Client.LocalEndPoint)
+                                                                   &&
+                                                                   t.RemoteEndPoint.Equals(client.Client.RemoteEndPoint));
 
             if (info == null)
                 return TcpState.Unknown;
