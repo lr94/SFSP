@@ -234,5 +234,12 @@ namespace SfspClient
             if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 ShareObject(ofd.FileName);
         }
+
+        private void mnu_stop_Click(object sender, RoutedEventArgs e)
+        {
+            TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
+            if (tw != null)
+                tw.TransferObject.Abort();
+        }
     }
 }

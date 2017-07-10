@@ -46,14 +46,24 @@
         <DockPanel>
             <!-- Lista dei trasferimenti -->
             <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
+                
+                <!-- Context menu per gli elementi -->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Name="mnu_stop" Header="Annulla" IsEnabled="{Binding CanBeStopped}" Click="mnu_stop_Click"></MenuItem>
+                                    <MenuItem Name="mnu_transferinfo" Header="Dettagli"></MenuItem>
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
+                <!-- Template elemento -->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <!--
-                        <DockPanel>
-                            <Canvas Background="Aquamarine" Width="100" Height="100" DockPanel.Dock="Left">
-                            </Canvas>
-                        </DockPanel>
-                        -->
                         <Grid Height="75">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75" />

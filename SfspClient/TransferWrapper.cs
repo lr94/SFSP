@@ -156,6 +156,14 @@ namespace SfspClient
                     return Visibility.Hidden;
             }
         }
+
+        public bool CanBeStopped
+        {
+            get
+            {
+                return (_TransferObject.Status != TransferStatus.Failed && _TransferObject.Status != TransferStatus.Completed);
+            }
+        }
         
         private void TransferObject_ProgressUpdate(object sender, ProgressUpdateEventArgs e)
         {
