@@ -12,16 +12,20 @@
         <ContextMenu x:Key="notifyIconMenu">
             <MenuItem Name="mnu_transfers" Header="Trasferimenti" Click="mnu_transfers_Click">
                 <MenuItem.Icon>
-                    <fa:ImageAwesome Icon="Exchange"></fa:ImageAwesome>
+                    <fa:ImageAwesome Icon="Exchange" Height="20"></fa:ImageAwesome>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Impostazioni" Click="mnu_settings_Click">
                 <MenuItem.Icon>
-                    <fa:ImageAwesome Icon="Cog"></fa:ImageAwesome>
+                    <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
                 </MenuItem.Icon>
             </MenuItem>
             <Separator></Separator>
-            <MenuItem Header="Esci" Click="mnu_quit_Click"></MenuItem>
+            <MenuItem Header="Esci" Click="mnu_quit_Click">
+                <MenuItem.Icon>
+                    <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
+                </MenuItem.Icon>
+            </MenuItem>
         </ContextMenu>
     </Window.Resources>
     
@@ -29,17 +33,37 @@
         <!-- Main menu -->
         <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click"></MenuItem>
+                <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="ShareAlt" Height="20"></fa:ImageAwesome>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator></Separator>
-                <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click"></MenuItem>
+                <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Strumenti">
-                <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click"></MenuItem>
+                <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="TrashOutline" Height="18"></fa:ImageAwesome>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator></Separator>
-                <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click"></MenuItem>
+                <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="?">
-                <MenuItem Name="mnu_about" Header="Informazioni" Click="mnu_about_Click"></MenuItem>
+                <MenuItem Name="mnu_about" Header="Informazioni" Click="mnu_about_Click">
+                    <MenuItem.Icon>
+                        <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20"></fa:ImageAwesome>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
@@ -50,11 +74,20 @@
                 <!-- Context menu per gli elementi -->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <ContextMenu>
-                                    <MenuItem Name="mnu_stop" Header="Annulla" IsEnabled="{Binding CanBeStopped}" Click="mnu_stop_Click"></MenuItem>
-                                    <MenuItem Name="mnu_transferinfo" Header="Dettagli"></MenuItem>
+                                    <MenuItem Name="mnu_stop" Header="Annulla" IsEnabled="{Binding CanBeStopped}" Click="mnu_stop_Click">
+                                        <MenuItem.Icon>
+                                            <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Name="mnu_transferinfo" Header="Dettagli">
+                                        <MenuItem.Icon>
+                                            <fa:ImageAwesome Icon="InfoCircle" Height="20"></fa:ImageAwesome>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
                                 </ContextMenu>
                             </Setter.Value>
                         </Setter>
