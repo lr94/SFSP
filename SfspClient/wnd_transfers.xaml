@@ -78,7 +78,7 @@
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <ContextMenu>
-                                    <MenuItem Name="mnu_stop" Header="Annulla" IsEnabled="{Binding CanBeStopped}" Click="mnu_stop_Click">
+                                    <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Click="mnu_stop_Click">
                                         <MenuItem.Icon>
                                             <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
                                         </MenuItem.Icon>
