@@ -11,6 +11,18 @@
         <DockPanel>
             <TextBlock Name="txtb_filename" Text="Invio di {0}" DockPanel.Dock="Top" Margin="10" FontSize="20"/>
             <ListBox Name="lst_hosts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Multiple" Margin="10,0,10,45" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0" IsEnabled="False" SelectionChanged="lst_hosts_SelectionChanged">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Address}" />
+                                </StackPanel>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
