@@ -27,7 +27,7 @@ namespace SfspClient
             return String.Format("{0:0.#} {1}", n, unit);
         }
 
-        public string FormatTimeSpan(TimeSpan ts)
+        public static string FormatTimeSpan(TimeSpan ts)
         {
             var sl = new List<string>();
             if (ts.Days != 0)
