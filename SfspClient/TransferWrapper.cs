@@ -115,6 +115,34 @@ namespace SfspClient
             }
         }
 
+        public string SmallIcon
+        {
+            get
+            {
+                if (_TransferObject is SfspAsyncDownload)
+                {
+                    return "Download";
+                }
+                if (_TransferObject is SfspAsyncUpload)
+                {
+                    return "Upload";
+                }
+
+                return "Question"; // Non si dovrebbe mai arrivare qui
+            }
+        }
+
+        public Visibility SmallIconVisibility
+        {
+            get
+            {
+                if (_TransferObject.Status == TransferStatus.Completed || _TransferObject.Status == TransferStatus.Failed)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
         public Brush IconBrush
         {
             get
@@ -180,6 +208,7 @@ namespace SfspClient
             OnPropertyChanged("IconBrush");
             OnPropertyChanged("Icon");
             OnPropertyChanged("Spin");
+            OnPropertyChanged("SmallIconVisibility");
         }
 
         private void OnPropertyChanged(string propertyName)

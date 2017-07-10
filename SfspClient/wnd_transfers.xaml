@@ -108,6 +108,7 @@
                             </Grid.RowDefinitions>
                             <!-- Icona del trasferimento -->
                             <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="{Binding Icon}" Spin="{Binding Spin}" Foreground="{Binding IconBrush}" />
+                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,5" Height="15" Icon="{Binding SmallIcon}" Visibility="{Binding SmallIconVisibility}" Foreground="DarkGray"></fa:ImageAwesome>
                             <DockPanel Grid.Column="1" Grid.Row="0">
                                 <!-- Nome dell'oggetto (nome file o cartella radice) -->
                                 <TextBlock Text="{Binding RootObjectName}" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
