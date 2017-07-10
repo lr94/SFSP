@@ -127,7 +127,11 @@ namespace SfspClient
 
                 wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath);
 
-                bool? result = dialog.ShowDialog();
+                bool? result;
+                if (appSettings.AutoAccept)
+                    result = true;
+                else
+                    result = dialog.ShowDialog();
 
                 if (result.HasValue && result.Value)
                 {
