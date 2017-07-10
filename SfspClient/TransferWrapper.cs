@@ -173,15 +173,12 @@ namespace SfspClient
                 {
                     case TransferStatus.Completed:
                         return Brushes.Green;
-                        break;
                     case TransferStatus.Failed:
                         return Brushes.Red;
-                        break;
                     case TransferStatus.InProgress:
                         return Brushes.Blue;
-                        break;
                     default:
-                        return Brushes.DarkGray;
+                        return Brushes.DarkSlateGray;
                 }
             }
         }
