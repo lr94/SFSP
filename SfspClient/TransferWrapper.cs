@@ -153,7 +153,7 @@ namespace SfspClient
                 if (_TransferObject.Status == TransferStatus.InProgress)
                     return Visibility.Visible;
                 else
-                    return Visibility.Hidden;
+                    return Visibility.Collapsed;
             }
         }
 
