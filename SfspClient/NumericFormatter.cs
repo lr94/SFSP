@@ -27,17 +27,17 @@ namespace SfspClient
             return String.Format("{0:0.#} {1}", n, unit);
         }
 
-        public static string FormatTimeSpan(TimeSpan ts)
+        string FormatTimeSpan(TimeSpan ts)
         {
             var sl = new List<string>();
             if (ts.Days != 0)
                 sl.Add(ts.Days.ToString() + " giorn" + (ts.Days == 1 ? "o" : "i"));
             if (ts.Hours != 0)
-                sl.Add(ts.Hours.ToString() + " or" + (ts.Days == 1 ? "a" : "e"));
+                sl.Add(ts.Hours.ToString() + " or" + (ts.Hours == 1 ? "a" : "e"));
             if (ts.Minutes != 0)
-                sl.Add(ts.Minutes.ToString() + " minut" + (ts.Days == 1 ? "o" : "i"));
+                sl.Add(ts.Minutes.ToString() + " minut" + (ts.Minutes == 1 ? "o" : "i"));
             if (ts.Seconds != 0)
-                sl.Add(ts.Seconds.ToString() + " second" + (ts.Days == 1 ? "o" : "i"));
+                sl.Add(ts.Seconds.ToString() + " second" + (ts.Seconds == 1 ? "o" : "i"));
 
             return sl.Aggregate((a, b) => a + ", " + b);
         }
