@@ -154,9 +154,37 @@ namespace Sfsp
             }
         }
 
+
+        private bool _Aborting = false;
         /// <summary>
-        /// Interrompe il treasferimento
+        /// True se vogliamo interrompere il trasferimento
         /// </summary>
-        public abstract void Abort();
+        protected bool Aborting
+        {
+            get
+            {
+                bool value;
+                lock (locker)
+                {
+                    value = _Aborting;
+                }
+                return value;
+            }
+            set
+            {
+                lock (locker)
+                {
+                    _Aborting = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Interrompe il trasferimento in corso chiudendo la connessione con l'host remoto
+        /// </summary>
+        public void Abort()
+        {
+            Aborting = true;
+        }
     }
 }

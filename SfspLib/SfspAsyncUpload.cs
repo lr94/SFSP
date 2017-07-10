@@ -69,114 +69,121 @@ namespace Sfsp
 
         private void UploadTask()
         {
-            // Scorro tutti gli oggetti da inviare
-            long totalSize = 0;
-            foreach(string currentObject in relativePaths)
-            {
-                // Ne ottengo il percorso completo per poi determinarne la dimensione, che aggiungo a totalSize
-                String fullpath = Path.Combine(basePath, currentObject);
-                if(File.Exists(fullpath))
-                {
-                    FileInfo fi = new FileInfo(fullpath);
-                    totalSize += fi.Length;
-                }
-            }
-            TotalSize = totalSize;
-
             // Mi collego all'host remoto
             TcpClient client = remoteHost.CreateConnection();
             NetworkStream stream = client.GetStream();
 
-            // Preparo il messaggio di richiesta da inviare
-            List<string> relativeSFSPPaths = relativePaths.Select(s => PathUtils.ConvertOSPathToSFSP(s)).ToList();
-            SfspRequestMessage request = new SfspRequestMessage(configuration.Name, (ulong)totalSize, relativeSFSPPaths);
-
-            // Invio il messaggio
-            request.Write(stream);
-            SetStatus(TransferStatus.Pending);
-            
-            // Leggo il messaggio di risposta
-            SfspMessage msg = SfspMessage.ReadMessage(stream);
-
-            // Ci aspettiamo una risposta di tipo Confirm!
-            if(!(msg is SfspConfirmMessage))
+            try
             {
-                SetStatus(TransferStatus.Failed);
-                return;
+                // Scorro tutti gli oggetti da inviare
+                long totalSize = 0;
+                foreach (string currentObject in relativePaths)
+                {
+                    // Ne ottengo il percorso completo per poi determinarne la dimensione, che aggiungo a totalSize
+                    String fullpath = Path.Combine(basePath, currentObject);
+                    if (File.Exists(fullpath))
+                    {
+                        FileInfo fi = new FileInfo(fullpath);
+                        totalSize += fi.Length;
+                    }
+                }
+                TotalSize = totalSize;
+
+                // Preparo il messaggio di richiesta da inviare
+                List<string> relativeSFSPPaths = relativePaths.Select(s => PathUtils.ConvertOSPathToSFSP(s)).ToList();
+                SfspRequestMessage request = new SfspRequestMessage(configuration.Name, (ulong)totalSize, relativeSFSPPaths);
+
+                // Invio il messaggio
+                request.Write(stream);
+                SetStatus(TransferStatus.Pending);
+
+                // Leggo il messaggio di risposta
+                SfspMessage msg = SfspMessage.ReadMessage(stream);
+
+                // Ci aspettiamo una risposta di tipo Confirm!
+                if (!(msg is SfspConfirmMessage))
+                {
+                    SetStatus(TransferStatus.Failed);
+                    return;
+                }
+
+                SfspConfirmMessage confirm = (SfspConfirmMessage)msg;
+                // Se l'invio è stato rifiutato...
+                if (confirm.Status == SfspConfirmMessage.FileStatus.Error)
+                {
+                    SetStatus(TransferStatus.Failed);
+                    stream.Close();
+                    client.Close();
+                    return;
+                }
+
+                // Se arriviamo qui l'invio è stato accettato!
+                SetStatus(TransferStatus.InProgress);
+
+                // Inizio il trasferimento vero e proprio
+                foreach (String objectRelativePath in relativePaths)
+                {
+                    // Percorso completo sul sistema locale
+                    string fullPath = Path.Combine(basePath, objectRelativePath);
+
+                    // Se è una cartella...
+                    if (Directory.Exists(fullPath))
+                    {
+                        // ...inviamo un comando di creazione della cartella
+                        SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(PathUtils.ConvertOSPathToSFSP(objectRelativePath));
+                        createDirMessage.Write(stream);
+
+                        // Attendo conferma
+                        msg = SfspMessage.ReadMessage(stream);
+                        if (!(msg is SfspConfirmMessage))
+                        {
+                            SetStatus(TransferStatus.Failed);
+                            stream.Close();
+                            client.Close();
+                            return;
+                        }
+                        confirm = (SfspConfirmMessage)msg;
+                        if (confirm.Status != SfspConfirmMessage.FileStatus.Ok)
+                        {
+                            SetStatus(TransferStatus.Failed);
+                            stream.Close();
+                            client.Close();
+                            return;
+                        }
+                    }
+                    // Se è un file...
+                    else if (File.Exists(fullPath))
+                    {
+                        // Provo massimo 3 volte ad inviarlo
+                        bool done = false;
+                        int attempts = 3;
+                        do
+                        {
+                            done |= UploadFile(stream, fullPath, objectRelativePath);
+                            attempts--;
+                        } while (!done && attempts > 0);
+                        if (!done)
+                        {
+                            throw new Exception("Too many errors");
+                        }
+                    }
+                    else
+                        throw new FileNotFoundException("File or directory not found", fullPath);
+                }
+
+                // Abbiamo finito
+                ForceProgressUpdate();
+                SetStatus(TransferStatus.Completed);
             }
-
-            SfspConfirmMessage confirm = (SfspConfirmMessage)msg;
-            // Se l'invio è stato rifiutato...
-            if(confirm.Status == SfspConfirmMessage.FileStatus.Error)
+            catch(Exception)
             {
                 SetStatus(TransferStatus.Failed);
+            }
+            finally
+            {
                 stream.Close();
                 client.Close();
-                return;
             }
-
-            // Se arriviamo qui l'invio è stato accettato!
-            SetStatus(TransferStatus.InProgress);
-
-            // Inizio il trasferimento vero e proprio
-            foreach(String objectRelativePath in relativePaths)
-            {
-                // Percorso completo sul sistema locale
-                string fullPath = Path.Combine(basePath, objectRelativePath);
-
-                // Se è una cartella...
-                if (Directory.Exists(fullPath))
-                {
-                    // ...inviamo un comando di creazione della cartella
-                    SfspCreateDirectoryMessage createDirMessage = new SfspCreateDirectoryMessage(PathUtils.ConvertOSPathToSFSP(objectRelativePath));
-                    createDirMessage.Write(stream);
-
-                    // Attendo conferma
-                    msg = SfspMessage.ReadMessage(stream);
-                    if (!(msg is SfspConfirmMessage))
-                    {
-                        SetStatus(TransferStatus.Failed);
-                        stream.Close();
-                        client.Close();
-                        return;
-                    }
-                    confirm = (SfspConfirmMessage)msg;
-                    if(confirm.Status != SfspConfirmMessage.FileStatus.Ok)
-                    {
-                        SetStatus(TransferStatus.Failed);
-                        stream.Close();
-                        client.Close();
-                        return;
-                    }
-                }
-                // Se è un file...
-                else if (File.Exists(fullPath))
-                {
-                    // Provo massimo 3 volte ad inviarlo
-                    bool done = false;
-                    int attempts = 3;
-                    do
-                    {
-                        done |= UploadFile(stream, fullPath, objectRelativePath);
-                        attempts--;
-                    } while (!done && attempts > 0);
-                    if(!done)
-                    {
-                        SetStatus(TransferStatus.Failed);
-                        stream.Close();
-                        client.Close();
-                        return;
-                    }
-                }
-                else
-                    throw new FileNotFoundException("File or directory not found", fullPath);
-            }
-
-            // Abbiamo finito
-            ForceProgressUpdate();
-            SetStatus(TransferStatus.Completed);
-            stream.Close();
-            client.Close();
         }
 
         private bool UploadFile(NetworkStream stream, string fullPath, string relativePath)
@@ -200,6 +207,9 @@ namespace Sfsp
             long fSent = 0;
             while(fSent < fSize)
             {
+                if (Aborting)
+                    throw new Exception("Abort");
+
                 int bufSize = (fSize - fSent < BUFFER_SIZE) ? (int)(fSize - fSent) : BUFFER_SIZE;
                 // Leggo dal file
                 bufSize = fStream.Read(buffer, 0, bufSize);
@@ -240,14 +250,6 @@ namespace Sfsp
 
             // Tutto a posto
             return true;
-        }
-
-        /// <summary>
-        /// Interrompe il trasferimento in corso chiudendo la connessione con l'host remoto
-        /// </summary>
-        public override void Abort()
-        {
-            throw new NotImplementedException();
         }
     }
 }
