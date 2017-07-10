@@ -48,7 +48,7 @@
             <MenuItem Header="Strumenti">
                 <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click">
                     <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="TrashOutline" Height="18"></fa:ImageAwesome>
+                        <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator></Separator>
@@ -71,6 +71,15 @@
             <!-- Lista dei trasferimenti -->
             <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
                 
+                <!-- Eventi per context menu. Viene segnato un Warning su Handler ma in realtà è tutto ok, deve essere un bug -->
+                <ListBox.Resources>
+                    <Style x:Key="mnu_stop_style" TargetType="MenuItem">
+                        <EventSetter Event="Click" Handler="mnu_stop_Click"></EventSetter>
+                    </Style>
+                    <Style x:Key="mnu_delete_style" TargetType="MenuItem">
+                        <EventSetter Event="Click" Handler="mnu_delete_Click"></EventSetter>
+                    </Style>
+                </ListBox.Resources>
                 <!-- Context menu per gli elementi -->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
@@ -78,9 +87,14 @@
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <ContextMenu>
-                                    <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Click="mnu_stop_Click">
+                                    <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Style="{StaticResource mnu_stop_style}">
                                         <MenuItem.Icon>
                                             <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Name="mnu_delete" Header="Rimuovi dalla lista" Visibility="{Binding DeleteMenuVisibility}" Style="{StaticResource mnu_delete_style}">
+                                        <MenuItem.Icon>
+                                            <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Name="mnu_transferinfo" Header="Dettagli">

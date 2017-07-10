@@ -203,6 +203,17 @@ namespace SfspClient
                     return Visibility.Collapsed;
             }
         }
+
+        public Visibility DeleteMenuVisibility
+        {
+            get
+            {
+                if (_TransferObject.Status == TransferStatus.Completed || _TransferObject.Status == TransferStatus.Failed)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
         
         private void TransferObject_ProgressUpdate(object sender, ProgressUpdateEventArgs e)
         {
@@ -221,6 +232,7 @@ namespace SfspClient
             OnPropertyChanged("Icon");
             OnPropertyChanged("Spin");
             OnPropertyChanged("SmallIconVisibility");
+            OnPropertyChanged("DeleteMenuVisibility");
         }
 
         private void OnPropertyChanged(string propertyName)

@@ -241,5 +241,12 @@ namespace SfspClient
             if (tw != null)
                 tw.TransferObject.Abort();
         }
+
+        private void mnu_delete_Click(object sender, EventArgs e)
+        {
+            TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
+            if (tw != null)
+                transfer_wrapper_list.Remove(tw);
+        }
     }
 }
