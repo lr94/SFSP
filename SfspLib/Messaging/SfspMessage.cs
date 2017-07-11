@@ -75,6 +75,8 @@ namespace Sfsp.Messaging
 
         /// <summary>
         /// Legge un messaggio SFSP e crea un'istanza di una classe derivata adatta per rappresentarlo.
+        /// Preferibilmente usare SfspNetworkStream, in modo da poter rilevare chiusure di connessione da remoto
+        /// e sollevare eccezione TransferAbortException
         /// </summary>
         /// <param name="sourceStream">Stream da cui leggere il messaggio</param>
         /// <returns>Oggetto rappresentante il messaggio ricevuto.</returns>
