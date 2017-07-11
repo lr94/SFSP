@@ -122,7 +122,8 @@ namespace Sfsp
 
                         // Scarico il file
                         string fullPath = Path.Combine(destinationPath, PathUtils.ConvertSFSPPathToOS(fileRelativePath));
-                        DownloadFile(stream, fullPath, (long)createFileMsg.FileSize);
+                        if (!DownloadFile(stream, fullPath, (long)createFileMsg.FileSize))
+                            toReceive.Add(fileRelativePath); // Se non va a buon fine rimetto il file tra quelli ancora da fare
                     }
                 }
 
@@ -141,10 +142,12 @@ namespace Sfsp
             }
         }
         
-        private void DownloadFile(NetworkStream stream, string fullPath, long size)
+        private bool DownloadFile(NetworkStream stream, string fullPath, long size)
         {
             string tmpFullPath = fullPath + ".part";
             FileStream fs = File.Open(tmpFullPath, FileMode.Create, FileAccess.Write);
+
+            bool okFlag = true;
 
             try
             {
@@ -212,6 +215,8 @@ namespace Sfsp
                     // Qualcosa è andato storto, elimino il file temporaneo
                     File.Delete(tmpFullPath);
 
+                    okFlag = false;
+
                     progress -= size;
                     // Aggiornamento dell'avanzamento dell'operazione
                     ForceProgressUpdate();
@@ -224,6 +229,8 @@ namespace Sfsp
             {
                 fs.Close();
             }
+
+            return okFlag;
         }
 
         /// <summary>
