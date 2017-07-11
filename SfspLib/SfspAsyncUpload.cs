@@ -246,6 +246,15 @@ namespace Sfsp
             return true;
         }
 
+        public override void Abort()
+        {
+            base.Abort();
+
+            // Intanto setto lo stato, poi la connessione verrà chiusa in seguito grazie al flag settato da base.Abort()
+            FailureException = new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
+            SetStatus(TransferStatus.Failed);
+        }
+
         /// <summary>
         /// >Directory "radice" contenente gli oggetti da trasferire
         /// </summary>

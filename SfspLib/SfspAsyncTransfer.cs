@@ -227,7 +227,7 @@ namespace Sfsp
         /// <summary>
         /// Interrompe il trasferimento in corso chiudendo la connessione con l'host remoto
         /// </summary>
-        public void Abort()
+        public virtual void Abort()
         {
             Aborting = true;
         }
