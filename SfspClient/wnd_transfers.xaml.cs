@@ -166,7 +166,7 @@ namespace SfspClient
             {
                 SfspAsyncDownload download = e.Download;
 
-                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath);
+                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath, GetActiveObjects());
 
                 bool? result;
                 if (appSettings.AutoAccept)

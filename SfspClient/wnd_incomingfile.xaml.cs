@@ -20,9 +20,13 @@ namespace SfspClient
     /// </summary>
     public partial class wnd_incomingfile : Window
     {
-        public wnd_incomingfile(SfspAsyncDownload download, string defaultPath)
+        private ISet<string> active_objects;
+
+        public wnd_incomingfile(SfspAsyncDownload download, string defaultPath, ISet<string> activeObjects)
         {
             InitializeComponent();
+
+            active_objects = activeObjects;
 
             txt_path.Text = defaultPath;
             txtb_name.Text = String.Format(txtb_name.Text, download.RemoteHostName);
