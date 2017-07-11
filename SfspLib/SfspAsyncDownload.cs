@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Linq;
 using Sfsp.Messaging;
+using Sfsp.TcpUtils; // Per extension method TcpClient.GetState()
 
 namespace Sfsp
 {
@@ -169,7 +170,7 @@ namespace Sfsp
                     // Se non ho ricevuto dati, verifico lo stato della connessione TCP
                     if (n == 0)
                     {
-                        TcpState state = GetTcpClientState(tcpClient);
+                        TcpState state = tcpClient.GetState();
                         // Se è stata chiusa sollevo un'eccezione
                         if (state != TcpState.Established)
                             throw new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
@@ -231,26 +232,6 @@ namespace Sfsp
             }
 
             return okFlag;
-        }
-
-        /// <summary>
-        /// Ottiene lo stato di una connessione TCP
-        /// </summary>
-        /// <param name="client">Oggetto TcpClient relativo alla connessione di cui si vuole conoscere lo stato</param>
-        /// <returns>Lo stato della connessione</returns>
-        private TcpState GetTcpClientState(TcpClient client)
-        {
-           TcpConnectionInformation info = IPGlobalProperties.GetIPGlobalProperties()
-                                                             .GetActiveTcpConnections()
-                                                             .SingleOrDefault(t
-                                                                => t.LocalEndPoint.Equals(client.Client.LocalEndPoint)
-                                                                   &&
-                                                                   t.RemoteEndPoint.Equals(client.Client.RemoteEndPoint));
-
-            if (info == null)
-                return TcpState.Unknown;
-
-            return info.State;
         }
 
         /// <summary>
