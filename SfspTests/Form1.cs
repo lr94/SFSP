@@ -72,7 +72,7 @@ namespace TestSFSP
             listener = new SfspListener(new SfspHostConfiguration(txt_name.Text));
             listener.TransferRequest += (object s2, TransferRequestEventArgs e2) =>
             {
-                List<String> ss = e2.Download.GetObjects();
+                IReadOnlyList<String> ss = e2.Download.RelativePaths;
                 MessageBox.Show(e2.Download.RemoteHostName + "\n" + e2.Download.TotalSize.ToString() + "\n\n" + "Numero oggetti: " + ss.Count);
 
                 e2.Download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 125);
