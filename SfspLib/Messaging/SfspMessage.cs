@@ -24,8 +24,8 @@ namespace Sfsp.Messaging
             Confirm = 8
         }
 
-        private const byte MY_PROTOCOL_VERSION_MAJOR = 0;
-        private const byte MY_PROTOCOL_VERSION_MINOR = 8;
+        private const byte MY_PROTOCOL_VERSION_MAJOR = 1;
+        private const byte MY_PROTOCOL_VERSION_MINOR = 0;
 
         protected Stream dataStream;
         protected SfspMessageTypes _MessageType;
