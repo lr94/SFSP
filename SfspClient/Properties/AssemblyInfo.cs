@@ -8,11 +8,11 @@ using System.Windows;
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
 [assembly: AssemblyTitle("SfspClient")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Applicazione per la condivisione di file e cartelle sulla rete locale")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Luca Robbiano")]
 [assembly: AssemblyProduct("SfspClient")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
