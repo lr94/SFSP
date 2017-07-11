@@ -85,6 +85,36 @@ namespace SfspClient
         }
 
         /// <summary>
+        /// Ottiene una lista di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
+        /// attualmente in corso
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetActiveObjects()
+        {
+            return transfer_wrapper_list.SelectMany(tw =>
+            {
+                SfspAsyncTransfer transfer = tw.TransferObject;
+                if (transfer.Status != TransferStatus.InProgress)
+                    return new List<string>();
+
+                return transfer.RelativePaths.Select(relativePath =>
+                {
+                    string localBase;
+                    if (transfer is SfspAsyncDownload)
+                        localBase = ((SfspAsyncDownload)transfer).DestinationDirectory;
+                    else if (transfer is SfspAsyncUpload)
+                        localBase = ((SfspAsyncUpload)transfer).BaseDirectory;
+                    else
+                        localBase = ""; // Non verrà mai eseguito
+
+                    relativePath = relativePath.Replace('\\', System.IO.Path.DirectorySeparatorChar);
+
+                    return System.IO.Path.Combine(localBase, relativePath);
+                });
+            }).ToList();
+        }
+
+        /// <summary>
         /// Da chiamare quando si vuole condividere un file o una cartella. Aprirà la finestra di scansione ecc ecc 
         /// </summary>
         /// <param name="path">Percorso dell'oggetto da condividere</param>
