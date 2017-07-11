@@ -370,7 +370,7 @@ namespace Sfsp.Messaging
         /// Legge una lista di stringhe dal messaggio
         /// </summary>
         /// <returns>La lista di stringhe lette</returns>
-        protected IList<string> ReadStringList()
+        protected List<string> ReadStringList()
         {
             List<String> l = new List<string>();
 
@@ -388,7 +388,7 @@ namespace Sfsp.Messaging
         /// Scrive nel messaggio una lista di stringe
         /// </summary>
         /// <param name="list">Lista di stringhe da scrivere</param>
-        protected void WriteStringList(IList<string> list)
+        protected void WriteStringList(ICollection<string> list)
         {
             // Scrivo il numero di elementi
             uint n = (uint)list.Count;

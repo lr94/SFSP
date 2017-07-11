@@ -14,7 +14,7 @@ namespace Sfsp
 {
     public class SfspAsyncDownload : SfspAsyncTransfer
     {
-        private IList<string> relativePaths;
+        private List<string> relativePaths;
         private TcpClient tcpClient;
         Thread downloadThread;
 

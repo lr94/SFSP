@@ -9,9 +9,9 @@ namespace Sfsp.Messaging
     internal class SfspRequestMessage : SfspMessage
     {
         private ulong _TotalSize;
-        IList<String> _RelativePaths;
+        List<String> _RelativePaths;
 
-        public SfspRequestMessage(string hostName, ulong totalSize, IList<String> relativePaths) : base(SfspMessageTypes.Request)
+        public SfspRequestMessage(string hostName, ulong totalSize, List<String> relativePaths) : base(SfspMessageTypes.Request)
         {
             RemoteHostName = hostName;
             _TotalSize = totalSize;
@@ -50,7 +50,7 @@ namespace Sfsp.Messaging
             }
         }
 
-        public IList<String> RelativePaths
+        public List<String> RelativePaths
         {
             get
             {
