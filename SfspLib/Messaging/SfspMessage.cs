@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Sfsp.TcpUtils;
 
 namespace Sfsp.Messaging
 {
@@ -53,13 +54,20 @@ namespace Sfsp.Messaging
         private static int Receive(Stream stream, byte[] buffer, int offset, int count)
         {
             int n = 0;
-            try
+            while (n < count)
             {
-                while (n < count)
-                    n += stream.Read(buffer, offset + n, count - n);
-            } catch(IOException)
-            {
+                int received = stream.Read(buffer, offset + n, count - n);
 
+                // Se non abbiamo letto niente e stiamo ricevendo dalla rete mediante SfspNetworkStream
+                if(received == 0)
+                {
+                    // La connessione è stata chiusa?
+                    SfspNetworkStream sns = stream as SfspNetworkStream;
+                    if (sns != null && sns.GetSocket().GetState() != System.Net.NetworkInformation.TcpState.Established)
+                        throw new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
+                }
+
+                n += received;
             }
 
             return n;
