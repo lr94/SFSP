@@ -89,7 +89,7 @@ namespace SfspClient
         /// attualmente in corso.
         /// </summary>
         /// <returns></returns>
-        public HashSet<string> GetActiveObjects()
+        public ISet<string> GetActiveObjects()
         {
             var list = transfer_wrapper_list.SelectMany(tw =>
             {
@@ -112,8 +112,8 @@ namespace SfspClient
                     return System.IO.Path.Combine(localBase, relativePath);
                 });
             }).ToList();
-
-            return new HashSet<string>(list);
+            
+            return new SortedSet<string>(list);
         }
 
         /// <summary>
