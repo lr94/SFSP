@@ -56,12 +56,34 @@ namespace SfspClient
             }
         }
 
-        public string ProgressFractionString
+        public string Description
         {
             get
             {
-                if (_TransferObject.Status == TransferStatus.Completed || _TransferObject.Status == TransferStatus.Failed)
+                if (_TransferObject.Status == TransferStatus.Completed)
                     return TotalSizeString;
+                if (_TransferObject.Status == TransferStatus.Failed)
+                {
+                    Exception e = _TransferObject.FailureException;
+                    if (e == null)
+                        return TotalSizeString;
+
+                    if (e is TransferAbortException)
+                    {
+                        var abortException = (TransferAbortException)e;
+                        switch (abortException.Type)
+                        {
+                            case TransferAbortException.AbortType.LocalAbort:
+                                return "Trasferimento annullato";
+                            case TransferAbortException.AbortType.RemoteAbort:
+                                return "Trasferimento annullato dall'host remoto";
+                        }
+                    }
+                    else if (e is System.Net.Sockets.SocketException)
+                        return "Errore di rete: " + e.Message;
+                    else if (e is System.IO.IOException)
+                        return "Errore di I/O: " + e.Message;
+                }
 
                 return ProgressBytesString + " / " + TotalSizeString;
             }

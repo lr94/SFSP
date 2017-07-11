@@ -107,7 +107,7 @@
                         </Setter>
                         <Setter Property="ToolTip">
                             <Setter.Value>
-                                <TextBlock Text="{Binding ProgressFractionString}" />
+                                <TextBlock Text="{Binding Description}" />
                             </Setter.Value>
                         </Setter>
                     </Style>
