@@ -248,5 +248,16 @@ namespace SfspClient
             if (tw != null)
                 transfer_wrapper_list.Remove(tw);
         }
+
+        private void lst_transfers_Drop(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if(files.Length == 1)
+                    ShareObject(files[0]);
+            }
+        }
     }
 }

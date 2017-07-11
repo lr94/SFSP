@@ -69,7 +69,7 @@
         </Menu>
         <DockPanel>
             <!-- Lista dei trasferimenti -->
-            <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch">
+            <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch" Drop="lst_transfers_Drop" AllowDrop="True">
                 
                 <!-- Eventi per context menu. Viene segnato un Warning su Handler ma in realtà è tutto ok, deve essere un bug -->
                 <ListBox.Resources>
