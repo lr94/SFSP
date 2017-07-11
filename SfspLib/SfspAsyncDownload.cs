@@ -66,6 +66,8 @@ namespace Sfsp
             if (!Directory.Exists(destinationPath))
                 throw new DirectoryNotFoundException();
 
+            DestinationDirectory = destinationPath;
+
             downloadThread = new Thread(() => DownloadTask(destinationPath));
             downloadThread.IsBackground = true;
             downloadThread.Start();
@@ -235,6 +237,15 @@ namespace Sfsp
             }
 
             return okFlag;
+        }
+
+        /// <summary>
+        /// Percorso in cui si sta andando a salvare la cartella o i file ricevuti
+        /// </summary>
+        public string DestinationDirectory
+        {
+            get;
+            private set;
         }
 
         /// <summary>
