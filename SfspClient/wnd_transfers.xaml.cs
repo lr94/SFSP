@@ -85,16 +85,20 @@ namespace SfspClient
         }
 
         /// <summary>
-        /// Ottiene l'insieme dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
+        /// Ottiene l'insieme dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download o solo download)
         /// attualmente in corso.
         /// </summary>
+        /// <param name="onlyDownloads">Se true vengono considerati solo gli oggetti in download</param>
         /// <returns></returns>
-        public ISet<string> GetActiveObjects()
+        public ISet<string> GetActiveObjects(bool onlyDownloads = false)
         {
             var list = transfer_wrapper_list.SelectMany(tw =>
             {
                 SfspAsyncTransfer transfer = tw.TransferObject;
                 if (transfer.Status != TransferStatus.InProgress)
+                    return new List<string>();
+
+                if(onlyDownloads && !(transfer is SfspAsyncDownload))
                     return new List<string>();
 
                 return transfer.RelativePaths.Select(relativePath =>
@@ -129,10 +133,32 @@ namespace SfspClient
             {
                 // Invio file
                 List<SfspHost> hostList = hostScannerDialog.GetSelectedHosts();
+
+                bool checkedForConflicts = false; // True se abbiamo già controllato se ci sono conflitti
                 
                 foreach(SfspHost h in hostList)
                 {
                     SfspAsyncUpload upload = h.Send(path, hostConfiguration);
+
+                    // Da eseguire solo col primo host (tanto con quelli dopo sarebbe uguale)
+                    if(!checkedForConflicts)
+                    {
+                        // Controllo che nessuno dei file che andiamo a caricare sia tra i file che stiamo scaricando
+                        IReadOnlyCollection<string> objectsToUpload = upload.RelativePaths;
+                        ISet<string> activeDownloadObjects = GetActiveObjects(true);
+                        foreach(string currentObject in objectsToUpload)
+                        {
+                            string fullPath = System.IO.Path.Combine(upload.BaseDirectory, currentObject.Replace('\\', System.IO.Path.DirectorySeparatorChar));
+                            if(activeDownloadObjects.Contains(fullPath))
+                            {
+                                MessageBox.Show("Impossibile inviare l'elemento selezionato a causa di un conflitto con altri elementi in download");
+                                return;
+                            }
+                        }
+
+                        checkedForConflicts = true;
+                    }
+
                     // Aggiorno stato dell'avanzamento 10 volte al secondo
                     upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
