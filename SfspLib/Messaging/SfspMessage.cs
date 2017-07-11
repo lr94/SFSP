@@ -58,11 +58,12 @@ namespace Sfsp.Messaging
             {
                 int received = stream.Read(buffer, offset + n, count - n);
 
-                // Se non abbiamo letto niente e stiamo ricevendo dalla rete mediante SfspNetworkStream
+                // Se non abbiamo letto niente...
                 if(received == 0)
                 {
-                    // La connessione è stata chiusa?
+                    //  ...e stiamo ricevendo dalla rete mediante SfspNetworkStream
                     SfspNetworkStream sns = stream as SfspNetworkStream;
+                    // La connessione è stata chiusa?
                     if (sns != null && sns.GetSocket().GetState() != System.Net.NetworkInformation.TcpState.Established)
                         throw new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
                 }
