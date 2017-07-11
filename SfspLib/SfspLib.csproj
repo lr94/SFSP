@@ -60,6 +60,8 @@
     <Compile Include="SfspHostFoundEventArgs.cs" />
     <Compile Include="SfspListener.cs" />
     <Compile Include="SfspScanner.cs" />
+    <Compile Include="TcpUtils\SfspNetworkStream.cs" />
+    <Compile Include="TcpUtils\TcpUtilsExtension.cs" />
     <Compile Include="TransferAbortException.cs" />
     <Compile Include="TransferRequestEventArgs.cs" />
     <Compile Include="TransferStatus.cs" />
