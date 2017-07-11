@@ -74,10 +74,12 @@ namespace Sfsp
 
         private void DownloadTask(string destinationPath)
         {
-            SfspNetworkStream stream = new SfspNetworkStream(tcpClient.Client);
+            SfspNetworkStream stream = null;
 
             try
             {
+                stream = new SfspNetworkStream(tcpClient.Client);
+
                 // Invio il messaggio di accettazione
                 SfspConfirmMessage confirmMsg = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
                 confirmMsg.Write(stream);
@@ -138,7 +140,9 @@ namespace Sfsp
             }
             finally
             {
-                stream.Close();
+                if(stream != null)
+                    stream.Close();
+
                 tcpClient.Close();
             }
         }
