@@ -83,6 +83,8 @@ namespace SfspClient
                         return "Errore di rete: " + e.Message;
                     else if (e is System.IO.IOException)
                         return "Errore di I/O: " + e.Message;
+                    else
+                        return "Errore: " + e.Message;
                 }
 
                 return ProgressBytesString + " / " + TotalSizeString;
