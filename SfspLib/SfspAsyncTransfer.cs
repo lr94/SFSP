@@ -155,8 +155,45 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Interrompe il treasferimento
+        /// Se il trasferimento è fallito (Status == Failed) contiene l'eccezione che ne ha causato il fallimento.
+        /// Null altrimenti
         /// </summary>
-        public abstract void Abort();
+        public Exception FailureException
+        {
+            get;
+            internal set;
+        }
+
+        private bool _Aborting = false;
+        /// <summary>
+        /// True se vogliamo interrompere il trasferimento
+        /// </summary>
+        protected bool Aborting
+        {
+            get
+            {
+                bool value;
+                lock (locker)
+                {
+                    value = _Aborting;
+                }
+                return value;
+            }
+            set
+            {
+                lock (locker)
+                {
+                    _Aborting = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Interrompe il trasferimento in corso chiudendo la connessione con l'host remoto
+        /// </summary>
+        public void Abort()
+        {
+            Aborting = true;
+        }
     }
 }
