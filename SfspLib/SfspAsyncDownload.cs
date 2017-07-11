@@ -144,77 +144,84 @@ namespace Sfsp
             string tmpFullPath = fullPath + ".part";
             FileStream fs = File.Open(tmpFullPath, FileMode.Create, FileAccess.Write);
 
-            // Preparazione per il calcolo del checksum
-            SHA256 sha256 = SHA256.Create();
-            sha256.Initialize();
-
-            byte[] buffer = new byte[BUFFER_SIZE];
-            long fReceived = 0;
-            while(fReceived < size)
+            try
             {
-                if (Aborting)
-                    throw new Exception("Abort");
+                // Preparazione per il calcolo del checksum
+                SHA256 sha256 = SHA256.Create();
+                sha256.Initialize();
 
-                // Riceve i dati e li inserisce nel buffer
-                int bufSize = (size - fReceived) < BUFFER_SIZE ? (int)(size - fReceived) : BUFFER_SIZE;
-                int n = stream.Read(buffer, 0, bufSize);
-
-                // Se non ho ricevuto dati, verifico lo stato della connessione TCP
-                if(n == 0)
+                byte[] buffer = new byte[BUFFER_SIZE];
+                long fReceived = 0;
+                while (fReceived < size)
                 {
-                    TcpState state = GetTcpClientState(tcpClient);
-                    // Se è stata chiusa sollevo un'eccezione
-                    if (state != TcpState.Established)
-                        throw new SocketException();
+                    if (Aborting)
+                        throw new Exception("Abort");
+
+                    // Riceve i dati e li inserisce nel buffer
+                    int bufSize = (size - fReceived) < BUFFER_SIZE ? (int)(size - fReceived) : BUFFER_SIZE;
+                    int n = stream.Read(buffer, 0, bufSize);
+
+                    // Se non ho ricevuto dati, verifico lo stato della connessione TCP
+                    if (n == 0)
+                    {
+                        TcpState state = GetTcpClientState(tcpClient);
+                        // Se è stata chiusa sollevo un'eccezione
+                        if (state != TcpState.Established)
+                            throw new SocketException();
+                    }
+
+                    // Scrive il buffer su disco
+                    fs.Write(buffer, 0, n);
+
+                    // Calcolo del checksum
+                    sha256.TransformBlock(buffer, 0, n, buffer, 0);
+
+                    fReceived += n;
+                    progress += n;
+
+                    // Eventuale aggiornamento dell'avanzamento dell'operazione
+                    ProgressUpdateIfNeeded();
                 }
+                fs.Close();
 
-                // Scrive il buffer su disco
-                fs.Write(buffer, 0, n);
+                // Verifica del checksum
+                sha256.TransformFinalBlock(buffer, 0, 0);
+                byte[] hash = sha256.Hash;
+                SfspMessage receivedMsg = SfspMessage.ReadMessage(stream);
+                if (!(receivedMsg is SfspChecksumMessage))
+                    throw new ProtocolViolationException("Unexpected SFSP message");
+                SfspChecksumMessage checksumMsg = (SfspChecksumMessage)receivedMsg;
 
-                // Calcolo del checksum
-                sha256.TransformBlock(buffer, 0, n, buffer, 0);
+                SfspConfirmMessage confirm;
+                if (checksumMsg.Check(hash))
+                {
+                    // Tutto a posto
+                    // Se c'è già un file con lo stesso nome lo elimino
+                    if (File.Exists(fullPath))
+                        File.Delete(fullPath);
 
-                fReceived += n;
-                progress += n;
+                    // Rinomino il file temporaneo
+                    File.Move(tmpFullPath, fullPath);
 
-                // Eventuale aggiornamento dell'avanzamento dell'operazione
-                ProgressUpdateIfNeeded();
+                    confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+                }
+                else
+                {
+                    // Qualcosa è andato storto, elimino il file temporaneo
+                    File.Delete(tmpFullPath);
+
+                    progress -= size;
+                    // Aggiornamento dell'avanzamento dell'operazione
+                    ForceProgressUpdate();
+
+                    confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
+                }
+                confirm.Write(stream);
             }
-            fs.Close();
-
-            // Verifica del checksum
-            sha256.TransformFinalBlock(buffer, 0, 0);
-            byte[] hash = sha256.Hash;
-            SfspMessage receivedMsg = SfspMessage.ReadMessage(stream);
-            if (!(receivedMsg is SfspChecksumMessage))
-                throw new ProtocolViolationException("Unexpected SFSP message");
-            SfspChecksumMessage checksumMsg = (SfspChecksumMessage)receivedMsg;
-
-            SfspConfirmMessage confirm;
-            if (checksumMsg.Check(hash))
+            finally
             {
-                // Tutto a posto
-                // Se c'è già un file con lo stesso nome lo elimino
-                if (File.Exists(fullPath))
-                    File.Delete(fullPath);
-
-                // Rinomino il file temporaneo
-                File.Move(tmpFullPath, fullPath);
-
-                confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Ok);
+                fs.Close();
             }
-            else
-            {
-                // Qualcosa è andato storto, elimino il file temporaneo
-                File.Delete(tmpFullPath);
-
-                progress -= size;
-                // Aggiornamento dell'avanzamento dell'operazione
-                ForceProgressUpdate();
-
-                confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
-            }
-            confirm.Write(stream);
         }
 
         /// <summary>

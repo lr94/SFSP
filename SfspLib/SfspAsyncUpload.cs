@@ -205,26 +205,32 @@ namespace Sfsp
             // Invio i dati
             byte[] buffer = new byte[BUFFER_SIZE];
             long fSent = 0;
-            while(fSent < fSize)
+            try
             {
-                if (Aborting)
-                    throw new Exception("Abort");
+                while (fSent < fSize)
+                {
+                    if (Aborting)
+                        throw new Exception("Abort");
 
-                int bufSize = (fSize - fSent < BUFFER_SIZE) ? (int)(fSize - fSent) : BUFFER_SIZE;
-                // Leggo dal file
-                bufSize = fStream.Read(buffer, 0, bufSize);
-                // Invio i dati
-                stream.Write(buffer, 0, bufSize);
-                // Calcolo del checksum
-                sha256.TransformBlock(buffer, 0, bufSize, buffer, 0);
-                // Aggiorno i contatori
-                fSent += bufSize;
-                progress += bufSize;
+                    int bufSize = (fSize - fSent < BUFFER_SIZE) ? (int)(fSize - fSent) : BUFFER_SIZE;
+                    // Leggo dal file
+                    bufSize = fStream.Read(buffer, 0, bufSize);
+                    // Invio i dati
+                    stream.Write(buffer, 0, bufSize);
+                    // Calcolo del checksum
+                    sha256.TransformBlock(buffer, 0, bufSize, buffer, 0);
+                    // Aggiorno i contatori
+                    fSent += bufSize;
+                    progress += bufSize;
 
-                // Eventuale aggiornamento dell'avanzamento dell'operazione
-                ProgressUpdateIfNeeded();
+                    // Eventuale aggiornamento dell'avanzamento dell'operazione
+                    ProgressUpdateIfNeeded();
+                }
             }
-            fStream.Close();
+            finally
+            {
+                fStream.Close();
+            }
 
             // Invio checksum
             sha256.TransformFinalBlock(buffer, 0, 0);
