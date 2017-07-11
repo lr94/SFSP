@@ -158,6 +158,7 @@ namespace Sfsp
         /// <summary>
         /// Se il trasferimento è fallito (Status == Failed) contiene l'eccezione che ne ha causato il fallimento.
         /// Null altrimenti
+        /// Proprietà thread safe
         /// </summary>
         public Exception FailureException
         {
