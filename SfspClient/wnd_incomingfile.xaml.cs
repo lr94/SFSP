@@ -26,7 +26,7 @@ namespace SfspClient
 
             txt_path.Text = defaultPath;
             txtb_name.Text = String.Format(txtb_name.Text, download.RemoteHostName);
-            txtb_filename.Text = String.Format(txtb_filename.Text, download.GetObjects()[0]);
+            txtb_filename.Text = String.Format(txtb_filename.Text, download.RelativePaths[0]);
             txtb_size.Text = String.Format(txtb_size.Text, NumericFormatter.FormatBytes(download.TotalSize));
         }
 
