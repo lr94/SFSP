@@ -111,7 +111,7 @@ namespace Sfsp
                 SfspConfirmMessage confirm = (SfspConfirmMessage)msg;
                 // Se l'invio è stato rifiutato...
                 if (confirm.Status == SfspConfirmMessage.FileStatus.Error)
-                    this.FailureException = new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
+                    throw new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
 
                 // Se arriviamo qui l'invio è stato accettato!
                 SetStatus(TransferStatus.InProgress);
