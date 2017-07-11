@@ -247,6 +247,17 @@ namespace SfspClient
             }
         }
 
+        public Visibility AbortMenuVisibility
+        {
+            get
+            {
+                if (_TransferObject.Status != TransferStatus.Completed && _TransferObject.Status != TransferStatus.Failed)
+                    return Visibility.Visible;
+                else
+                    return Visibility.Collapsed;
+            }
+        }
+
         public Visibility DeleteMenuVisibility
         {
             get

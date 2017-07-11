@@ -88,7 +88,7 @@
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
-                                        <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Style="{StaticResource mnu_stop_style}">
+                                        <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding AbortMenuVisibility}" Style="{StaticResource mnu_stop_style}">
                                             <MenuItem.Icon>
                                                 <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
                                             </MenuItem.Icon>
