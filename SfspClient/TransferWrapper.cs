@@ -48,6 +48,25 @@ namespace SfspClient
             }
         }
 
+        public string ProgressBytesString
+        {
+            get
+            {
+                return NumericFormatter.FormatBytes(Progress);
+            }
+        }
+
+        public string ProgressFractionString
+        {
+            get
+            {
+                if (_TransferObject.Status == TransferStatus.Completed || _TransferObject.Status == TransferStatus.Failed)
+                    return TotalSizeString;
+
+                return ProgressBytesString + " / " + TotalSizeString;
+            }
+        }
+
         public long Speed
         {
             get;

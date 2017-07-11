@@ -105,6 +105,11 @@
                                 </ContextMenu>
                             </Setter.Value>
                         </Setter>
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding ProgressFractionString}" />
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 
