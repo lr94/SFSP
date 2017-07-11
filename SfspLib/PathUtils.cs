@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Sfsp
 {
-    internal abstract class PathUtils
+    internal static class PathUtils
     {
         /// <summary>
         /// Restituisce il percorso relativo di un file/directory a partire da un altro percorso
