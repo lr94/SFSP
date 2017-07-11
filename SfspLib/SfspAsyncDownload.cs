@@ -238,17 +238,6 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Restituisce una lista di tutti gli oggetti che l'host remoto vuole inviare.
-        /// I percorsi sono con separatore SFSP ("\")
-        /// </summary>
-        /// <returns>Lista contenente i percorsi relativi dei file e delle cartelle</returns>
-        public List<String> GetObjects()
-        {
-            List<string> list = new List<string>(relativePaths);
-            return list;
-        }
-
-        /// <summary>
         /// Nome SFSP dell'host che invia i dati
         /// </summary>
         public string RemoteHostName
