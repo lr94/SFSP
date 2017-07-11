@@ -344,9 +344,28 @@ namespace SfspClient
 
         private void item_DoubleClick(object sender, MouseButtonEventArgs e)
         {
+            OpenSelected();
+        }
+
+        private void item_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Delete)
+            {
+                TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
+                if (tw != null && (tw.TransferObject.Status == TransferStatus.Completed || tw.TransferObject.Status == TransferStatus.Failed))
+                    transfer_wrapper_list.Remove(tw);
+            }
+            else if(e.Key == Key.Enter)
+            {
+                OpenSelected();
+            }
+        }
+
+        private void OpenSelected()
+        {
             TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
 
-            if(tw != null)
+            if (tw != null)
             {
                 SfspAsyncDownload transfer = tw.TransferObject as SfspAsyncDownload;
                 if (transfer != null && transfer.Status == TransferStatus.Completed)
