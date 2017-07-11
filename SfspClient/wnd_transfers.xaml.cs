@@ -251,13 +251,24 @@ namespace SfspClient
 
         private void lst_transfers_Drop(object sender, DragEventArgs e)
         {
-            if(e.Data.GetDataPresent(DataFormats.FileDrop))
+            icn_upload.Visibility = Visibility.Collapsed;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 if(files.Length == 1)
                     ShareObject(files[0]);
             }
+        }
+
+        private void Window_DragEnter(object sender, DragEventArgs e)
+        {
+            icn_upload.Visibility = Visibility.Visible;
+        }
+
+        private void Window_DragLeave(object sender, DragEventArgs e)
+        {
+            icn_upload.Visibility = Visibility.Collapsed;
         }
     }
 }

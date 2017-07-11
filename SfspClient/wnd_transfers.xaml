@@ -6,7 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave">
     <Window.Resources>
         <!-- Context menu per l'icona nella system tray -->
         <ContextMenu x:Key="notifyIconMenu">
@@ -28,129 +28,132 @@
             </MenuItem>
         </ContextMenu>
     </Window.Resources>
-    
-    <DockPanel>
-        <!-- Main menu -->
-        <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click">
-                    <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="ShareAlt" Height="20"></fa:ImageAwesome>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator></Separator>
-                <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click">
-                    <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="Strumenti">
-                <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click">
-                    <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator></Separator>
-                <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click">
-                    <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="?">
-                <MenuItem Name="mnu_about" Header="Informazioni" Click="mnu_about_Click">
-                    <MenuItem.Icon>
-                        <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20"></fa:ImageAwesome>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
-            </MenuItem>
-        </Menu>
+
+    <Grid>
         <DockPanel>
-            <!-- Lista dei trasferimenti -->
-            <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch" Drop="lst_transfers_Drop" AllowDrop="True">
-                
-                <!-- Eventi per context menu. Viene segnato un Warning su Handler ma in realtà è tutto ok, deve essere un bug -->
-                <ListBox.Resources>
-                    <Style x:Key="mnu_stop_style" TargetType="MenuItem">
-                        <EventSetter Event="Click" Handler="mnu_stop_Click"></EventSetter>
-                    </Style>
-                    <Style x:Key="mnu_delete_style" TargetType="MenuItem">
-                        <EventSetter Event="Click" Handler="mnu_delete_Click"></EventSetter>
-                    </Style>
-                </ListBox.Resources>
-                <!-- Context menu per gli elementi -->
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-                        <Setter Property="ContextMenu">
-                            <Setter.Value>
-                                <ContextMenu>
-                                    <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Style="{StaticResource mnu_stop_style}">
-                                        <MenuItem.Icon>
-                                            <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Name="mnu_delete" Header="Rimuovi dalla lista" Visibility="{Binding DeleteMenuVisibility}" Style="{StaticResource mnu_delete_style}">
-                                        <MenuItem.Icon>
-                                            <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Name="mnu_transferinfo" Header="Dettagli">
-                                        <MenuItem.Icon>
-                                            <fa:ImageAwesome Icon="InfoCircle" Height="20"></fa:ImageAwesome>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="ToolTip">
-                            <Setter.Value>
-                                <TextBlock Text="{Binding Description}" />
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                
-                <!-- Template elemento -->
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Height="75">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <!-- Icona del trasferimento -->
-                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="{Binding Icon}" Spin="{Binding Spin}" Foreground="{Binding IconBrush}" />
-                            <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,5" Height="15" Icon="{Binding SmallIcon}" Visibility="{Binding SmallIconVisibility}" Foreground="DarkSlateGray"></fa:ImageAwesome>
-                            <DockPanel Grid.Column="1" Grid.Row="0">
-                                <!-- Nome dell'oggetto (nome file o cartella radice) -->
-                                <TextBlock Text="{Binding RootObjectName}" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
-                                <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">
-                                    <!-- Mittente? -->
-                                    <TextBlock Text="{Binding RemoteHostName}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
-                                    <!-- Velocità / tempo residuo -->
-                                    <TextBlock Visibility="{Binding ProgressVisibility}" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0} - {1}">
-                                                <Binding Path="EstimatedTimeString" />
-                                                <Binding Path="SpeedString" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </StackPanel>
-                            </DockPanel>
-                            <!-- Avanzamento -->
-                            <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="{Binding ProgressPercent, Mode=OneWay}" Visibility="{Binding ProgressVisibility}"></ProgressBar>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <!-- Main menu -->
+            <Menu Width="Auto" Height="20" DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="ShareAlt" Height="20"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator></Separator>
+                    <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Strumenti">
+                    <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator></Separator>
+                    <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="?">
+                    <MenuItem Name="mnu_about" Header="Informazioni" Click="mnu_about_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <DockPanel>
+                <!-- Lista dei trasferimenti -->
+                <ListBox Name="lst_transfers" HorizontalContentAlignment="Stretch" Drop="lst_transfers_Drop" AllowDrop="True">
+
+                    <!-- Eventi per context menu. Viene segnato un Warning su Handler ma in realtà è tutto ok, deve essere un bug -->
+                    <ListBox.Resources>
+                        <Style x:Key="mnu_stop_style" TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="mnu_stop_Click"></EventSetter>
+                        </Style>
+                        <Style x:Key="mnu_delete_style" TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="mnu_delete_Click"></EventSetter>
+                        </Style>
+                    </ListBox.Resources>
+                    <!-- Context menu per gli elementi -->
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding ProgressVisibility}" Style="{StaticResource mnu_stop_style}">
+                                            <MenuItem.Icon>
+                                                <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="mnu_delete" Header="Rimuovi dalla lista" Visibility="{Binding DeleteMenuVisibility}" Style="{StaticResource mnu_delete_style}">
+                                            <MenuItem.Icon>
+                                                <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Name="mnu_transferinfo" Header="Dettagli">
+                                            <MenuItem.Icon>
+                                                <fa:ImageAwesome Icon="InfoCircle" Height="20"></fa:ImageAwesome>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <TextBlock Text="{Binding Description}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <!-- Template elemento -->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="75">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <!-- Icona del trasferimento -->
+                                <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="60" Icon="{Binding Icon}" Spin="{Binding Spin}" Foreground="{Binding IconBrush}" />
+                                <fa:ImageAwesome Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,5" Height="15" Icon="{Binding SmallIcon}" Visibility="{Binding SmallIconVisibility}" Foreground="DarkSlateGray"></fa:ImageAwesome>
+                                <DockPanel Grid.Column="1" Grid.Row="0">
+                                    <!-- Nome dell'oggetto (nome file o cartella radice) -->
+                                    <TextBlock Text="{Binding RootObjectName}" Margin="10,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"></TextBlock>
+                                    <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                                        <!-- Mittente? -->
+                                        <TextBlock Text="{Binding RemoteHostName}" DockPanel.Dock="Right" HorizontalAlignment="Right"></TextBlock>
+                                        <!-- Velocità / tempo residuo -->
+                                        <TextBlock Visibility="{Binding ProgressVisibility}" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} - {1}">
+                                                    <Binding Path="EstimatedTimeString" />
+                                                    <Binding Path="SpeedString" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
+                                <!-- Avanzamento -->
+                                <ProgressBar Grid.Column="1" Grid.Row="1" Margin="10,10,10,10" Value="{Binding ProgressPercent, Mode=OneWay}" Visibility="{Binding ProgressVisibility}"></ProgressBar>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
         </DockPanel>
-    </DockPanel>
+        <fa:ImageAwesome Name="icn_upload" Icon="Upload" Height="100" Opacity="0.3" Visibility="Collapsed"></fa:ImageAwesome>
+    </Grid>
 </Window>
