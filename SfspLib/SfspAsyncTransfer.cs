@@ -154,6 +154,15 @@ namespace Sfsp
             }
         }
 
+        /// <summary>
+        /// Se il trasferimento è fallito (Status == Failed) contiene l'eccezione che ne ha causato il fallimento.
+        /// Null altrimenti
+        /// </summary>
+        public Exception FailureException
+        {
+            get;
+            internal set;
+        }
 
         private bool _Aborting = false;
         /// <summary>

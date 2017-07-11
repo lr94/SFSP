@@ -102,20 +102,12 @@ namespace Sfsp
 
                 // Ci aspettiamo una risposta di tipo Confirm!
                 if (!(msg is SfspConfirmMessage))
-                {
-                    SetStatus(TransferStatus.Failed);
-                    return;
-                }
+                    throw new ProtocolViolationException("Expected Confirm message, got " + msg.MessageType.ToString());
 
                 SfspConfirmMessage confirm = (SfspConfirmMessage)msg;
                 // Se l'invio è stato rifiutato...
                 if (confirm.Status == SfspConfirmMessage.FileStatus.Error)
-                {
-                    SetStatus(TransferStatus.Failed);
-                    stream.Close();
-                    client.Close();
-                    return;
-                }
+                    this.FailureException = new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
 
                 // Se arriviamo qui l'invio è stato accettato!
                 SetStatus(TransferStatus.InProgress);
@@ -136,20 +128,10 @@ namespace Sfsp
                         // Attendo conferma
                         msg = SfspMessage.ReadMessage(stream);
                         if (!(msg is SfspConfirmMessage))
-                        {
-                            SetStatus(TransferStatus.Failed);
-                            stream.Close();
-                            client.Close();
-                            return;
-                        }
+                            throw new ProtocolViolationException("Expected Confirm message, got " + msg.MessageType.ToString());
                         confirm = (SfspConfirmMessage)msg;
                         if (confirm.Status != SfspConfirmMessage.FileStatus.Ok)
-                        {
-                            SetStatus(TransferStatus.Failed);
-                            stream.Close();
-                            client.Close();
-                            return;
-                        }
+                            throw new Exception("Could not create directory " + objectRelativePath + " on the remote host.");
                     }
                     // Se è un file...
                     else if (File.Exists(fullPath))
@@ -175,8 +157,9 @@ namespace Sfsp
                 ForceProgressUpdate();
                 SetStatus(TransferStatus.Completed);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                this.FailureException = ex;
                 SetStatus(TransferStatus.Failed);
             }
             finally
@@ -210,7 +193,7 @@ namespace Sfsp
                 while (fSent < fSize)
                 {
                     if (Aborting)
-                        throw new Exception("Abort");
+                        throw new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
 
                     int bufSize = (fSize - fSent < BUFFER_SIZE) ? (int)(fSize - fSent) : BUFFER_SIZE;
                     // Leggo dal file

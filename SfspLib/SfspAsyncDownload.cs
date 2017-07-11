@@ -42,6 +42,7 @@ namespace Sfsp
             }
 
             // Setto lo stato
+            this.FailureException = new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
             SetStatus(TransferStatus.Failed);
 
             // Invio il messaggio di rifiuto
@@ -128,8 +129,9 @@ namespace Sfsp
                 ForceProgressUpdate();
                 SetStatus(TransferStatus.Completed);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                this.FailureException = ex;
                 SetStatus(TransferStatus.Failed);
             }
             finally
@@ -155,7 +157,7 @@ namespace Sfsp
                 while (fReceived < size)
                 {
                     if (Aborting)
-                        throw new Exception("Abort");
+                        throw new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
 
                     // Riceve i dati e li inserisce nel buffer
                     int bufSize = (size - fReceived) < BUFFER_SIZE ? (int)(size - fReceived) : BUFFER_SIZE;
@@ -167,7 +169,7 @@ namespace Sfsp
                         TcpState state = GetTcpClientState(tcpClient);
                         // Se è stata chiusa sollevo un'eccezione
                         if (state != TcpState.Established)
-                            throw new SocketException();
+                            throw new TransferAbortException(TransferAbortException.AbortType.RemoteAbort);
                     }
 
                     // Scrive il buffer su disco
