@@ -173,11 +173,18 @@ namespace SfspClient
 
         public void Quit()
         {
-            int running_transfer = transfer_wrapper_list.Where(tw =>
+            int running_transfers = transfer_wrapper_list.Where(tw =>
                 (tw.TransferObject.Status != TransferStatus.Failed && tw.TransferObject.Status != TransferStatus.Completed)).Count();
-            if(running_transfer > 0)
+
+            foreach (var tw in transfer_wrapper_list)
             {
-                MessageBoxResult res =  MessageBox.Show("Ci sono " + running_transfer.ToString() + " trasferimenti in corso, uscendo verranno interrotti. Vuoi veramente uscire?", "Conferma", MessageBoxButton.YesNo);
+                if (tw.TransferObject.Status != TransferStatus.Failed && tw.TransferObject.Status != TransferStatus.Completed)
+                    tw.TransferObject.Abort();
+            }
+
+            if (running_transfers > 0)
+            {
+                MessageBoxResult res =  MessageBox.Show("Ci sono " + running_transfers.ToString() + " trasferimenti in corso, uscendo verranno interrotti. Vuoi veramente uscire?", "Conferma", MessageBoxButton.YesNo);
                 if (res == MessageBoxResult.No)
                     return;
             }
