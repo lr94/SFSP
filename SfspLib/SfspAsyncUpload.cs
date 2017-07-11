@@ -70,12 +70,15 @@ namespace Sfsp
 
         private void UploadTask()
         {
-            // Mi collego all'host remoto
-            TcpClient client = remoteHost.CreateConnection();
-            SfspNetworkStream stream = new SfspNetworkStream(client.Client);
+            TcpClient client = null;
+            SfspNetworkStream stream = null;
 
             try
             {
+                // Mi collego all'host remoto
+                client = remoteHost.CreateConnection();
+                stream = new SfspNetworkStream(client.Client);
+
                 // Scorro tutti gli oggetti da inviare
                 long totalSize = 0;
                 foreach (string currentObject in relativePaths)
@@ -165,8 +168,10 @@ namespace Sfsp
             }
             finally
             {
-                stream.Close();
-                client.Close();
+                if (client != null)
+                    client.Close();
+                if (stream != null)
+                    stream.Close();
             }
         }
 
