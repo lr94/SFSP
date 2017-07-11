@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sfsp
 {
@@ -12,6 +13,12 @@ namespace Sfsp
         /// Numero di bytes trasferiti
         /// </summary>
         protected long progress = 0;
+
+        /// <summary>
+        /// Lista degli oggetti (percorsi relativi).
+        /// I percorsi sono rappresentati usando "\" come carattere separatore, indipendentemente dalla piattaforma
+        /// </summary>
+        protected List<string> relativePaths;
 
         /// <summary>
         /// Evento sollevato ad ogni cambio di stato
@@ -155,6 +162,19 @@ namespace Sfsp
         }
 
         private Exception _FailureException;
+        /// <summary>
+        /// Lista dei percorsi relativi degli oggetti da trasferire
+        /// </summary>
+        public IReadOnlyList<string> RelativePaths
+        {
+            get
+            {
+                if (relativePaths == null)
+                    return null;
+                return relativePaths.AsReadOnly();
+            }
+        }
+
         /// <summary>
         /// Se il trasferimento è fallito (Status == Failed) contiene l'eccezione che ne ha causato il fallimento.
         /// Null altrimenti

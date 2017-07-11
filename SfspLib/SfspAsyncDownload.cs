@@ -14,7 +14,6 @@ namespace Sfsp
 {
     public class SfspAsyncDownload : SfspAsyncTransfer
     {
-        private List<string> relativePaths;
         private TcpClient tcpClient;
         Thread downloadThread;
 
@@ -66,6 +65,8 @@ namespace Sfsp
 
             if (!Directory.Exists(destinationPath))
                 throw new DirectoryNotFoundException();
+
+            DestinationDirectory = destinationPath;
 
             downloadThread = new Thread(() => DownloadTask(destinationPath));
             downloadThread.IsBackground = true;
@@ -239,14 +240,12 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Restituisce una lista di tutti gli oggetti che l'host remoto vuole inviare.
-        /// I percorsi sono con separatore SFSP ("\")
+        /// Percorso in cui si sta andando a salvare la cartella o i file ricevuti
         /// </summary>
-        /// <returns>Lista contenente i percorsi relativi dei file e delle cartelle</returns>
-        public List<String> GetObjects()
+        public string DestinationDirectory
         {
-            List<string> list = new List<string>(relativePaths);
-            return list;
+            get;
+            private set;
         }
 
         /// <summary>

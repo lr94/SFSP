@@ -85,6 +85,42 @@ namespace SfspClient
         }
 
         /// <summary>
+        /// Ottiene l'insieme dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download o solo download)
+        /// attualmente in corso.
+        /// </summary>
+        /// <param name="onlyDownloads">Se true vengono considerati solo gli oggetti in download</param>
+        /// <returns></returns>
+        public ISet<string> GetActiveObjects(bool onlyDownloads = false)
+        {
+            var list = transfer_wrapper_list.SelectMany(tw =>
+            {
+                SfspAsyncTransfer transfer = tw.TransferObject;
+                if (transfer.Status != TransferStatus.InProgress)
+                    return new List<string>();
+
+                if(onlyDownloads && !(transfer is SfspAsyncDownload))
+                    return new List<string>();
+
+                return transfer.RelativePaths.Select(relativePath =>
+                {
+                    string localBase;
+                    if (transfer is SfspAsyncDownload)
+                        localBase = ((SfspAsyncDownload)transfer).DestinationDirectory;
+                    else if (transfer is SfspAsyncUpload)
+                        localBase = ((SfspAsyncUpload)transfer).BaseDirectory;
+                    else
+                        localBase = ""; // Non verrà mai eseguito
+
+                    relativePath = relativePath.Replace('\\', System.IO.Path.DirectorySeparatorChar);
+
+                    return System.IO.Path.Combine(localBase, relativePath);
+                });
+            }).ToList();
+            
+            return new SortedSet<string>(list);
+        }
+
+        /// <summary>
         /// Da chiamare quando si vuole condividere un file o una cartella. Aprirà la finestra di scansione ecc ecc 
         /// </summary>
         /// <param name="path">Percorso dell'oggetto da condividere</param>
@@ -97,15 +133,37 @@ namespace SfspClient
             {
                 // Invio file
                 List<SfspHost> hostList = hostScannerDialog.GetSelectedHosts();
+
+                bool checkedForConflicts = false; // True se abbiamo già controllato se ci sono conflitti
                 
                 foreach(SfspHost h in hostList)
                 {
                     SfspAsyncUpload upload = h.Send(path, hostConfiguration);
+
+                    // Da eseguire solo col primo host (tanto con quelli dopo sarebbe uguale)
+                    if(!checkedForConflicts)
+                    {
+                        // Controllo che nessuno dei file che andiamo a caricare sia tra i file che stiamo scaricando
+                        IReadOnlyCollection<string> objectsToUpload = upload.RelativePaths;
+                        ISet<string> activeDownloadObjects = GetActiveObjects(true);
+                        foreach(string currentObject in objectsToUpload)
+                        {
+                            string fullPath = System.IO.Path.Combine(upload.BaseDirectory, currentObject.Replace('\\', System.IO.Path.DirectorySeparatorChar));
+                            if(activeDownloadObjects.Contains(fullPath))
+                            {
+                                MessageBox.Show("Impossibile inviare l'elemento selezionato a causa di un conflitto con altri elementi in download");
+                                return;
+                            }
+                        }
+
+                        checkedForConflicts = true;
+                    }
+
                     // Aggiorno stato dell'avanzamento 10 volte al secondo
                     upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
                     // Aggiunto in cima alla lista
-                    var wrapper = new TransferWrapper(upload, h.Name, System.IO.Path.GetFileName(path));
+                    var wrapper = new TransferWrapper(upload, h.Name);
                     transfer_wrapper_list.Insert(0, wrapper);
 
                     upload.Start();
@@ -134,7 +192,7 @@ namespace SfspClient
             {
                 SfspAsyncDownload download = e.Download;
 
-                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath);
+                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath, GetActiveObjects());
 
                 bool? result;
                 if (appSettings.AutoAccept)
@@ -148,7 +206,7 @@ namespace SfspClient
                     download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
                     // Aggiunto in cima alla lista
-                    var wrapper = new TransferWrapper(download, e.Download.RemoteHostName, download.GetObjects()[0]);
+                    var wrapper = new TransferWrapper(download, e.Download.RemoteHostName);
                     transfer_wrapper_list.Insert(0, wrapper);
 
                     download.Accept(dialog.DestinationPath);
