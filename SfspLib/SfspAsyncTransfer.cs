@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sfsp
 {
@@ -12,6 +13,11 @@ namespace Sfsp
         /// Numero di bytes trasferiti
         /// </summary>
         protected long progress = 0;
+
+        /// <summary>
+        /// Lista degli oggetti (percorsi relativi)
+        /// </summary>
+        protected List<string> relativePaths;
 
         /// <summary>
         /// Evento sollevato ad ogni cambio di stato
@@ -151,6 +157,19 @@ namespace Sfsp
                 }
 
                 _ProgressUpdateTime = value;
+            }
+        }
+
+        /// <summary>
+        /// Lista dei percorsi relativi degli oggetti da trasferire
+        /// </summary>
+        public IReadOnlyList<string> RelativePaths
+        {
+            get
+            {
+                if (relativePaths == null)
+                    return null;
+                return relativePaths.AsReadOnly();
             }
         }
 

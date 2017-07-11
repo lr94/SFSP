@@ -17,7 +17,6 @@ namespace Sfsp
     public class SfspAsyncUpload : SfspAsyncTransfer
     {
         private string basePath;
-        private List<string> relativePaths;
         private SfspHost remoteHost;
         private SfspHostConfiguration configuration;
 
