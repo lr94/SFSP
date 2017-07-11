@@ -85,8 +85,8 @@ namespace SfspClient
         }
 
         /// <summary>
-        /// Ottiene una lista di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
-        /// attualmente in corso
+        /// Ottiene una lista dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
+        /// attualmente in corso.
         /// </summary>
         /// <returns></returns>
         public List<string> GetActiveObjects()
