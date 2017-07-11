@@ -85,13 +85,13 @@ namespace SfspClient
         }
 
         /// <summary>
-        /// Ottiene una lista dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
+        /// Ottiene l'insieme dei percorsi assoluti di tutti gli oggetti (file e cartelle) coinvolti nei trasferimenti (sia upload che download)
         /// attualmente in corso.
         /// </summary>
         /// <returns></returns>
-        public List<string> GetActiveObjects()
+        public HashSet<string> GetActiveObjects()
         {
-            return transfer_wrapper_list.SelectMany(tw =>
+            var list = transfer_wrapper_list.SelectMany(tw =>
             {
                 SfspAsyncTransfer transfer = tw.TransferObject;
                 if (transfer.Status != TransferStatus.InProgress)
@@ -112,6 +112,8 @@ namespace SfspClient
                     return System.IO.Path.Combine(localBase, relativePath);
                 });
             }).ToList();
+
+            return new HashSet<string>(list);
         }
 
         /// <summary>
