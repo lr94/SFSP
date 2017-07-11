@@ -84,6 +84,7 @@
                     <!-- Context menu per gli elementi -->
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <EventSetter Event="PreviewMouseDoubleClick" Handler="item_DoubleClick"></EventSetter>
                             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
                             <Setter Property="ContextMenu">
                                 <Setter.Value>

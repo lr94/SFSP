@@ -341,5 +341,20 @@ namespace SfspClient
         {
             icn_upload.Visibility = Visibility.Collapsed;
         }
+
+        private void item_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
+
+            if(tw != null)
+            {
+                SfspAsyncDownload transfer = tw.TransferObject as SfspAsyncDownload;
+                if (transfer != null && transfer.Status == TransferStatus.Completed)
+                {
+                    string path = System.IO.Path.Combine(transfer.DestinationDirectory, transfer.RelativePaths[0].Replace('\\', System.IO.Path.DirectorySeparatorChar));
+                    System.Diagnostics.Process.Start(path);
+                }
+            }
+        }
     }
 }
