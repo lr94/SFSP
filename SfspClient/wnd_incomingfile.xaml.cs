@@ -91,5 +91,10 @@ namespace SfspClient
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 txt_path.Text = fbd.SelectedPath;
         }
+
+        private void txt_path_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btn_accept.IsEnabled = System.IO.Directory.Exists(txt_path.Text);
+        }
     }
 }
