@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Linq;
 using Sfsp.Messaging;
+using Sfsp.TcpUtils;
 
 namespace Sfsp
 {
@@ -71,7 +72,7 @@ namespace Sfsp
         {
             // Mi collego all'host remoto
             TcpClient client = remoteHost.CreateConnection();
-            NetworkStream stream = client.GetStream();
+            SfspNetworkStream stream = new SfspNetworkStream(client.Client);
 
             try
             {
