@@ -3,6 +3,9 @@ using System.Net.Sockets;
 
 namespace Sfsp.TcpUtils
 {
+    /// <summary>
+    /// Eredita tutto da System.Net.Sockets.NetworkStream, ma espone GetSocket()
+    /// </summary>
     internal class SfspNetworkStream : NetworkStream
     {
         public SfspNetworkStream(Socket socket) : base(socket)
