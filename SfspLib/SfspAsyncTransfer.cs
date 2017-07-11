@@ -15,7 +15,8 @@ namespace Sfsp
         protected long progress = 0;
 
         /// <summary>
-        /// Lista degli oggetti (percorsi relativi)
+        /// Lista degli oggetti (percorsi relativi).
+        /// I percorsi sono rappresentati usando "\" come carattere separatore, indipendentemente dalla piattaforma
         /// </summary>
         protected List<string> relativePaths;
 
