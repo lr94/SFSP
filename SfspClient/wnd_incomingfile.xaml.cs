@@ -21,12 +21,14 @@ namespace SfspClient
     public partial class wnd_incomingfile : Window
     {
         private ISet<string> active_objects;
+        SfspAsyncDownload download;
 
         public wnd_incomingfile(SfspAsyncDownload download, string defaultPath, ISet<string> activeObjects)
         {
             InitializeComponent();
 
             active_objects = activeObjects;
+            this.download = download;
 
             txt_path.Text = defaultPath;
             txtb_name.Text = String.Format(txtb_name.Text, download.RemoteHostName);
@@ -42,8 +44,33 @@ namespace SfspClient
             }
         }
 
+        /// <summary>
+        /// Restituisce true se il percorso di destinazione specificato causa conflitti con altri trasferimenti
+        /// </summary>
+        /// <param name="destinationPath"></param>
+        /// <returns></returns>
+        private bool CheckForConflicts(string destinationPath)
+        {
+            IReadOnlyCollection<string> relativePaths = download.RelativePaths;
+            foreach (string relativePath in relativePaths)
+            {
+                string hypotheticalLocalPath = System.IO.Path.Combine(destinationPath, relativePath.Replace('\\', System.IO.Path.DirectorySeparatorChar));
+
+                if (active_objects.Contains(hypotheticalLocalPath))
+                    return true;
+            }
+
+            return false;
+        }
+
         private void btn_accept_Click(object sender, RoutedEventArgs e)
         {
+            if(CheckForConflicts(txt_path.Text))
+            {
+                MessageBox.Show("Il percorso di destinazione selezionato causa un conflitto con altri trasferimenti in corso");
+                return;
+            }
+
             this.DialogResult = true;
             this.Close();
         }
