@@ -105,7 +105,7 @@ namespace SfspClient
                     upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
                     // Aggiunto in cima alla lista
-                    var wrapper = new TransferWrapper(upload, h.Name, System.IO.Path.GetFileName(path));
+                    var wrapper = new TransferWrapper(upload, h.Name);
                     transfer_wrapper_list.Insert(0, wrapper);
 
                     upload.Start();
@@ -148,7 +148,7 @@ namespace SfspClient
                     download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
                     // Aggiunto in cima alla lista
-                    var wrapper = new TransferWrapper(download, e.Download.RemoteHostName, download.GetObjects()[0]);
+                    var wrapper = new TransferWrapper(download, e.Download.RemoteHostName);
                     transfer_wrapper_list.Insert(0, wrapper);
 
                     download.Accept(dialog.DestinationPath);

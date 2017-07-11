@@ -10,13 +10,13 @@ namespace SfspClient
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TransferWrapper(SfspAsyncTransfer transfer, string remoteHostName, string rootObjectName)
+        public TransferWrapper(SfspAsyncTransfer transfer, string remoteHostName)
         {
             Progress = 0;
             Speed = 0;
             RemoteHostName = remoteHostName;
             TransferObject = transfer;
-            RootObjectName = rootObjectName;
+            RootObjectName = transfer.RelativePaths[0];
         }
 
         private SfspAsyncTransfer _TransferObject;
