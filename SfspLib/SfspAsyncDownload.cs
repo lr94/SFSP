@@ -74,7 +74,7 @@ namespace Sfsp
 
         private void DownloadTask(string destinationPath)
         {
-            NetworkStream stream = tcpClient.GetStream();
+            SfspNetworkStream stream = new SfspNetworkStream(tcpClient.Client);
 
             try
             {
