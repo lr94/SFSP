@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SfspClient
 {
-    internal abstract class NumericFormatter
+    internal static class NumericFormatter
     {
         public static string FormatBytes(long num)
         {
