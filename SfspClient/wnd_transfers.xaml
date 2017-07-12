@@ -80,6 +80,9 @@
                         <Style x:Key="mnu_delete_style" TargetType="MenuItem">
                             <EventSetter Event="Click" Handler="mnu_delete_Click"></EventSetter>
                         </Style>
+                        <Style x:Key="mnu_transferinfo_style" TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="mnu_transferinfo_Click"></EventSetter>
+                        </Style>
                     </ListBox.Resources>
                     <!-- Context menu per gli elementi -->
                     <ListBox.ItemContainerStyle>
@@ -100,7 +103,7 @@
                                                 <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Name="mnu_transferinfo" Header="Dettagli">
+                                        <MenuItem Name="mnu_transferinfo" Header="Dettagli" Style="{StaticResource mnu_transferinfo_style}">
                                             <MenuItem.Icon>
                                                 <fa:ImageAwesome Icon="InfoCircle" Height="20"></fa:ImageAwesome>
                                             </MenuItem.Icon>

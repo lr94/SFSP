@@ -236,8 +236,7 @@ namespace SfspClient
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            wnd_details det = new wnd_details();
-            det.Show();
+
         }
 
         private void mnu_settings_Click(object sender, RoutedEventArgs e)
@@ -305,6 +304,16 @@ namespace SfspClient
             TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
             if (tw != null)
                 transfer_wrapper_list.Remove(tw);
+        }
+
+        private void mnu_transferinfo_Click(object sender, EventArgs e)
+        {
+            TransferWrapper tw = lst_transfers.SelectedItem as TransferWrapper;
+            if (tw != null)
+            {
+                wnd_details details = new wnd_details(tw);
+                details.Show();
+            }
         }
 
         private void lst_transfers_Drop(object sender, DragEventArgs e)
