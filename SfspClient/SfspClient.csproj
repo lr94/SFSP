@@ -79,6 +79,9 @@
     <Compile Include="wnd_about.xaml.cs">
       <DependentUpon>wnd_about.xaml</DependentUpon>
     </Compile>
+    <Compile Include="wnd_details.xaml.cs">
+      <DependentUpon>wnd_details.xaml</DependentUpon>
+    </Compile>
     <Compile Include="wnd_hosts.xaml.cs">
       <DependentUpon>wnd_hosts.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="wnd_about.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="wnd_details.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

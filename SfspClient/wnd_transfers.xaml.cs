@@ -236,15 +236,8 @@ namespace SfspClient
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            wnd_hosts hostScannerDialog = new wnd_hosts("PROVA", hostConfiguration);
-
-            bool? result = hostScannerDialog.ShowDialog();
-            if (result.HasValue && result.Value)
-            {
-                // Invio file
-                List<SfspHost> h = hostScannerDialog.GetSelectedHosts();
-                MessageBox.Show(h.Count.ToString());
-            }
+            wnd_details det = new wnd_details();
+            det.Show();
         }
 
         private void mnu_settings_Click(object sender, RoutedEventArgs e)
