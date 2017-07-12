@@ -12,18 +12,18 @@
         <ContextMenu x:Key="notifyIconMenu">
             <MenuItem Name="mnu_transfers" Header="Trasferimenti" Click="mnu_transfers_Click">
                 <MenuItem.Icon>
-                    <fa:ImageAwesome Icon="Exchange" Height="20"></fa:ImageAwesome>
+                    <fa:ImageAwesome Icon="Exchange" Height="20" Foreground="#27ae60"></fa:ImageAwesome>
                 </MenuItem.Icon>
             </MenuItem>
             <MenuItem Header="Impostazioni" Click="mnu_settings_Click">
                 <MenuItem.Icon>
-                    <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
+                    <fa:ImageAwesome Icon="Cog" Height="20" Foreground="#616161"></fa:ImageAwesome>
                 </MenuItem.Icon>
             </MenuItem>
             <Separator></Separator>
             <MenuItem Header="Esci" Click="mnu_quit_Click">
                 <MenuItem.Icon>
-                    <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
+                    <fa:ImageAwesome Icon="SignOut" Height="20" Foreground="#c0392b"></fa:ImageAwesome>
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
@@ -36,38 +36,38 @@
                 <MenuItem Header="_File">
                     <MenuItem Name="mnu_share" Header="Condividi file" Click="mnu_share_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="ShareAlt" Height="20"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="ShareAlt" Height="20" Foreground="#2980b9"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator></Separator>
                     <MenuItem Name="mnu_quit" Header="Esci" Click="mnu_quit_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="SignOut" Height="20"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="SignOut" Height="20" Foreground="#c0392b"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Strumenti">
                     <MenuItem Name="mnu_clear" Header="Cancella lista" Click="mnu_clear_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="TrashOutline" Height="15" Foreground="#4e342e"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Name="mnu_serverinfo" Header="Informazioni server" Click="mnu_serverinfo_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="Server" Height="20"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="Server" Height="20" Foreground="#263238"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator></Separator>
                     <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="Cog" Height="20"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="Cog" Height="20" Foreground="#616161"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="?">
                     <MenuItem Name="mnu_about" Header="Informazioni" Click="mnu_about_Click">
                         <MenuItem.Icon>
-                            <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20"></fa:ImageAwesome>
+                            <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20" Foreground="#2980b9"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
@@ -100,17 +100,17 @@
                                     <ContextMenu>
                                         <MenuItem Name="mnu_stop" Header="Annulla" Visibility="{Binding AbortMenuVisibility}" Style="{StaticResource mnu_stop_style}">
                                             <MenuItem.Icon>
-                                                <fa:ImageAwesome Icon="Times" Height="20"></fa:ImageAwesome>
+                                                <fa:ImageAwesome Icon="Times" Height="20" Foreground="#e74c3c"></fa:ImageAwesome>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="mnu_delete" Header="Rimuovi dalla lista" Visibility="{Binding DeleteMenuVisibility}" Style="{StaticResource mnu_delete_style}">
                                             <MenuItem.Icon>
-                                                <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
+                                                <fa:ImageAwesome Icon="TrashOutline" Height="15" Foreground="#4e342e"></fa:ImageAwesome>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="mnu_transferinfo" Header="Dettagli" Style="{StaticResource mnu_transferinfo_style}">
                                             <MenuItem.Icon>
-                                                <fa:ImageAwesome Icon="InfoCircle" Height="20"></fa:ImageAwesome>
+                                                <fa:ImageAwesome Icon="InfoCircle" Height="20" Foreground="#2980b9"></fa:ImageAwesome>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                     </ContextMenu>
