@@ -5,7 +5,7 @@ namespace Sfsp
 {
     public abstract class SfspAsyncTransfer
     {
-        public const int BUFFER_SIZE = 1024;
+        public const int BUFFER_SIZE = 4096;
 
         protected object locker = new object();
 
