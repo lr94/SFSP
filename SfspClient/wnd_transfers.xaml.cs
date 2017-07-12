@@ -57,14 +57,22 @@ namespace SfspClient
 
         void InitSfsp()
         {
-            // Nome dell'host come da impostazioni
-            hostConfiguration = new SfspHostConfiguration(appSettings.HostName);
+            try
+            {
+                // Nome dell'host come da impostazioni
+                hostConfiguration = new SfspHostConfiguration(appSettings.HostName);
 
-            // Inizializzo il listener
-            listener = new SfspListener(hostConfiguration);
-            listener.TransferRequest += Listener_TransferRequest;
-            // Mi metto in ascolto
-            listener.Start();
+                // Inizializzo il listener
+                listener = new SfspListener(hostConfiguration);
+                listener.TransferRequest += Listener_TransferRequest;
+                // Mi metto in ascolto
+                listener.Start();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Si è verificato un errore durante l'inizializzazione:\n" + ex.Message, "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            }
         }
 
         public wnd_transfers()
