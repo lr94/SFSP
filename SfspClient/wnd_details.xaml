@@ -6,7 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Dettagli trasferimento" Height="500" Width="600" Icon="icon.ico">
+        Title="Dettagli trasferimento" Height="500" Width="600" MinHeight="500" MinWidth="430" Icon="icon.ico">
     <Grid Margin="10">
         <DockPanel>
             <StackPanel DockPanel.Dock="Top">
