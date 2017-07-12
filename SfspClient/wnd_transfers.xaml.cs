@@ -207,24 +207,65 @@ namespace SfspClient
             {
                 SfspAsyncDownload download = e.Download;
 
-                wnd_incomingfile dialog = new wnd_incomingfile(download, appSettings.DefaultPath, GetActiveObjects());
+                // Percorso in cui andare a salvare i file ricevuti
+                string destinationPath = appSettings.DefaultPath;
 
+                // Lista degli oggetti attivi (per evitare conflitti)
+                ISet<string> active_objects = GetActiveObjects();
+                
+                wnd_incomingfile dialog = new wnd_incomingfile(download, destinationPath, active_objects);
+
+                // True: trasferimento accettato, false o nessun valore: trasferimento da rifiutare
                 bool? result;
-                if (appSettings.AutoAccept)
-                    result = true;
-                else
-                    result = dialog.ShowDialog();
 
+                // Se è impostata l'accettazione automatica
+                if (appSettings.AutoAccept)
+                {
+                    // Verifica che non ci siano conflitti
+                    bool conflicts = false;
+
+                    // Scorro tutti gli oggetti che dovremmo ricevere...
+                    IReadOnlyCollection<string> relativePaths = download.RelativePaths;
+                    foreach (string relativePath in relativePaths)
+                    {
+                        // ...ne determino l'ipotetico percorso assoluto
+                        string hypotheticalLocalPath = System.IO.Path.Combine(destinationPath, relativePath.Replace('\\', System.IO.Path.DirectorySeparatorChar));
+
+                        // Se è già usato da un oggetto attivo abbiamo un conflitto
+                        if (active_objects.Contains(hypotheticalLocalPath))
+                        {
+                            conflicts = true;
+                            break;
+                        }
+                    }
+
+                    // Se ci sono conflitti mi comporto come se non fosse impostata l'accettazione automatica
+                    if (conflicts)
+                    {
+                        result = dialog.ShowDialog();
+                        destinationPath = dialog.DestinationPath;
+                    }
+                    else
+                        result = true; // Nessun conflitto, accetto e basta
+                }
+                else // Se non è impostata l'accettazione automatica
+                {
+                    // Chiedo all'utente
+                    result = dialog.ShowDialog();
+                    destinationPath = dialog.DestinationPath;
+                }
+
+                // Il trasferimento s'ha da fare?
                 if (result.HasValue && result.Value)
                 {
                     // Aggiorno stato dell'avanzamento 10 volte al secondo
                     download.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
-                    // Aggiunto in cima alla lista
+                    // Aggiungo in cima alla lista
                     var wrapper = new TransferWrapper(download, e.Download.RemoteHostName);
                     transfer_wrapper_list.Insert(0, wrapper);
 
-                    download.Accept(dialog.DestinationPath);
+                    download.Accept(destinationPath);
                 }
                 else
                     download.Deny();
