@@ -12,7 +12,7 @@
             <StackPanel DockPanel.Dock="Top">
                 <fa:ImageAwesome Icon="{Binding Icon}" Height="100" Foreground="{Binding IconBrush}" Spin="{Binding Spin}" />
                 <DockPanel Margin="0,10,0,0">
-                    <TextBlock Width="100">Trasferiti:</TextBlock>
+                    <TextBlock Width="130">Trasferiti:</TextBlock>
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} B ({1})" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
@@ -23,7 +23,7 @@
                     </TextBlock>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,0">
-                    <TextBlock Width="100">Dimensione:</TextBlock>
+                    <TextBlock Width="130">Dimensione:</TextBlock>
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} B ({1})">
@@ -34,7 +34,7 @@
                     </TextBlock>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,0">
-                    <TextBlock Width="100">Percentuale:</TextBlock>
+                    <TextBlock Width="130">Percentuale:</TextBlock>
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0:0.###} %" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
@@ -44,7 +44,7 @@
                     </TextBlock>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,0">
-                    <TextBlock Width="100">Velocità:</TextBlock>
+                    <TextBlock Width="130">Velocità:</TextBlock>
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
@@ -54,7 +54,7 @@
                     </TextBlock>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,0">
-                    <TextBlock Width="100">Host remoto:</TextBlock>
+                    <TextBlock Width="130">Host remoto:</TextBlock>
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} ({1})">
@@ -63,6 +63,10 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Numero elementi:</TextBlock>
+                    <TextBlock Text="{Binding TransferObject.RelativePaths.Count}" />
                 </DockPanel>
                 <TextBlock Margin="0,20,0,0">Elementi:</TextBlock>
             </StackPanel>
