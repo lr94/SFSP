@@ -265,5 +265,16 @@ namespace Sfsp
                 return basePath;
             }
         }
+
+        /// <summary>
+        /// Ottiene l'indirizzo IP dell'host remoto
+        /// </summary>
+        public override IPAddress RemoteAddress
+        {
+            get
+            {
+                return remoteHost.Address;
+            }
+        }
     }
 }

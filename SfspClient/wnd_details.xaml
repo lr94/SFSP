@@ -1,0 +1,78 @@
+﻿<Window x:Class="SfspClient.wnd_details"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:local="clr-namespace:SfspClient"
+        mc:Ignorable="d"
+        Title="Dettagli trasferimento" Height="500" Width="600" Icon="icon.ico">
+    <Grid Margin="10">
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <fa:ImageAwesome Icon="{Binding Icon}" Height="100" Foreground="{Binding IconBrush}" Spin="{Binding Spin}" />
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Trasferiti:</TextBlock>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} B ({1})" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="Progress" />
+                                <Binding Path="ProgressBytesString" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Dimensione:</TextBlock>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} B ({1})">
+                                <Binding Path="TotalSize" />
+                                <Binding Path="TotalSizeString" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Percentuale:</TextBlock>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:0.###} %" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="ProgressPercent" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Velocità:</TextBlock>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="SpeedString" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Host remoto:</TextBlock>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} ({1})">
+                                <Binding Path="RemoteHostName" />
+                                <Binding Path="TransferObject.RemoteAddress" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DockPanel>
+                <DockPanel Margin="0,10,0,0">
+                    <TextBlock Width="130">Numero elementi:</TextBlock>
+                    <TextBlock Text="{Binding TransferObject.RelativePaths.Count}" />
+                </DockPanel>
+                <TextBlock Margin="0,20,0,0">Elementi:</TextBlock>
+            </StackPanel>
+            <DockPanel VerticalAlignment="Stretch" Margin="0,5,0,0">
+                <TextBox Name="txt_list" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible" />
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -277,6 +277,9 @@ namespace SfspClient
             OnPropertyChanged("ProgressPercent");
             OnPropertyChanged("SpeedString");
             OnPropertyChanged("EstimatedTimeString");
+
+            OnPropertyChanged("ProgressBytesString");
+            OnPropertyChanged("Progress");
         }
 
         private void TransferObject_StatusChange(object sender, TransferStatusChangedEventArgs e)

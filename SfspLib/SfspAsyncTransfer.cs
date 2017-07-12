@@ -231,5 +231,13 @@ namespace Sfsp
         {
             Aborting = true;
         }
+
+        /// <summary>
+        /// Ottiene l'indirizzo IP dell'host remoto
+        /// </summary>
+        public abstract System.Net.IPAddress RemoteAddress
+        {
+            get;
+        }
     }
 }
