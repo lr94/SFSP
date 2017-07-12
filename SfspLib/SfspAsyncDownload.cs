@@ -256,5 +256,20 @@ namespace Sfsp
             get;
             private set;
         }
+
+        /// <summary>
+        /// Ottiene l'indirizzo IP dell'host remoto
+        /// </summary>
+        public override IPAddress RemoteAddress
+        {
+            get
+            {
+                IPEndPoint ip_ep = this.tcpClient.Client.RemoteEndPoint as IPEndPoint;
+                if (ip_ep == null)
+                    return null;
+
+                return ip_ep.Address;
+            }
+        }
     }
 }
