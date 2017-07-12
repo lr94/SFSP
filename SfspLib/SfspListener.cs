@@ -14,6 +14,7 @@ namespace Sfsp
     public class SfspListener
     {
         private List<UdpClient> udpClients;
+        private TcpListener listener;
 
         private object locker = new object();
 
@@ -49,6 +50,10 @@ namespace Sfsp
                     // mi limito ad ignorare la cosa
                 }
             }
+
+            // Se non abbiamo client UDP in ascolto su nessuna interfaccia
+            if(udpClients.Count == 0)
+                throw new Exception("Could not initialize SfspListener");
         }
 
         public event EventHandler<TransferRequestEventArgs> TransferRequest;
@@ -70,6 +75,9 @@ namespace Sfsp
                 udpListenerThread.Start();
             }
 
+            listener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
+            listener.Start();
+
             Thread tcpListenerThread = new Thread(TcpServerTask);
             tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
@@ -77,9 +85,6 @@ namespace Sfsp
 
         private void TcpServerTask()
         {
-            TcpListener listener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
-            listener.Start();
-
             while (true)
             {
                 // Si è connesso qualcuno
