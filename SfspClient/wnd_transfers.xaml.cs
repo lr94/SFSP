@@ -312,6 +312,7 @@ namespace SfspClient
             if (tw != null)
             {
                 wnd_details details = new wnd_details(tw);
+                details.DataContext = tw;
                 details.Show();
             }
         }
