@@ -14,7 +14,7 @@ namespace Sfsp
     public class SfspListener
     {
         private List<UdpClient> udpClients;
-        private TcpListener listener;
+        private TcpListener tcpListener;
 
         private object locker = new object();
 
@@ -75,8 +75,8 @@ namespace Sfsp
                 udpListenerThread.Start();
             }
 
-            listener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
-            listener.Start();
+            tcpListener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
+            tcpListener.Start();
 
             Thread tcpListenerThread = new Thread(TcpServerTask);
             tcpListenerThread.IsBackground = true;
@@ -88,7 +88,7 @@ namespace Sfsp
             while (true)
             {
                 // Si è connesso qualcuno
-                TcpClient client = listener.AcceptTcpClient();
+                TcpClient client = tcpListener.AcceptTcpClient();
 
                 // Se siamo invisibili non vogliamo ricevere nulla, ci disconnettiamo
                 if (!Configuration.Online)
