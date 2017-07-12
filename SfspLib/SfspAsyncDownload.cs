@@ -26,6 +26,11 @@ namespace Sfsp
             RemoteHostName = request.RemoteHostName;
             tcpClient = client;
 
+            // Recupero l'IP remoto in modo che resti accessibile anche dopo la disconnessione
+            IPEndPoint remote_ep = client.Client.RemoteEndPoint as IPEndPoint;
+            if(remote_ep != null)
+                RemoteAddress = remote_ep.Address;
+
             Status = TransferStatus.Pending;
         }
 
@@ -262,14 +267,8 @@ namespace Sfsp
         /// </summary>
         public override IPAddress RemoteAddress
         {
-            get
-            {
-                IPEndPoint ip_ep = this.tcpClient.Client.RemoteEndPoint as IPEndPoint;
-                if (ip_ep == null)
-                    return null;
-
-                return ip_ep.Address;
-            }
+            get;
+            private set;
         }
     }
 }
