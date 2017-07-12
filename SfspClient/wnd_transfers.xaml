@@ -52,6 +52,11 @@
                             <fa:ImageAwesome Icon="TrashOutline" Height="15"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="mnu_serverinfo" Header="Informazioni server" Click="mnu_serverinfo_Click">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Server" Height="20"></fa:ImageAwesome>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <Separator></Separator>
                     <MenuItem Name="mnu_settings" Header="Opzioni" Click="mnu_settings_Click">
                         <MenuItem.Icon>

@@ -386,5 +386,14 @@ namespace SfspClient
                 }
             }
         }
+
+        private void mnu_serverinfo_Click(object sender, RoutedEventArgs e)
+        {
+            string udpList = listener.UdpLocalEndpoints.Select(ep => ep.ToString()).Aggregate((a, b) => a + "\n" + b);
+            string tcp = listener.TcpLocalEndpoint.ToString();
+
+            string message = "Endpoint locale ascolto TCP:\n" + tcp + "\n\nEndpoint locali ascolto UDP:\n" + udpList + "\n\nGruppo multicast:\n" + hostConfiguration.MulticastAddress.ToString();
+            MessageBox.Show(message, "Informazioni server", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
