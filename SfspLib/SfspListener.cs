@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Sfsp.Messaging;
 
 namespace Sfsp
@@ -160,5 +161,26 @@ namespace Sfsp
             private set;
         }
 
+        /// <summary>
+        /// Lista degli endpoint UDP su cui il listener è in ascolto
+        /// </summary>
+        public IReadOnlyCollection<IPEndPoint> UdpLocalEndpoints
+        {
+            get
+            {
+                return udpClients.Select(c => c.Client.LocalEndPoint as IPEndPoint).ToList().AsReadOnly();
+            }
+        }
+
+        /// <summary>
+        /// Endpoint TCP su cui il listener è in ascolto
+        /// </summary>
+        public IPEndPoint TcpLocalEndpoint
+        {
+            get
+            {
+                return tcpListener.LocalEndpoint as IPEndPoint;
+            }
+        }
     }
 }
