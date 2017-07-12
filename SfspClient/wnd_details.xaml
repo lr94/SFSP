@@ -10,7 +10,7 @@
     <Grid Margin="10">
         <DockPanel>
             <StackPanel DockPanel.Dock="Top">
-                <fa:ImageAwesome Icon="{Binding Icon}" Height="100" Foreground="{Binding IconBrush}" />
+                <fa:ImageAwesome Icon="{Binding Icon}" Height="100" Foreground="{Binding IconBrush}" Spin="{Binding Spin}" />
                 <DockPanel Margin="0,10,0,0">
                     <TextBlock Width="100">Trasferiti:</TextBlock>
                     <TextBlock>
