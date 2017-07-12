@@ -23,7 +23,7 @@ namespace SfspClient
         private ISet<string> active_objects;
         SfspAsyncDownload download;
 
-        public wnd_incomingfile(SfspAsyncDownload download, string defaultPath, ISet<string> activeObjects)
+        public wnd_incomingfile(SfspAsyncDownload download, string defaultPath, ISet<string> activeObjects, bool actionRequiredMessage = false)
         {
             InitializeComponent();
 
@@ -34,6 +34,9 @@ namespace SfspClient
             txtb_name.Text = String.Format(txtb_name.Text, download.RemoteHostName);
             txtb_filename.Text = String.Format(txtb_filename.Text, download.RelativePaths[0]);
             txtb_size.Text = String.Format(txtb_size.Text, NumericFormatter.FormatBytes(download.TotalSize));
+
+            if (actionRequiredMessage)
+                dck_actionrequiredmsg.Visibility = Visibility.Visible;
         }
 
         public string DestinationPath

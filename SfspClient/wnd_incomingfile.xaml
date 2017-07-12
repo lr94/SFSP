@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Richiesta di connessione" Height="198.867" Width="442.776" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Richiesta di connessione" Height="215" Width="443" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Margin="10">
             <TextBlock Name="txtb_name" FontSize="20" Text="{}{0} vuole inviarti dei file:"/>
@@ -27,5 +27,8 @@
                 Accetta
             </Button>
         </StackPanel>
+        <DockPanel Name="dck_actionrequiredmsg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="250" Margin="10,0,0,5" Visibility="Collapsed">
+            <TextBlock TextWrapping="Wrap" Foreground="Red">Impossibile accettare automaticamente i file a causa di un conflitto con altri file in trasferimento</TextBlock>
+        </DockPanel>
     </Grid>
 </Window>

@@ -213,8 +213,6 @@ namespace SfspClient
                 // Lista degli oggetti attivi (per evitare conflitti)
                 ISet<string> active_objects = GetActiveObjects();
                 
-                wnd_incomingfile dialog = new wnd_incomingfile(download, destinationPath, active_objects);
-
                 // True: trasferimento accettato, false o nessun valore: trasferimento da rifiutare
                 bool? result;
 
@@ -239,9 +237,10 @@ namespace SfspClient
                         }
                     }
 
-                    // Se ci sono conflitti mi comporto come se non fosse impostata l'accettazione automatica
+                    // Se ci sono conflitti mi comporto come se non fosse impostata l'accettazione automatica (ma segnalo il perché)
                     if (conflicts)
                     {
+                        wnd_incomingfile dialog = new wnd_incomingfile(download, destinationPath, active_objects, true);
                         result = dialog.ShowDialog();
                         destinationPath = dialog.DestinationPath;
                     }
@@ -251,6 +250,7 @@ namespace SfspClient
                 else // Se non è impostata l'accettazione automatica
                 {
                     // Chiedo all'utente
+                    wnd_incomingfile dialog = new wnd_incomingfile(download, destinationPath, active_objects);
                     result = dialog.ShowDialog();
                     destinationPath = dialog.DestinationPath;
                 }
