@@ -67,5 +67,20 @@ namespace SfspClient
             if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 txt_path.Text = fbd.SelectedPath;
         }
+
+        private void txt_path_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckIfValid();
+        }
+
+        void CheckIfValid()
+        {
+            btn_ok.IsEnabled = (txt_name.Text.Trim() != "" && System.IO.Directory.Exists(txt_path.Text));
+        }
+
+        private void txt_name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckIfValid();
+        }
     }
 }
