@@ -29,6 +29,9 @@ namespace SfspClient
 
         public static string FormatTimeSpan(TimeSpan ts)
         {
+            if(ts.TotalSeconds < 1.0)
+                return ts.Milliseconds + " millisecond" + (ts.Milliseconds == 1 ? "o" : "i");
+
             var sl = new List<string>();
             if (ts.Days != 0)
                 sl.Add(ts.Days.ToString() + " giorn" + (ts.Days == 1 ? "o" : "i"));
