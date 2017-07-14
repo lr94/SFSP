@@ -2,6 +2,9 @@
 
 namespace Sfsp
 {
+    /// <summary>
+    /// Rappresenta gli argomenti dell'evento sollevato quando viene trovato un nuovo host durante la scansione
+    /// </summary>
     public class SfspHostFoundEventArgs : EventArgs
     {
         public SfspHostFoundEventArgs(SfspHost host)

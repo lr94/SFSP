@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Sfsp
 {
+    /// <summary>
+    /// Rappresenta un generico trasferimento tra due host, upload o download
+    /// </summary>
     public abstract class SfspAsyncTransfer
     {
         public const int BUFFER_SIZE = 4096;

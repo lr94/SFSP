@@ -67,6 +67,9 @@ namespace Sfsp
             uploadThread.Start();
         }
 
+        /// <summary>
+        /// Routine principale del thread che si occupa di effettuare l'upload
+        /// </summary>
         private void UploadTask()
         {
             TcpClient client = null;
@@ -174,6 +177,14 @@ namespace Sfsp
             }
         }
 
+        /// <summary>
+        /// Effettua l'upload vero e proprio di un file.
+        /// Può sollevare TransferAbortException
+        /// </summary>
+        /// <param name="stream">NetworkStream relativo alla connessione con l'host remoto</param>
+        /// <param name="fullPath">Percorso completo locale del file da inviare</param>
+        /// <param name="relativePath">Percorso SFSP relativo del file, relativo alla radice del trasferimento</param>
+        /// <returns>True in caso di successo, false altrimenti</returns>
         private bool UploadFile(NetworkStream stream, string fullPath, string relativePath)
         {
             // Determino la dimensione del file
@@ -246,11 +257,17 @@ namespace Sfsp
             return true;
         }
 
+        /// <summary>
+        /// Interrompe il trasferimento in corso chiudendo la connessione con l'host remoto
+        /// </summary>
         public override void Abort()
         {
             base.Abort();
 
             // Intanto setto lo stato, poi la connessione verrà chiusa in seguito grazie al flag settato da base.Abort()
+            // Questa cosa serve per annullare gli invii che non sono ancora stati accettati dall'host remoto:
+            // la connessione verrà chiusa solo nel momento in cui inizia il trasferimento, ma noi vogliamo che l'Upload
+            // nel frattempo risulti già annullato, non in attesa.
             FailureException = new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
             SetStatus(TransferStatus.Failed);
         }

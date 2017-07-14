@@ -31,7 +31,7 @@ namespace Sfsp
         public event EventHandler<EventArgs> ScanComplete;
 
         /// <summary>
-        /// 
+        /// Inizializza un nuovo oggetto scanner
         /// </summary>
         /// <param name="configuration">Configurazione dell'host che effettua la ricerca</param>
         public SfspScanner(SfspHostConfiguration configuration)
