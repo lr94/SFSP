@@ -26,6 +26,11 @@ namespace Sfsp.TcpUtils
         /// <returns>Lo stato della connessione</returns>
         public static TcpState GetState(this Socket client)
         {
+            /*
+            Ispirato a questa risposta
+            https://stackoverflow.com/questions/1387459/how-to-check-if-tcpclient-connection-is-closed#19706302
+            opportunamente corretta
+            */
             TcpConnectionInformation info = IPGlobalProperties.GetIPGlobalProperties()
                                                               .GetActiveTcpConnections()
                                                               .SingleOrDefault(t
