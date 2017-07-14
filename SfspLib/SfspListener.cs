@@ -69,16 +69,21 @@ namespace Sfsp
         /// </summary>
         public void Start()
         {
+            // Per ogni UDP client creo un thread che stia in ascolto
             foreach (UdpClient udpClient in udpClients)
             {
+                // Ok, qui perdiamo il riferimento all'oggetto Thread ma tanto non ce ne facciamo niente
+                // (e il garbage collector non si libererà di thread in esecuzione)
                 Thread udpListenerThread = new Thread(() => UdpServerTask(udpClient));
                 udpListenerThread.IsBackground = true;
                 udpListenerThread.Start();
             }
 
+            // Creo il listener per le connessioni TCP
             tcpListener = new TcpListener(new IPEndPoint(IPAddress.Any, Configuration.TcpPort));
             tcpListener.Start();
 
+            // ...e il relativo thread di ascolto
             Thread tcpListenerThread = new Thread(TcpServerTask);
             tcpListenerThread.IsBackground = true;
             tcpListenerThread.Start();
@@ -128,9 +133,11 @@ namespace Sfsp
         {
             while (true)
             {
+                // Ricevo un pacchetto e ne determino l'origine
                 IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
                 byte[] datagram = udpClient.Receive(ref remoteEndpoint);
 
+                // Creo il relativo oggetto SfspMessage
                 MemoryStream ms = new MemoryStream(datagram);
                 SfspMessage msg = SfspMessage.ReadMessage(ms);
 
@@ -138,10 +145,12 @@ namespace Sfsp
                 if (!Configuration.Online)
                     continue;
 
+                // Se il messaggio era dovuto a una scansione (l'unico consentito su UDP, in effetti)
                 if (msg is SfspScanRequestMessage)
                 {
                     SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
 
+                    // Rispondo con il mio nome e la mia porta TCP
                     SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
                     TcpClient tcpClient = new TcpClient();
                     tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
@@ -149,6 +158,7 @@ namespace Sfsp
                     scanResponse.Write(stream);
                     tcpClient.Close();
                 }
+                // Niente else: se arriva un altro messaggio (non ScanRequest) in violazione del protocollo mi limito a ignorarlo
             }
         }
 
