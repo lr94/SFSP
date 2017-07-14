@@ -423,7 +423,8 @@ namespace SfspClient
                 if (transfer != null && transfer.Status == TransferStatus.Completed)
                 {
                     string path = System.IO.Path.Combine(transfer.DestinationDirectory, transfer.RelativePaths[0].Replace('\\', System.IO.Path.DirectorySeparatorChar));
-                    System.Diagnostics.Process.Start(path);
+                    if (System.IO.Directory.Exists(path) || System.IO.File.Exists(path))
+                        System.Diagnostics.Process.Start(path);
                 }
             }
         }
