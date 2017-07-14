@@ -19,7 +19,7 @@ namespace SfspClient
 
             n /= Math.Pow(1024, ui);
 
-            string unit = units[ui];
+            string unit = ui < units.Length ? units[ui] : "?";
             if (ui != 0)
                 unit += "i";
             unit += "B";
