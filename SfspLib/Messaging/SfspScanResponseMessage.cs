@@ -4,6 +4,8 @@ namespace Sfsp.Messaging
 {
     /// <summary>
     /// Rappresenta il messaggio inviato da un host per cercare altri host sulla rete.
+    /// Costituisce una risposta a un messaggio di tipo ScanRequest ma viene inviato tramite TCP alla porta
+    /// specificata
     /// </summary>
     internal class SfspScanResponseMessage : SfspMessage
     {

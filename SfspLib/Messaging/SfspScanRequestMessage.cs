@@ -8,6 +8,8 @@ namespace Sfsp.Messaging
 {
     /// <summary>
     /// Rappresenta il messaggio inviato da un host per cercare altri host sulla rete.
+    /// Si tratta dell'unico messaggio inviato mediante UDP e contiene il numero di una porta TCP
+    /// temporaneamente aperta dall'host, sulla quale esso si aspetta una risposta
     /// </summary>
     internal class SfspScanRequestMessage : SfspMessage
     {

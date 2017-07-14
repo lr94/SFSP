@@ -2,6 +2,9 @@
 
 namespace Sfsp.Messaging
 {
+    /// <summary>
+    /// Eccezione lanciata quando viene ricevuto un messaggio non valido
+    /// </summary>
     public class SfspInvalidMessageException : Exception
     {
         protected string _Message;

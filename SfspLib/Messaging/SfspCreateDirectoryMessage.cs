@@ -2,6 +2,10 @@
 
 namespace Sfsp.Messaging
 {
+    /// <summary>
+    /// Rappresenta un messaggio di tipo CreateDirectory, attraverso il quale si chiede al ricevente
+    /// di creare una cartella
+    /// </summary>
     internal class SfspCreateDirectoryMessage : SfspMessage
     {
         private string _RelativePath;

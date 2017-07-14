@@ -141,7 +141,7 @@ namespace Sfsp.Messaging
                 case SfspMessageTypes.Checksum:
                     msg = new SfspChecksumMessage(new byte[32]);
                     break;
-                default:
+                default: // Tipo di messaggio sconosciuto
                     throw new SfspInvalidMessageException();
             }
 

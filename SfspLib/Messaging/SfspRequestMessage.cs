@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Sfsp.Messaging
 {
+    /// <summary>
+    /// Rappresenta un messaggio di tipo request, attraverso il quale un host comunica ad un altro
+    /// che vuole inviargli dei dati.
+    /// Il messaggio contiene il nome dell'host che vuole inviare i dati, la loro dimensione totale
+    /// (contando solo i file) e la lista di tutti i percorsi relativi dei file e delle cartelle
+    /// </summary>
     internal class SfspRequestMessage : SfspMessage
     {
         private ulong _TotalSize;
