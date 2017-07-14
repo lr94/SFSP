@@ -8,6 +8,14 @@ namespace SfspClient
 {
     internal static class NumericFormatter
     {
+        /// <summary>
+        /// Formatta un numero di byte usando l'opportuna unità di misura.
+        /// Le unità utilizzate sono quelle definite dalla IEC nel 1998, su base 1024
+        /// (KiB, MiB, GiB...)
+        /// In teoria si chiamerebbero "kibibyte", "mebibyte" ecc ecc
+        /// </summary>
+        /// <param name="num">Numero di byte</param>
+        /// <returns>Stringa contenente il numero di byte (con una cifra decimale massima) e l'unità di misura</returns>
         public static string FormatBytes(long num)
         {
             if (num == 0)
@@ -27,6 +35,11 @@ namespace SfspClient
             return String.Format("{0:0.#} {1}", n, unit);
         }
 
+        /// <summary>
+        /// Formatta un intervallo di tempo esprimendolo in italiano
+        /// </summary>
+        /// <param name="ts">Intervallo temporale</param>
+        /// <returns></returns>
         public static string FormatTimeSpan(TimeSpan ts)
         {
             if(ts.TotalSeconds < 1.0)
