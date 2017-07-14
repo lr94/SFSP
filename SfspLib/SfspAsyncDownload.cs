@@ -8,10 +8,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Linq;
 using Sfsp.Messaging;
-using Sfsp.TcpUtils; // Per extension method TcpClient.GetState()
+using Sfsp.TcpUtils; // Per extension method TcpClient.GetState() e per SfspNetworkStream
 
 namespace Sfsp
 {
+    /// <summary>
+    /// Rappresenta un download dall'host remoto
+    /// </summary>
     public class SfspAsyncDownload : SfspAsyncTransfer
     {
         private TcpClient tcpClient;
@@ -19,6 +22,11 @@ namespace Sfsp
 
         private bool response_sent = false;
 
+        /// <summary>
+        /// Genera una nova istanza di un oggetto SfspAsyncDownload
+        /// </summary>
+        /// <param name="request">Messaggio di richiesta ricevuto dall'host remoto</param>
+        /// <param name="client">TcpClient relativo alla connessione con l'host remoto</param>
         internal SfspAsyncDownload(SfspRequestMessage request, TcpClient client)
         {
             TotalSize = (long)request.TotalSize;
@@ -31,6 +39,7 @@ namespace Sfsp
             if(remote_ep != null)
                 _RemoteAddress = remote_ep.Address;
 
+            // Il trasferimento è in attesa di accettazione
             Status = TransferStatus.Pending;
         }
 
@@ -41,6 +50,7 @@ namespace Sfsp
         {
             lock(locker)
             {
+                // Se era già stata inviata una risposta lancio un'eccezione
                 if (response_sent)
                     throw new InvalidOperationException("Response already sent");
                 response_sent = true;
@@ -78,12 +88,23 @@ namespace Sfsp
             downloadThread.Start();
         }
 
+        /// <summary>
+        /// Routine principale del thread che si occupa di effettuare il download vero e proprio.
+        /// Demanda il download dei file alla DownloadFile()
+        /// </summary>
+        /// <param name="destinationPath">Percorso di destinazione locale</param>
         private void DownloadTask(string destinationPath)
         {
             SfspNetworkStream stream = null;
 
             try
             {
+                /* 
+                    Uso SfspNetworkStream al posto di NetworkStream
+                    NetworkStream funzionerebbe lo stesso, ma SfspMessage non potrebbe accorgersi
+                    della disconnessione dell'host remoto (perché NetworkStream non permette di accedere
+                    all'oggetto Socket sottostante)
+                */
                 stream = new SfspNetworkStream(tcpClient.Client);
 
                 // Invio il messaggio di accettazione
@@ -136,7 +157,9 @@ namespace Sfsp
                     }
                 }
 
+                // Il download è terminato, quindi forzo un aggiornamento dell'avanzamento
                 ForceProgressUpdate();
+                // E modifico lo stato
                 SetStatus(TransferStatus.Completed);
             }
             catch(Exception ex)
@@ -152,9 +175,20 @@ namespace Sfsp
                 tcpClient.Close();
             }
         }
-        
+
+        /// <summary>
+        /// Scarica un file e lo salva in locale.
+        /// Finché il download è in corso i dati vengono memorizzati in un file temporaneo ".part"
+        /// Se esiste già un file in fullPath, esso viene sovrascritto al termine.
+        /// Può sollevare un'eccezione TransferAbortException uno dei due host interrompe la connessione
+        /// </summary>
+        /// <param name="stream">NetworkStream (va bene anche SfspNetworkStream) relativo alla connessione</param>
+        /// <param name="fullPath">Percorso completo e definitivo del file locale</param>
+        /// <param name="size">Dimensione del file da scaricare</param>
+        /// <returns>True in caso di successo, False in caso di fallimento</returns>
         private bool DownloadFile(NetworkStream stream, string fullPath, long size)
         {
+            // Apro in scrittura il file temporaneo
             string tmpFullPath = fullPath + ".part";
             FileStream fs = File.Open(tmpFullPath, FileMode.Create, FileAccess.Write);
 
@@ -170,6 +204,7 @@ namespace Sfsp
                 long fReceived = 0;
                 while (fReceived < size)
                 {
+                    // Se l'utente ha chiesto di annullare sollevo un'eccezione per sospendere tutto
                     if (Aborting)
                         throw new TransferAbortException(TransferAbortException.AbortType.LocalAbort);
 
@@ -208,6 +243,7 @@ namespace Sfsp
                     throw new ProtocolViolationException("Unexpected SFSP message");
                 SfspChecksumMessage checksumMsg = (SfspChecksumMessage)receivedMsg;
 
+                // Conferma da inviare
                 SfspConfirmMessage confirm;
                 if (checksumMsg.Check(hash))
                 {
@@ -228,12 +264,13 @@ namespace Sfsp
 
                     okFlag = false;
 
+                    // Aggiornamento dell'avanzamento dell'operazione (torniamo indietro)
                     progress -= size;
-                    // Aggiornamento dell'avanzamento dell'operazione
                     ForceProgressUpdate();
 
                     confirm = new SfspConfirmMessage(SfspConfirmMessage.FileStatus.Error);
                 }
+                // Invio la conferma
                 confirm.Write(stream);
             }
             finally

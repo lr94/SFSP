@@ -2,6 +2,9 @@
 
 namespace Sfsp
 {
+    /// <summary>
+    /// Argomento dell'evento sollevato ad ogni aggiornamento dell'avanzamento
+    /// </summary>
     public class ProgressUpdateEventArgs : EventArgs
     {
         internal ProgressUpdateEventArgs(long progress, long total, long speed)
@@ -30,7 +33,7 @@ namespace Sfsp
         }
 
         /// <summary>
-        /// Velocità (B/s) calcolata sull'ultimo intervallo
+        /// Velocità (B/s) calcolata sull'ultimo intervallo temporale
         /// </summary>
         public long Speed
         {
