@@ -71,7 +71,7 @@ namespace Sfsp
         {
             foreach (UdpClient udpClient in udpClients)
             {
-                Thread udpListenerThread = new Thread(() => ServerTask(udpClient));
+                Thread udpListenerThread = new Thread(() => UdpServerTask(udpClient));
                 udpListenerThread.IsBackground = true;
                 udpListenerThread.Start();
             }
@@ -124,7 +124,7 @@ namespace Sfsp
         }
 
 
-        private void ServerTask(UdpClient udpClient)
+        private void UdpServerTask(UdpClient udpClient)
         {
             while (true)
             {
