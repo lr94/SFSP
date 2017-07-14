@@ -48,7 +48,7 @@ namespace Sfsp
             foreach (IPAddress currentIP in addresses)
             {
                 UdpClient currentClient = new UdpClient();
-                currentClient.MulticastLoopback = true;
+                currentClient.MulticastLoopback = _Configuration.AllowLoopback;
                 // ...in modo da essere sicuro di inviare i pacchetti multicast su tutte le interfacce.
                 // Questo si è reso necessario dopo che mi sono accorto che su Windows i pacchetti UDP
                 // venivano indirizzati tutti sull'interfaccia di VirtualBox (192.168.1.51?) invece che sulla
