@@ -208,24 +208,36 @@ namespace SfspClient
             return Int32.Parse(data[key]);
         }
 
+        /// <summary>
+        /// Nome dell'host
+        /// </summary>
         public string HostName
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Percorso di destinazione di default
+        /// </summary>
         public string DefaultPath
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Specifica se l'host deve accettare automaticamente i file in arrivo
+        /// </summary>
         public bool AutoAccept
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Specifica se l'host deve operare in modalità Online o Offline
+        /// </summary>
         public HostMode Mode
         {
             get;
