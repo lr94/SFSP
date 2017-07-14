@@ -70,11 +70,11 @@ namespace Sfsp
             }
         }
 
-    /// <summary>
-    /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file.
-    /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
-    /// </summary>
-    public ushort TcpPort
+        /// <summary>
+        /// Porta TCP su cui l'host deve stare in ascolto per la ricezione di file.
+        /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
+        /// </summary>
+        public ushort TcpPort
         {
             get;
             set;
