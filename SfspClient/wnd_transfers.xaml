@@ -70,7 +70,7 @@
                             <fa:ImageAwesome Icon="QuestionCircleOutline" Height="20" Foreground="#2980b9"></fa:ImageAwesome>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="(dev)" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Header="(dev)" Click="MenuItem_Click" Visibility="Collapsed"></MenuItem>
                 </MenuItem>
             </Menu>
             <DockPanel>
