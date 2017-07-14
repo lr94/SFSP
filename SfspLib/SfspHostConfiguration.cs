@@ -17,6 +17,7 @@ namespace Sfsp
             TcpPort = 6000;
             UdpPort = 5999;
             MulticastAddress = IPAddress.Parse("239.0.0.1");
+            AllowLoopback = true;
         }
 
         private string _Name;
@@ -94,6 +95,15 @@ namespace Sfsp
         /// Modificare questa proprietà a server già avviato è inutile e non produce alcun effetto.
         /// </summary>
         public IPAddress MulticastAddress
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Indica se l'host può inviarsi dei file da solo
+        /// </summary>
+        public bool AllowLoopback
         {
             get;
             set;

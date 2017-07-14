@@ -39,7 +39,7 @@ namespace Sfsp
                 try
                 {
                     UdpClient currentClient = new UdpClient(new IPEndPoint(currentIP, Configuration.UdpPort));
-                    currentClient.MulticastLoopback = true;
+                    currentClient.MulticastLoopback = Configuration.AllowLoopback;
                     // ...in modo da essere sicuro di ascoltare per pacchetti multicast su tutte le interfacce
                     currentClient.JoinMulticastGroup(Configuration.MulticastAddress, currentIP);
 
