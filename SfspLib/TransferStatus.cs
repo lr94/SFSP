@@ -1,5 +1,8 @@
 ﻿namespace Sfsp
 {
+    /// <summary>
+    /// Rappresenta lo stato di un trasferimento
+    /// </summary>
     public enum TransferStatus
     {
         /// <summary>
