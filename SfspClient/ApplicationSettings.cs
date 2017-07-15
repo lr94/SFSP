@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace SfspClient
@@ -25,6 +26,8 @@ namespace SfspClient
             DefaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
             AutoAccept = false;
             Mode = HostMode.Online;
+            Loopback = true;
+            MulticastAddress = IPAddress.Parse("239.0.0.1");
 
             Load();
         }
@@ -108,6 +111,10 @@ namespace SfspClient
 
             Mode = ReadHostMode("mode");
 
+            MulticastAddress = ReadIPAddress("multicast_address");
+
+            Loopback = ReadBoolean("loopback");
+
             if (set_default)
                 Store();
         }
@@ -121,6 +128,8 @@ namespace SfspClient
             WriteString("path", DefaultPath);
             WriteHostMode("mode", Mode);
             WriteBoolean("autoaccept", AutoAccept);
+            WriteIPAddress("multicast_address", MulticastAddress);
+            WriteBoolean("loopback", Loopback);
 
             StreamWriter sw = new StreamWriter(GetFileName(), false, Encoding.UTF8);
 
@@ -147,6 +156,11 @@ namespace SfspClient
                 data[key] = "true";
             else
                 data[key] = "false";
+        }
+
+        private void WriteIPAddress(string key, IPAddress value)
+        {
+            data[key] = value.ToString();
         }
 
         private void WriteHostMode(string key, HostMode value)
@@ -183,6 +197,19 @@ namespace SfspClient
                 return false;
             else
                 throw new FileFormatException("Invalid boolean in settings file");
+        }
+
+        private IPAddress ReadIPAddress(string key)
+        {
+            if (!data.ContainsKey(key))
+                return null;
+
+            IPAddress parsed;
+
+            if (!IPAddress.TryParse(data[key], out parsed))
+                throw new FileFormatException("Invalid IP address in settings file");
+
+            return parsed;
         }
 
         private HostMode ReadHostMode(string key)
@@ -239,6 +266,21 @@ namespace SfspClient
         /// Specifica se l'host deve operare in modalità Online o Offline
         /// </summary>
         public HostMode Mode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Specifica l'indirizzo del gruppo multicast su cui deve lavorare l'applicazione
+        /// </summary>
+        public IPAddress MulticastAddress
+        {
+            get;
+            set;
+        }
+
+        public bool Loopback
         {
             get;
             set;
