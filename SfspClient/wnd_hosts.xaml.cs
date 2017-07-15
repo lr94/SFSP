@@ -53,30 +53,20 @@ namespace SfspClient
 
         private void scanner_HostFound(object sender, SfspHostFoundEventArgs e)
         {
-            Dispatcher.Invoke(new AddHostDelegate(AddHost), new object[] { e.Host });
+            Dispatcher.Invoke(() =>
+            {
+                hosts.Add(e.Host);
+            });
         }
 
         private void scanner_ScanComplete(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(ScanComplete);
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // lst_hosts.Items.Add("test");
-        }
-
-        private delegate void AddHostDelegate(SfspHost host);
-        private void AddHost(SfspHost host)
-        {
-            hosts.Add(host);
-        }
-
-        private void ScanComplete()
-        {
-            icn_spinner.Spin = false;
-            icn_spinner.Visibility = Visibility.Hidden;
-            lst_hosts.IsEnabled = true;
+            Dispatcher.Invoke(() =>
+            {
+                icn_spinner.Spin = false;
+                icn_spinner.Visibility = Visibility.Hidden;
+                lst_hosts.IsEnabled = true;
+            });
         }
 
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
