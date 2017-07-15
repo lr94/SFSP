@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Impostazioni" Height="200" Width="500" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Title="Impostazioni" Height="300" Width="500" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -41,6 +41,33 @@
                     <CheckBox Name="chk_autoaccept">
                         <TextBlock>Accetta automaticamente i file in arrivo</TextBlock>
                     </CheckBox>
+                </DockPanel>
+            </DockPanel>
+            <Separator Margin="0, 10, 0 0"></Separator>
+            <DockPanel Margin="0, 10, 0, 0">
+                <Label Width="120">Indirizzo multicast:</Label>
+                <DockPanel>
+                    <TextBox Name="txt_multicast" VerticalContentAlignment="Center" TextChanged="txt_multicast_TextChanged"></TextBox>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel Margin="0,5,0,0">
+                <DockPanel Width="120" />
+                <DockPanel>
+                    <CheckBox Name="chk_loopback">
+                        <TextBlock>Abilita loopback</TextBlock>
+                    </CheckBox>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel Margin="0,5,0,0">
+                <Label Width="120">Porta UDP:</Label>
+                <DockPanel>
+                    <TextBox Name="txt_udp_port" HorizontalAlignment="Left" VerticalContentAlignment="Center" Width="50" TextChanged="txt_udp_port_TextChanged"></TextBox>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel Margin="0,5,0,0">
+                <Label Width="120">Porta TCP:</Label>
+                <DockPanel>
+                    <TextBox Name="txt_tcp_port" HorizontalAlignment="Left" VerticalContentAlignment="Center" Width="50" TextChanged="txt_tcp_port_TextChanged"></TextBox>
                 </DockPanel>
             </DockPanel>
         </StackPanel>
