@@ -64,6 +64,9 @@ namespace SfspClient
                 // Loopback e gruppo multicast come da impostazioni
                 hostConfiguration.AllowLoopback = appSettings.Loopback;
                 hostConfiguration.MulticastAddress = appSettings.MulticastAddress;
+                // Imposto le porte
+                hostConfiguration.TcpPort = (ushort)appSettings.TcpPort;
+                hostConfiguration.UdpPort = (ushort)appSettings.UdpPort;
 
                 // Inizializzo il listener
                 listener = new SfspListener(hostConfiguration);

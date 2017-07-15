@@ -27,7 +27,9 @@ namespace SfspClient
             AutoAccept = false;
             Mode = HostMode.Online;
             Loopback = true;
-            MulticastAddress = IPAddress.Parse("239.0.0.1");
+            MulticastAddress = IPAddress.Parse("239.0.0.2");
+            UdpPort = 5999;
+            TcpPort = 6000;
 
             Load();
         }
@@ -115,6 +117,13 @@ namespace SfspClient
 
             Loopback = ReadBoolean("loopback");
 
+            UdpPort = ReadInteger("udp_port");
+            if (UdpPort > short.MaxValue)
+                throw new FileFormatException("Invalid port number" + UdpPort);
+            TcpPort = ReadInteger("tcp_port");
+            if (TcpPort > short.MaxValue)
+                throw new FileFormatException("Invalid port number" + TcpPort);
+
             if (set_default)
                 Store();
         }
@@ -130,6 +139,8 @@ namespace SfspClient
             WriteBoolean("autoaccept", AutoAccept);
             WriteIPAddress("multicast_address", MulticastAddress);
             WriteBoolean("loopback", Loopback);
+            WriteInteger("udp_port", UdpPort);
+            WriteInteger("tcp_port", TcpPort);
 
             StreamWriter sw = new StreamWriter(GetFileName(), false, Encoding.UTF8);
 
@@ -280,7 +291,28 @@ namespace SfspClient
             set;
         }
 
+        /// <summary>
+        /// Specifica se l'host deve potersi autoinviare dei file
+        /// </summary>
         public bool Loopback
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Specifica la porta UDP su cui restare in ascolto
+        /// </summary>
+        public int UdpPort
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Specifica la porta TCP su cui restare in ascolto
+        /// </summary>
+        public int TcpPort
         {
             get;
             set;
