@@ -159,13 +159,22 @@ namespace Sfsp
             }
             catch (Exception e) // In caso di eccezione
             {
-                // Rilancio l'eccezione avendo però cura di fermare il server
-                // Non uso finally {...} perché rilanciando l'eccezione non sarebbe eseguito
-                tcpListener.Stop();
-                throw e;
+                OnError(e);
             }
+            finally
+            {
+                tcpListener.Stop();
+            }
+        }
 
-            tcpListener.Stop();
+        /// <summary>
+        /// Evento sollevato quando si verifica un errore durante la scansione
+        /// </summary>
+        public event EventHandler<Exception> Error;
+        protected void OnError(Exception ex)
+        {
+            if (Error != null)
+                Error(this, ex);
         }
 
         /// <summary>
