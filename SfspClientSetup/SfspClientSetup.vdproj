@@ -27,18 +27,18 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DA4058B18A3A99796FF98A35E43B1BED"
-        "OwnerKey" = "8:_E4A9AE6479624E3692BD1899532E73E3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E4A9AE6479624E3692BD1899532E73E3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_FEE6922DF65A07EFFAAAF38246FF2E9A"
+        "OwnerKey" = "8:_E4A9AE6479624E3692BD1899532E73E3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E4A9AE6479624E3692BD1899532E73E3"
         "MsmSig" = "8:_UNDEFINED"
@@ -46,7 +46,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DA4058B18A3A99796FF98A35E43B1BED"
+        "OwnerKey" = "8:_FEE6922DF65A07EFFAAAF38246FF2E9A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -201,14 +201,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DA4058B18A3A99796FF98A35E43B1BED"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FEE6922DF65A07EFFAAAF38246FF2E9A"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Sfsp, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DA4058B18A3A99796FF98A35E43B1BED"
+                    "_FEE6922DF65A07EFFAAAF38246FF2E9A"
                     {
                     "Name" = "8:Sfsp.dll"
                     "Attributes" = "3:512"
@@ -310,15 +310,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SfspClientSetup"
-        "ProductCode" = "8:{45C23BF3-50AB-47AB-90A4-F636B5D75C38}"
-        "PackageCode" = "8:{49DDFE64-C319-4906-8135-6E13C6A62782}"
+        "ProductCode" = "8:{1333C545-8BD1-4791-A55D-A723086F859F}"
+        "PackageCode" = "8:{00EAAC30-343F-4CBA-9108-D9F8B128797A}"
         "UpgradeCode" = "8:{C85960C1-99E0-4D09-92C4-261907272BFA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.1.0"
         "Manufacturer" = "8:Luca Robbiano"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1044,7 +1044,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E4A9AE6479624E3692BD1899532E73E3"
             {
-            "SourcePath" = "8:..\\SfspClient\\obj\\Debug\\SfspClient.exe"
+            "SourcePath" = "8:..\\SfspClient\\obj\\Release\\SfspClient.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_830B269FD3D54965B1A1F88AD7E54E33"
