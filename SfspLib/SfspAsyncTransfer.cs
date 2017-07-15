@@ -73,7 +73,11 @@ namespace Sfsp
 
             // Calcolo la velocità
             double seconds = now.Subtract(last_progress_update).TotalSeconds;
-            long speed = (long)((double)(progress - notified_progress) / seconds);
+            long speed;
+            if (seconds == 0.0)
+                speed = long.MaxValue; // Non dovrebbe mai succedere, ma almeno siamo sicuri di non dividere per 0
+            else
+                speed = (long)((double)(progress - notified_progress) / seconds);
             // (se un file viene ritrasferito in seguito a errore risulterebbe velocità negativa)
             if (speed < 0)
                 speed = 0;
