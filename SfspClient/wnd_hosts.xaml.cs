@@ -42,7 +42,7 @@ namespace SfspClient
                 Dispatcher.Invoke(() => this.Close());
             };
             icn_spinner.Spin = true;
-            scanner.StartScan(new TimeSpan(0, 0, 1));
+            scanner.StartScan(new TimeSpan(0, 0, 2));
         }
 
         public List<SfspHost> GetSelectedHosts()
