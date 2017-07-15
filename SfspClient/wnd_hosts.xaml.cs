@@ -37,6 +37,10 @@ namespace SfspClient
             scanner = new SfspScanner(config);
             scanner.HostFound += scanner_HostFound;
             scanner.ScanComplete += scanner_ScanComplete;
+            scanner.Error += (object sender, Exception e) => {
+                MessageBox.Show("Si è verificato un errore durante la scansione.\n" + e.Message, "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                Dispatcher.Invoke(() => this.Close());
+            };
             icn_spinner.Spin = true;
             scanner.StartScan(new TimeSpan(0, 0, 1));
         }
