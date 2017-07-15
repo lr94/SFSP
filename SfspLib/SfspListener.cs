@@ -57,11 +57,24 @@ namespace Sfsp
                 throw new Exception("Could not initialize SfspListener");
         }
 
+        /// <summary>
+        /// Evento sollevato quando un altro host chiede di inviare dei dati
+        /// </summary>
         public event EventHandler<TransferRequestEventArgs> TransferRequest;
         protected void OnTransferRequest(SfspAsyncDownload download)
         {
             if (TransferRequest != null)
                 TransferRequest(this, new TransferRequestEventArgs(download));
+        }
+
+        /// <summary>
+        /// Evento sollevato quando si verifica un errore del server (TCP o UDP)
+        /// </summary>
+        public event EventHandler<Exception> Error;
+        protected void OnError(Exception ex)
+        {
+            if (Error != null)
+                Error(this, ex);
         }
 
         /// <summary>
@@ -91,84 +104,99 @@ namespace Sfsp
 
         private void TcpServerTask()
         {
-            while (true)
+            try
             {
-                // Si è connesso qualcuno
-                TcpClient client = tcpListener.AcceptTcpClient();
-
-                // Se siamo invisibili non vogliamo ricevere nulla, ci disconnettiamo
-                if (!Configuration.Online)
+                while (true)
                 {
-                    client.Close();
-                    continue;
-                }
+                    // Si è connesso qualcuno
+                    TcpClient client = tcpListener.AcceptTcpClient();
 
-                NetworkStream stream = client.GetStream();
+                    // Se siamo invisibili non vogliamo ricevere nulla, ci disconnettiamo
+                    if (!Configuration.Online)
+                    {
+                        client.Close();
+                        continue;
+                    }
 
-                // Leggo il messaggio inviato (ignorando eventuali errori)
-                SfspMessage receivedMsg;
-                try
-                {
-                    receivedMsg = SfspMessage.ReadMessage(stream);
-                }
-                catch (SfspInvalidMessageException)
-                {
-                    // Se il messaggio non era valido ignoriamo direttamente questa richiesta di connessione
-                    continue;
-                }
+                    NetworkStream stream = client.GetStream();
 
-                // Ignoro eventuali messaggi di tipo non atteso
-                if (receivedMsg is SfspRequestMessage)
-                {
-                    SfspRequestMessage request = (SfspRequestMessage)receivedMsg;
+                    // Leggo il messaggio inviato (ignorando eventuali errori)
+                    SfspMessage receivedMsg;
+                    try
+                    {
+                        receivedMsg = SfspMessage.ReadMessage(stream);
+                    }
+                    catch (SfspInvalidMessageException)
+                    {
+                        // Se il messaggio non era valido ignoriamo direttamente questa richiesta di connessione
+                        continue;
+                    }
 
-                    // Genero l'oggetto per il download e sollevo l'evento
-                    OnTransferRequest(new SfspAsyncDownload(request, client));
+                    // Ignoro eventuali messaggi di tipo non atteso
+                    if (receivedMsg is SfspRequestMessage)
+                    {
+                        SfspRequestMessage request = (SfspRequestMessage)receivedMsg;
+
+                        // Genero l'oggetto per il download e sollevo l'evento
+                        OnTransferRequest(new SfspAsyncDownload(request, client));
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                OnError(ex);
             }
         }
 
 
         private void UdpServerTask(UdpClient udpClient)
         {
-            while (true)
+            try
             {
-                try
+                while (true)
                 {
-                    // Ricevo un pacchetto e ne determino l'origine
-                    IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] datagram = udpClient.Receive(ref remoteEndpoint);
-
-                    // Creo il relativo oggetto SfspMessage
-                    MemoryStream ms = new MemoryStream(datagram);
-                    SfspMessage msg = SfspMessage.ReadMessage(ms);
-
-                    // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
-                    if (!Configuration.Online)
-                        continue;
-
-                    // Se il messaggio era dovuto a una scansione (l'unico consentito su UDP, in effetti)
-                    if (msg is SfspScanRequestMessage)
+                    try
                     {
-                        SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
+                        // Ricevo un pacchetto e ne determino l'origine
+                        IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
+                        byte[] datagram = udpClient.Receive(ref remoteEndpoint);
 
-                        // Rispondo con il mio nome e la mia porta TCP
-                        SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
-                        TcpClient tcpClient = new TcpClient();
-                        tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
-                        NetworkStream stream = tcpClient.GetStream();
-                        scanResponse.Write(stream);
-                        tcpClient.Close();
+                        // Creo il relativo oggetto SfspMessage
+                        MemoryStream ms = new MemoryStream(datagram);
+                        SfspMessage msg = SfspMessage.ReadMessage(ms);
+
+                        // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
+                        if (!Configuration.Online)
+                            continue;
+
+                        // Se il messaggio era dovuto a una scansione (l'unico consentito su UDP, in effetti)
+                        if (msg is SfspScanRequestMessage)
+                        {
+                            SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
+
+                            // Rispondo con il mio nome e la mia porta TCP
+                            SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
+                            TcpClient tcpClient = new TcpClient();
+                            tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
+                            NetworkStream stream = tcpClient.GetStream();
+                            scanResponse.Write(stream);
+                            tcpClient.Close();
+                        }
+                        // Niente else: se arriva un altro messaggio (non ScanRequest) in violazione del protocollo mi limito a ignorarlo
                     }
-                    // Niente else: se arriva un altro messaggio (non ScanRequest) in violazione del protocollo mi limito a ignorarlo
-                }
-                catch(SfspInvalidMessageException)
-                {
-                    lock (locker)
+                    catch (SfspInvalidMessageException) // Non era un messaggio Sfsp...allora cos'era?
                     {
-                        _InvalidUDPDatagrams++;
+                        lock (locker)
+                        {
+                            // Probabilmente qualcun altro sta inviando a questo indirizzo multicast, è bene saperlo
+                            _InvalidUDPDatagrams++;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                OnError(ex);
             }
         }
 
