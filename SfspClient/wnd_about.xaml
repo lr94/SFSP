@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Informazioni" Height="200" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Icon="icon.ico" WindowStartupLocation="CenterScreen">
+        Title="Informazioni" Height="240" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Icon="icon.ico" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,13 +15,14 @@
     </Window.Resources>
     <Grid>
         <DockPanel>
-            <Viewbox Width="150" Height="150" Stretch="Uniform" Margin="10,0,0,0">
+            <Viewbox Width="160" Height="160" Stretch="Uniform" Margin="10,0,0,0">
                 <ContentControl Content="{StaticResource polito_logo}" />
             </Viewbox>
-            <StackPanel>
+            <StackPanel Margin="10">
                 <TextBlock HorizontalAlignment="Center" FontSize="30" TextAlignment="Center">
                 SFSP Client
                 </TextBlock>
+                <TextBlock Name="txtb_version" HorizontalAlignment="Center" TextAlignment="Center" Text="{}{version}"/>
                 <TextBlock HorizontalAlignment="Center" Padding="0,5,0,0" TextAlignment="Center">
                     Simple File Sharing Protocol
                 </TextBlock>
@@ -32,7 +33,7 @@
                     <LineBreak/>
                     A. A. 2016/2017
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" Padding="0,20,0,0" TextAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0,25,0,0" TextAlignment="Center">
                     Luca Robbiano (244033)
                 </TextBlock>
             </StackPanel>

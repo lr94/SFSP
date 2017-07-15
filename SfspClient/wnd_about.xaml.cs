@@ -22,6 +22,8 @@ namespace SfspClient
         public wnd_about()
         {
             InitializeComponent();
+
+            txtb_version.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }
