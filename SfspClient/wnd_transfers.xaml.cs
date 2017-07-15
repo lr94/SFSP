@@ -71,6 +71,11 @@ namespace SfspClient
                 // Inizializzo il listener
                 listener = new SfspListener(hostConfiguration);
                 listener.TransferRequest += Listener_TransferRequest;
+                listener.Error += (object sender, Exception ex) =>
+                {
+                    MessageBox.Show("Si è verificato un errore del server.\n" + ex.Message, "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Shutdown();
+                };
                 // Mi metto in ascolto
                 listener.Start();
             }
@@ -440,7 +445,11 @@ namespace SfspClient
             string udpList = listener.UdpLocalEndpoints.Select(ep => ep.ToString()).Aggregate((a, b) => a + "\n" + b);
             string tcp = listener.TcpLocalEndpoint.ToString();
 
-            string message = "Endpoint locale ascolto TCP:\n" + tcp + "\n\nEndpoint locali ascolto UDP:\n" + udpList + "\n\nGruppo multicast:\n" + hostConfiguration.MulticastAddress.ToString();
+            string message =
+                "Endpoint locale ascolto TCP:\n" + tcp +
+                "\n\nEndpoint locali ascolto UDP:\n" + udpList +
+                "\n\nGruppo multicast:\n" + hostConfiguration.MulticastAddress.ToString() +
+                "\n\nPacchetti UDP non riconosciuti ricevuti:\n" + listener.InvalidUDPDatagrams;
             MessageBox.Show(message, "Informazioni server", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
