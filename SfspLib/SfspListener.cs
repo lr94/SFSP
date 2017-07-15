@@ -133,32 +133,42 @@ namespace Sfsp
         {
             while (true)
             {
-                // Ricevo un pacchetto e ne determino l'origine
-                IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
-                byte[] datagram = udpClient.Receive(ref remoteEndpoint);
-
-                // Creo il relativo oggetto SfspMessage
-                MemoryStream ms = new MemoryStream(datagram);
-                SfspMessage msg = SfspMessage.ReadMessage(ms);
-
-                // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
-                if (!Configuration.Online)
-                    continue;
-
-                // Se il messaggio era dovuto a una scansione (l'unico consentito su UDP, in effetti)
-                if (msg is SfspScanRequestMessage)
+                try
                 {
-                    SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
+                    // Ricevo un pacchetto e ne determino l'origine
+                    IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] datagram = udpClient.Receive(ref remoteEndpoint);
 
-                    // Rispondo con il mio nome e la mia porta TCP
-                    SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
-                    TcpClient tcpClient = new TcpClient();
-                    tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
-                    NetworkStream stream = tcpClient.GetStream();
-                    scanResponse.Write(stream);
-                    tcpClient.Close();
+                    // Creo il relativo oggetto SfspMessage
+                    MemoryStream ms = new MemoryStream(datagram);
+                    SfspMessage msg = SfspMessage.ReadMessage(ms);
+
+                    // Se non vogliamo essere rilevabili ci limitiamo a non rispondere
+                    if (!Configuration.Online)
+                        continue;
+
+                    // Se il messaggio era dovuto a una scansione (l'unico consentito su UDP, in effetti)
+                    if (msg is SfspScanRequestMessage)
+                    {
+                        SfspScanRequestMessage scanRequest = (SfspScanRequestMessage)msg;
+
+                        // Rispondo con il mio nome e la mia porta TCP
+                        SfspScanResponseMessage scanResponse = new SfspScanResponseMessage(Configuration.Name, Configuration.TcpPort);
+                        TcpClient tcpClient = new TcpClient();
+                        tcpClient.Connect(remoteEndpoint.Address, scanRequest.TcpPort);
+                        NetworkStream stream = tcpClient.GetStream();
+                        scanResponse.Write(stream);
+                        tcpClient.Close();
+                    }
+                    // Niente else: se arriva un altro messaggio (non ScanRequest) in violazione del protocollo mi limito a ignorarlo
                 }
-                // Niente else: se arriva un altro messaggio (non ScanRequest) in violazione del protocollo mi limito a ignorarlo
+                catch(SfspInvalidMessageException)
+                {
+                    lock (locker)
+                    {
+                        _InvalidUDPDatagrams++;
+                    }
+                }
             }
         }
 
@@ -190,6 +200,24 @@ namespace Sfsp
             get
             {
                 return tcpListener.LocalEndpoint as IPEndPoint;
+            }
+        }
+
+        private int _InvalidUDPDatagrams = 0;
+        /// <summary>
+        /// Numero di pacchetti UDP non riconosciuti ricevuti.
+        /// Utile saperlo per capire se c'è qualcun altro che sta trasmettendo sullo stesso indirizzo multicast
+        /// </summary>
+        public int InvalidUDPDatagrams
+        {
+            get
+            {
+                int value;
+                lock (locker)
+                {
+                    value = _InvalidUDPDatagrams;
+                }
+                return value;
             }
         }
     }
