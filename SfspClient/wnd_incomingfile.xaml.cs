@@ -23,6 +23,13 @@ namespace SfspClient
         private ISet<string> active_objects;
         SfspAsyncDownload download;
 
+        /// <summary>
+        /// Costruttore della classe associata alla finestra wnd_incomingfile
+        /// </summary>
+        /// <param name="download">Oggetto associato al download</param>
+        /// <param name="defaultPath">Percorso di salvataggio di default per il download</param>
+        /// <param name="activeObjects">Insieme dei percorsi assoluti degli oggetti attivi</param>
+        /// <param name="actionRequiredMessage">Indica se mostrare un messaggio che indica che non è stato possibile processare automaticamente la richiesta a causa di un conflitto</param>
         public wnd_incomingfile(SfspAsyncDownload download, string defaultPath, ISet<string> activeObjects, bool actionRequiredMessage = false)
         {
             InitializeComponent();
