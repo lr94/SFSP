@@ -73,6 +73,7 @@ namespace Sfsp
         public void StartScan(TimeSpan timeout)
         {
             Thread t = new Thread(ScannerTask);
+            t.IsBackground = true;
             t.Start(timeout);
         }
 
