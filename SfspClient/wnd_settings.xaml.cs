@@ -39,11 +39,6 @@ namespace SfspClient
             txt_tcp_port.Text = settings.TcpPort.ToString();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

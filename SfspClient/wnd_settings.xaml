@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Impostazioni" Height="300" Width="500" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded">
+        Title="Impostazioni" Height="300" Width="500" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48*"/>
