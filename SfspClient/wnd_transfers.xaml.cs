@@ -59,12 +59,31 @@ namespace SfspClient
         }
         #endregion
 
+        /// <summary>
+        /// Impostazioni dell'applicazione
+        /// </summary>
         ApplicationSettings appSettings;
+
+        /// <summary>
+        /// Configurazione dell'host SFSP
+        /// </summary>
         SfspHostConfiguration hostConfiguration;
+
+        /// <summary>
+        /// Listener SFTP
+        /// </summary>
         SfspListener listener;
 
+        /// <summary>
+        /// Collezione osservabile di oggetti che incapsulano gli oggetti della libreria che rappresentano i trasferimenti.
+        /// Uso una collezione osservabile in modo che i dati mostrati a video siano aggiornati automaticamente
+        /// grazie al binding.
+        /// </summary>
         ObservableCollection<TransferWrapper> transfer_wrapper_list;
 
+        /// <summary>
+        /// Inizializzo l'host SFSP
+        /// </summary>
         void InitSfsp()
         {
             try
@@ -100,6 +119,7 @@ namespace SfspClient
         {
             InitializeComponent();
 
+            // Inizializza l'icona di notifica
             InitNotifyIcon("icon.ico", "notifyIconMenu");
 
             // Carico le impostazioni dell'applicazione
@@ -121,27 +141,35 @@ namespace SfspClient
         /// <returns></returns>
         public ISet<string> GetActiveObjects(bool onlyDownloads = false)
         {
+            // Seleziona per ogni wrapper di trasferimento...
             var list = transfer_wrapper_list.SelectMany(tw =>
             {
+                // ...niente se il trasferimento non è incorso
                 SfspAsyncTransfer transfer = tw.TransferObject;
                 if (transfer.Status != TransferStatus.InProgress)
                     return new List<string>();
 
+                // ...niente se il trasferimento non è un download e volevamo solo i download
                 if(onlyDownloads && !(transfer is SfspAsyncDownload))
                     return new List<string>();
 
+                // ...l'insieme dei percorsi locali degli oggetti in trasferimento
                 return transfer.RelativePaths.Select(relativePath =>
                 {
+                    // Directory radice del trasferimento
                     string localBase;
                     if (transfer is SfspAsyncDownload)
                         localBase = ((SfspAsyncDownload)transfer).DestinationDirectory;
                     else if (transfer is SfspAsyncUpload)
                         localBase = ((SfspAsyncUpload)transfer).BaseDirectory;
                     else
-                        localBase = ""; // Non verrà mai eseguito
+                        localBase = ""; // Non verrà mai eseguito, ma senza questa riga viene generato un warning
 
+                    // Sostituisco a "\" il carattere separatore di sistema
+                    // (che in realtà è sempre "\" su Windows, e visto che usiamo WPF siamo per forza su Windows)
                     relativePath = relativePath.Replace('\\', System.IO.Path.DirectorySeparatorChar);
 
+                    // Combino la directory radice e il percorso relativo dell'oggetto per ottenere il percorso assoluto locale dell'oggetto
                     return System.IO.Path.Combine(localBase, relativePath);
                 });
             }).ToList();
@@ -158,15 +186,17 @@ namespace SfspClient
             wnd_hosts hostScannerDialog = new wnd_hosts(path, hostConfiguration);
 
             bool? result = hostScannerDialog.ShowDialog();
-            if (result.HasValue && result.Value)
+            if (result.HasValue && result.Value) // Invio file
             {
-                // Invio file
+                // Lista degli host selezionati
                 List<SfspHost> hostList = hostScannerDialog.GetSelectedHosts();
 
                 bool checkedForConflicts = false; // True se abbiamo già controllato se ci sono conflitti
                 
+                // Per ogni host selezionato
                 foreach(SfspHost h in hostList)
                 {
+                    // Preparo il trasferimento
                     SfspAsyncUpload upload = h.Send(path, hostConfiguration);
 
                     // Da eseguire solo col primo host (tanto con quelli dopo sarebbe uguale)
@@ -191,20 +221,26 @@ namespace SfspClient
                     // Aggiorno stato dell'avanzamento 10 volte al secondo
                     upload.ProgressUpdateTime = new TimeSpan(0, 0, 0, 0, 100);
 
-                    // Aggiunto in cima alla lista
+                    // Aggiungo il trasferimento in cima alla lista (dopo averne creato l'oggetto wrapper)
                     var wrapper = new TransferWrapper(upload, h.Name);
                     transfer_wrapper_list.Insert(0, wrapper);
 
+                    // Avvio l'upload verso questo host
                     upload.Start();
                 }
             }
         }
 
+        /// <summary>
+        /// Gestione dell'uscita dall'applicazione (con richiesta di conferma)
+        /// </summary>
         public void Quit()
         {
+            // Conta il numero di trasferimenti non completati / falliti
             int running_transfers = transfer_wrapper_list.Where(tw =>
                 (tw.TransferObject.Status != TransferStatus.Failed && tw.TransferObject.Status != TransferStatus.Completed)).Count();
 
+            // Se ce ne sono chiedi conferma prima di uscire
             if (running_transfers > 0)
             {
                 MessageBoxResult res =  MessageBox.Show("Ci sono " + running_transfers.ToString() + " trasferimenti in corso, uscendo verranno interrotti. Vuoi veramente uscire?", "Conferma", MessageBoxButton.YesNo);
@@ -212,13 +248,17 @@ namespace SfspClient
                     return;
             }
 
+            // Se arriviamo fin qui vogliamo proprio uscire, quindi annulliamo tutti i trasferimenti in corso
             foreach (var tw in transfer_wrapper_list)
             {
                 if (tw.TransferObject.Status != TransferStatus.Failed && tw.TransferObject.Status != TransferStatus.Completed)
                     tw.TransferObject.Abort();
             }
 
+            // Nascondiamo l'icona di notifica (altrimenti rimane finché non ci si passa sopra col mouse, anche ad applicazione chiusa)
             notifyIcon.Visible = false;
+
+            // Finalmente usciamo
             Application.Current.Shutdown();
         }
 
@@ -286,16 +326,18 @@ namespace SfspClient
                     var wrapper = new TransferWrapper(download, e.Download.RemoteHostName);
                     transfer_wrapper_list.Insert(0, wrapper);
 
+                    // Accetto il download (che viene quindi avviato)
                     download.Accept(destinationPath);
                 }
                 else
+                    // Rifiuto il download
                     download.Deny();
             });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // lst_transfers.Items.Add("Hello");
+            
         }
 
         private void mnu_about_Click(object sender, RoutedEventArgs e)
@@ -311,6 +353,7 @@ namespace SfspClient
 
         private void mnu_settings_Click(object sender, RoutedEventArgs e)
         {
+            // Mostro la finestra di dialogo per le impostazioni
             wnd_settings settings = new wnd_settings();
             settings.ShowDialog();
 
@@ -322,15 +365,18 @@ namespace SfspClient
 
         private void mnu_transfers_Click(object sender, RoutedEventArgs e)
         {
+            // Mostro la finestra principale
             this.Show();
             this.Activate();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // Alla chiusura della finestra la nascondo e non la chiudo davvero
             this.Hide();
             e.Cancel = true;
 
+            // La prima volta mostro una notifica che informa l'utente che l'applicazione è ancora in esecuzione
             if(!still_running_tip_shown)
             {
                 notifyIcon.ShowBalloonTip(200,"Sfsp","SfspClient è ancora in esecuzione", System.Windows.Forms.ToolTipIcon.Info);
