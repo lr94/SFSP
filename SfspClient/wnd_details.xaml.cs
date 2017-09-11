@@ -29,6 +29,7 @@ namespace SfspClient
             tw = transferWrapper;
             this.DataContext = transferWrapper;
 
+            // Lista dei percorsi relativi (uno per riga)
             txt_list.Text = tw.TransferObject.RelativePaths.Aggregate((a, b) => a + "\n" + b);
         }
     }
