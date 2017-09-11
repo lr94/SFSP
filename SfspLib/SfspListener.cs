@@ -129,6 +129,7 @@ namespace Sfsp
                     catch (SfspInvalidMessageException)
                     {
                         // Se il messaggio non era valido ignoriamo direttamente questa richiesta di connessione
+                        client.Close();
                         continue;
                     }
 
