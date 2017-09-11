@@ -6,7 +6,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:SfspClient"
         mc:Ignorable="d"
-        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Loaded="Window_Loaded" Closing="Window_Closing" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave">
+        Title="Sfsp Client" Height="300" Width="600" MinWidth="300" MinHeight="300" Icon="icon.ico" Closing="Window_Closing" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave">
     <Window.Resources>
         <!-- Context menu per l'icona nella system tray -->
         <ContextMenu x:Key="notifyIconMenu">

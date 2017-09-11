@@ -335,11 +335,6 @@ namespace SfspClient
             });
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void mnu_about_Click(object sender, RoutedEventArgs e)
         {
             wnd_about about = new wnd_about();
@@ -348,7 +343,7 @@ namespace SfspClient
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            // Usato per debug
         }
 
         private void mnu_settings_Click(object sender, RoutedEventArgs e)
