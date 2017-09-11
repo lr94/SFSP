@@ -205,7 +205,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Sfsp, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Sfsp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_FEE6922DF65A07EFFAAAF38246FF2E9A"
@@ -311,7 +311,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SfspClientSetup"
         "ProductCode" = "8:{1333C545-8BD1-4791-A55D-A723086F859F}"
-        "PackageCode" = "8:{00EAAC30-343F-4CBA-9108-D9F8B128797A}"
+        "PackageCode" = "8:{BF15AF07-E240-44B3-95AC-8004C9A9EB4F}"
         "UpgradeCode" = "8:{C85960C1-99E0-4D09-92C4-261907272BFA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
