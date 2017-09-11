@@ -44,7 +44,7 @@ namespace Sfsp
         private DateTime last_progress_update = new DateTime(0);
         /// <summary>
         /// Se è specificato un intervallo di aggiornamento non nullo e se è trascorso almeno tale
-        /// intervallo dall'ultimo aggiornamento, lancia l'evento di aggiornamento dell'avanzamento
+        /// intervallo dall'ultimo aggiornamento, solleva l'evento di aggiornamento dell'avanzamento
         /// del trasferimento (sì, l'ho scritto sul serio).
         /// </summary>
         protected void ProgressUpdateIfNeeded()
