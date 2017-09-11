@@ -31,14 +31,17 @@ namespace SfspClient
             string filename = System.IO.Path.GetFileName(fileToSend);
             txtb_filename.Text = String.Format(txtb_filename.Text, filename);
 
+            // Associo alla ListBox una collezione osservabile di oggetti SfspHost
             hosts = new ObservableCollection<SfspHost>();
             lst_hosts.ItemsSource = hosts;
 
+            // Inizializzo lo scanner Sfsp
             scanner = new SfspScanner(config);
             scanner.HostFound += scanner_HostFound;
             scanner.ScanComplete += scanner_ScanComplete;
             scanner.Error += (object sender, Exception e) => {
                 MessageBox.Show("Si è verificato un errore durante la scansione.\n" + e.Message, "Errore", MessageBoxButton.OK, MessageBoxImage.Error);
+                // In caso di errore annullo
                 Dispatcher.Invoke(() => this.Close());
             };
             icn_spinner.Spin = true;
@@ -53,6 +56,7 @@ namespace SfspClient
 
         private void scanner_HostFound(object sender, SfspHostFoundEventArgs e)
         {
+            // Quando viene trovato un nuovo host lo aggiungo alla lista
             Dispatcher.Invoke(() =>
             {
                 hosts.Add(e.Host);
@@ -61,10 +65,13 @@ namespace SfspClient
 
         private void scanner_ScanComplete(object sender, EventArgs e)
         {
+            // Al termine della scansione
             Dispatcher.Invoke(() =>
             {
+                // Nascondo lo spinner
                 icn_spinner.Spin = false;
                 icn_spinner.Visibility = Visibility.Hidden;
+                // Abilito il controllo ListBox per la selezione degli host
                 lst_hosts.IsEnabled = true;
             });
         }
