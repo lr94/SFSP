@@ -24,15 +24,25 @@ namespace SfspClient
     public partial class wnd_transfers : Window
     {
         #region "NotifyIcon"
+        // Non esiste un controllo WPF per le icone di notifica, quindi prendiamo in prestito quello da Windows Forms
         System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
         bool still_running_tip_shown = false;
 
+        /// <summary>
+        /// Inizializza l'icona di notifica
+        /// </summary>
+        /// <param name="iconName">Nome della risorsa icona da utilizzare</param>
+        /// <param name="menuKey">Key del menu da usare</param>
         private void InitNotifyIcon(String iconName, String menuKey)
         {
+            // Creo un oggetto System.Drawing.Icon a partire dalla risorsa
             Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/" + iconName)).Stream;
             notifyIcon.Icon = new System.Drawing.Icon(iconStream);
+            // Visualizzo l'icona nella system tray
             notifyIcon.Visible = true;
 
+            // Aggiungo un event handler per il click che consente di visualizzare il menu associato all'icona
+            // questo metodo ci consente di utilizzare un menu WPF con una NotifyIcon WindowsForms.
             notifyIcon.MouseDown += (object sender, System.Windows.Forms.MouseEventArgs e) =>
             {
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
