@@ -34,6 +34,10 @@ namespace SfspClient
             Load();
         }
 
+        /// <summary>
+        /// Ottiene il nome della cartella relativa all'applicazione all'interno di AppData
+        /// </summary>
+        /// <returns></returns>
         private string GetApplicationFolder()
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
