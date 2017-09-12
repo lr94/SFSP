@@ -39,7 +39,7 @@ namespace SfspClient
         /// Formatta un intervallo di tempo esprimendolo in italiano
         /// </summary>
         /// <param name="ts">Intervallo temporale</param>
-        /// <returns></returns>
+        /// <returns>Una stringa rappresentante l'intervallo di tempo in italiano</returns>
         public static string FormatTimeSpan(TimeSpan ts)
         {
             if(ts.TotalSeconds < 1.0)
